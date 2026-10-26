@@ -1,9 +1,11 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
 import { AuthLayout } from '@/layouts/AuthLayout'
+import { ProfileLayout } from '@/layouts/ProfileLayout'
 import { RootLayout } from '@/layouts/RootLayout'
 import { StoreLayout } from '@/layouts/StoreLayout'
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
 import { RouteErrorPage } from '@/pages/RouteError/RouteErrorPage'
+import { ProtectedRoute } from './ProtectedRoute'
 
 // Every page is code-split; `lazy` resolves the named export each page module provides.
 const page = <M,>(load: () => Promise<M>, pick: (module: M) => React.ComponentType) => async () => ({ Component: pick(await load()) })
@@ -43,6 +45,30 @@ export const routes: RouteObject[] = [
               },
               { path: 'orders/:orderNumber', lazy: page(() => import('@/pages/Order/OrderPage'), (m) => m.OrderPage) },
               { path: 'search', lazy: page(() => import('@/pages/Search/SearchPage'), (m) => m.SearchPage) },
+              {
+                element: <ProtectedRoute />,
+                children: [
+                  {
+                    path: 'profile',
+                    element: <ProfileLayout />,
+                    children: [
+                      { index: true, lazy: page(() => import('@/pages/Profile/ProfilePage'), (m) => m.ProfilePage) },
+                      {
+                        path: 'personal-information',
+                        lazy: page(() => import('@/pages/Profile/PersonalInformation/PersonalInformationPage'), (m) => m.PersonalInformationPage),
+                      },
+                      { path: 'addresses', lazy: page(() => import('@/pages/Profile/Addresses/AddressesPage'), (m) => m.AddressesPage) },
+                      { path: 'orders', lazy: page(() => import('@/pages/Profile/Orders/ProfileOrdersPage'), (m) => m.ProfileOrdersPage) },
+                      {
+                        path: 'orders/:orderNumber',
+                        lazy: page(() => import('@/pages/Profile/OrderDetails/ProfileOrderDetailsPage'), (m) => m.ProfileOrderDetailsPage),
+                      },
+                      { path: 'wishlist', lazy: page(() => import('@/pages/Wishlist/WishlistPage'), (m) => () => <m.WishlistPage embedded />) },
+                      { path: 'settings', lazy: page(() => import('@/pages/Profile/Settings/ProfileSettingsPage'), (m) => m.ProfileSettingsPage) },
+                    ],
+                  },
+                ],
+              },
               { path: '*', element: <NotFoundPage /> },
             ],
           },

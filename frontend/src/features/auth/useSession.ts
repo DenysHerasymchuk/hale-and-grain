@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useWishlistStore } from '@/features/wishlist/wishlistStore'
 import { ApiError } from '@/lib/apiClient'
 import { authApi, type Credentials, type Session } from './api'
 
@@ -24,7 +25,9 @@ export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (credentials: Credentials) => authApi.login(credentials),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: sessionKey }),
+    // Remove rather than invalidate: no observer may be mounted on the auth pages, and a stale
+    // cached `null` would make the next protected route bounce straight back to login.
+    onSuccess: () => queryClient.removeQueries({ queryKey: sessionKey }),
   })
 }
 
@@ -32,9 +35,10 @@ export function useLogout() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: authApi.logout,
-    // Drop every cached query: account data must not linger after sign-out.
+    // Account data must not linger after sign-out, on screen or on this device.
     onSettled: () => {
       queryClient.clear()
+      useWishlistStore.getState().replaceAll([])
     },
   })
 }
