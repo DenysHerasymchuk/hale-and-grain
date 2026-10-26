@@ -20,14 +20,30 @@ export function HeroSection() {
   const { data: product } = useProduct(HERO_SLUG)
   const webGL = useWebGLSupport()
   const poster = product?.images[0]
-  const posterImage = poster && <img src={poster.url} alt={poster.altText} className="mx-auto h-full w-auto object-contain opacity-80 mix-blend-luminosity" />
+  // Without WebGL the photo peeks in from the edge instead.
+  const posterImage = poster && (
+    <img src={poster.url} alt="" className="absolute top-1/2 right-0 h-[70%] w-auto translate-x-[45%] -translate-y-1/2 object-contain opacity-80 mix-blend-luminosity" />
+  )
 
   return (
     <section ref={ref} className="relative isolate overflow-hidden bg-neutral-950 text-white">
       <HeroBackdrop paused={!inView} />
 
-      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-6 py-14 lg:grid-cols-[1.15fr_1fr] lg:py-10">
-        <div className="max-w-2xl">
+      {/* Anchored to the screen's right edge so the cabinet is cut off by the viewport itself. */}
+      <div className="absolute inset-y-0 right-0 hidden w-[58%] md:block">
+        {product?.model && webGL ? (
+          <ModelErrorBoundary fallback={() => posterImage}>
+            <Suspense fallback={null}>
+              <HeroModel model={product.model} active={inView} />
+            </Suspense>
+          </ModelErrorBoundary>
+        ) : (
+          posterImage
+        )}
+      </div>
+
+      <div className="container-page pointer-events-none relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center py-14 lg:py-10">
+        <div className="pointer-events-auto max-w-2xl">
           <BlurText
             as="h1"
             text="Furniture you can walk around before it arrives."
@@ -68,23 +84,6 @@ export function HeroSection() {
           </motion.p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, delay: 0.2, ease }}
-          className="relative h-[26rem] sm:h-[32rem] lg:h-[40rem]"
-        >
-          {product?.model && webGL ? (
-            <ModelErrorBoundary fallback={() => posterImage}>
-              <Suspense fallback={posterImage}>
-                <HeroModel model={product.model} active={inView} />
-              </Suspense>
-            </ModelErrorBoundary>
-          ) : (
-            posterImage
-          )}
-
-        </motion.div>
       </div>
     </section>
   )
