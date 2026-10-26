@@ -1,3 +1,6 @@
+# `docker compose up --build` runs the whole store on http://localhost:8080.
+# For day-to-day development run only the database (`docker compose up -d db`) and use
+# `dotnet run` + `npm run dev` for hot reload.
 services:
   db:
     image: postgres:17-alpine
@@ -14,6 +17,36 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  # One-shot: applies EF Core migrations and seeds the catalogue, then exits.
+  migrate:
+    build: ./backend
+    command: ["--seed"]
+    environment: &api-env
+      ConnectionStrings__Store: Host=db;Port=5432;Database=${POSTGRES_DB:-furniture_store};Username=${POSTGRES_USER:-furniture};Password=${POSTGRES_PASSWORD:-furniture_dev};Gss Encryption Mode=Disable
+      Seed__AdminEmail: ${SEED_ADMIN_EMAIL:-}
+      Seed__AdminPassword: ${SEED_ADMIN_PASSWORD:-}
+      # Local stack only: orders are recorded as "development, simulated" and no money moves.
+      Payments__Provider: ${PAYMENTS_PROVIDER:-Development}
+      # The API is reachable only through the web container's proxy on this network.
+      ForwardedHeaders__TrustAllProxies: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: ./backend
+    environment: *api-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  web:
+    build: ./frontend
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      - api
 
 volumes:
   db-data:

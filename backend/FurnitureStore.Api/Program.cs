@@ -5,6 +5,7 @@ using FurnitureStore.Api.Features.Catalog;
 using FurnitureStore.Api.Features.Orders;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -53,7 +54,20 @@ var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
     policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
+if (builder.Configuration.GetValue<bool>("ForwardedHeaders:TrustAllProxies"))
+{
+    // Only safe when the API is not directly reachable (e.g. behind the compose nginx).
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+        options.KnownIPNetworks.Clear();
+        options.KnownProxies.Clear();
+    });
+}
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // `dotnet run -- --seed` migrates and seeds explicitly; Development does it on startup.
 if (args.Contains("--seed") || (app.Environment.IsDevelopment() && app.Configuration.GetValue("Database:MigrateOnStartup", true)))
