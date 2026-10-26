@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using FurnitureStore.Api.Data;
 using FurnitureStore.Api.Domain;
 using FurnitureStore.Api.Features.Account;
+using FurnitureStore.Api.Features.Admin;
 using FurnitureStore.Api.Features.Catalog;
 using FurnitureStore.Api.Features.Orders;
 using Microsoft.AspNetCore.RateLimiting;
@@ -60,6 +61,7 @@ else
     builder.Services.AddScoped<IPaymentProvider, UnconfiguredPaymentProvider>();
 }
 
+var authPermitsPerMinute = builder.Configuration.GetValue("RateLimits:AuthPerMinute", 20);
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -68,7 +70,7 @@ builder.Services.AddRateLimiter(options =>
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1) }));
     options.AddPolicy("auth", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
-        _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1) }));
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = authPermitsPerMinute, Window = TimeSpan.FromMinutes(1) }));
 });
 
 builder.Services.ConfigureHttpJsonOptions(options =>
@@ -133,6 +135,7 @@ api.MapCatalogEndpoints();
 api.MapOrderEndpoints();
 api.MapAuthEndpoints();
 api.MapAccountEndpoints();
+api.MapAdminEndpoints();
 
 app.Run();
 
