@@ -24,7 +24,7 @@ export function HeroModel({ model, active }: HeroModelProps) {
 
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       frameloop={active && !reducedMotion ? 'always' : 'demand'}
       camera={{ fov: 30, position: [-2.6, 1.4, 4.2] }}
       gl={{ alpha: true, antialias: true }}
@@ -48,7 +48,8 @@ export function HeroModel({ model, active }: HeroModelProps) {
             </Center>
           </Float>
         </Bounds>
-        <ContactShadows position={[0, -1.05, 0]} opacity={0.55} scale={4} blur={2.8} far={2} color="#000000" />
+        {/* Baked once: re-rendering the shadow every frame was the main cost of the floating model. */}
+        <ContactShadows frames={1} position={[0, -1.05, 0]} opacity={0.55} scale={4} blur={2.8} far={2} resolution={256} color="#000000" />
       </Suspense>
 
       <OrbitControls
