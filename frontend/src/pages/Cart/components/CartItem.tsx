@@ -5,7 +5,7 @@ import { QuantitySelector } from '@/components/QuantitySelector/QuantitySelector
 import { lineLimit, useCartStore, type CartLine } from '@/features/cart/cartStore'
 import { routePaths } from '@/Routes/routePaths'
 
-export function CartItem({ line }: { line: CartLine }) {
+export function CartItem({ line, problem }: { line: CartLine; problem?: string }) {
   const setQuantity = useCartStore((state) => state.setQuantity)
   const remove = useCartStore((state) => state.remove)
 
@@ -33,6 +33,12 @@ export function CartItem({ line }: { line: CartLine }) {
           </div>
           <Price amount={line.unitPrice * line.quantity} currency={line.currency} className="font-medium text-primary" />
         </div>
+
+        {problem && (
+          <p role="alert" className="mt-2 text-sm text-error-primary">
+            {problem}
+          </p>
+        )}
 
         <div className="mt-auto flex items-center justify-between pt-4">
           <QuantitySelector
