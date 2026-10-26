@@ -1,4 +1,5 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
+import { AuthLayout } from '@/layouts/AuthLayout'
 import { RootLayout } from '@/layouts/RootLayout'
 import { StoreLayout } from '@/layouts/StoreLayout'
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
@@ -12,6 +13,16 @@ export const routes: RouteObject[] = [
     element: <RootLayout />,
     errorElement: <RouteErrorPage />,
     children: [
+      {
+        element: <AuthLayout />,
+        errorElement: <RouteErrorPage />,
+        children: [
+          { path: 'login', lazy: page(() => import('@/pages/Login/LoginPage'), (m) => m.LoginPage) },
+          { path: 'register', lazy: page(() => import('@/pages/Register/RegisterPage'), (m) => m.RegisterPage) },
+          { path: 'forgot-password', lazy: page(() => import('@/pages/ForgotPassword/ForgotPasswordPage'), (m) => m.ForgotPasswordPage) },
+          { path: 'reset-password', lazy: page(() => import('@/pages/ResetPassword/ResetPasswordPage'), (m) => m.ResetPasswordPage) },
+        ],
+      },
       {
         element: <StoreLayout />,
         children: [
