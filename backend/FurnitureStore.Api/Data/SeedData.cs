@@ -118,19 +118,19 @@ public static class SeedData
         Name = "Atelier Drawer Cabinet",
         Slug = "atelier-drawer-cabinet",
         Sku = "HG-STO-ATELIER",
-        ShortDescription = "A tall cabinet with four deep drawers, made for linen, paper and the things in between.",
+        ShortDescription = "Four oak drawers beneath two open shelves, held in a slim blackened frame.",
         Description = """
             Inspired by the cabinets in old print studios, Atelier pairs open display space with a bank of
             four full-width drawers. Each drawer runs on timber guides, waxed so it glides without hardware.
 
-            Brushed metal pulls are fixed through the drawer front, not glued, and the carcass is finished on
-            all four sides so it can stand away from the wall as a room divider.
+            There are no handles to catch a sleeve: a recessed finger groove runs under every drawer front.
+            The carcass is finished on all four sides, so it can stand away from the wall as a room divider.
             """,
         Price = 1450m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
         Dimensions = "W 114 × D 49 × H 188 cm",
-        Materials = "Timber carcass, brushed metal pulls",
+        Materials = "Oak drawers and shelves, blackened ash frame",
         IsPublished = true,
         IsFeatured = true,
         CreatedAt = SeededAt.AddDays(1),
@@ -162,7 +162,7 @@ public static class SeedData
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
         Dimensions = "W 110 × D 50 × H 214 cm",
-        Materials = "Powder-coated steel, timber shelves",
+        Materials = "Powder-coated steel, oak shelves",
         IsPublished = true,
         IsFeatured = false,
         CreatedAt = SeededAt.AddDays(2),
@@ -213,19 +213,19 @@ public static class SeedData
         Name = "Lune Console",
         Slug = "lune-console",
         Sku = "HG-CON-LUNE",
-        ShortDescription = "A lacquered console with carved detailing, after a classic Chinese altar table.",
+        ShortDescription = "A long hardwood console with carved spandrels and pierced roundels, after a Chinese altar table.",
         Description = """
             Lune takes its proportions from the traditional Chinese altar table: a long, narrow top with
-            upturned ends and a carved apron that frames the space beneath.
+            upturned ends, carried on two panel legs with hand-carved roundels and scrolling spandrels.
 
-            The finish is built up in thin coats and hand-rubbed between each one, giving a soft sheen that
-            deepens with age. Use it in an entrance, behind a sofa, or as a slim desk.
+            The oil finish is built up in thin coats and hand-rubbed between each one, giving a soft sheen
+            that deepens with age. Use it in an entrance, behind a sofa, or along a wall as a display table.
             """,
         Price = 1290m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
         Dimensions = "W 172 × D 34 × H 66 cm",
-        Materials = "Hardwood, hand-rubbed lacquer",
+        Materials = "Solid hardwood, hand-rubbed oil",
         IsPublished = true,
         IsFeatured = true,
         CreatedAt = SeededAt.AddDays(4),
@@ -234,8 +234,8 @@ public static class SeedData
         Model = PolyHavenModel("lune-console", "chinese_console_table", "Chinese Console Table"),
         Variants =
         [
-            Variant("3c000000-0000-0000-0005-000000000001", "HG-CON-LUNE-RED", "Cinnabar", "#7c2f24", null, 0m, 3, 0),
-            Variant("3c000000-0000-0000-0005-000000000002", "HG-CON-LUNE-BLK", "Black lacquer", "#231f1d", "#3a3533", 150m, 1, 1),
+            Variant("3c000000-0000-0000-0005-000000000001", "HG-CON-LUNE-NAT", "Natural", "#8a5a3c", null, 0m, 3, 0),
+            Variant("3c000000-0000-0000-0005-000000000002", "HG-CON-LUNE-BLK", "Ebonised", "#231f1d", "#3a3533", 150m, 1, 1),
         ],
     };
 
