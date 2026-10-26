@@ -108,7 +108,7 @@ public static class SeedData
         [
             Variant("3c000000-0000-0000-0001-000000000001", "HG-TBL-HARROW-NAT", "Natural", "#c49a6c", null, 0m, 6, 0),
             Variant("3c000000-0000-0000-0001-000000000002", "HG-TBL-HARROW-SMK", "Smoked", "#7a5a43", "#9b7b66", 120m, 3, 1),
-            Variant("3c000000-0000-0000-0001-000000000003", "HG-TBL-HARROW-EBN", "Ebonised", "#3a302b", "#4a4040", 180m, 2, 2),
+            Variant("3c000000-0000-0000-0001-000000000003", "HG-TBL-HARROW-EBN", "Ebonised", "#3a302b", "#6b5f59", 180m, 2, 2),
         ],
     };
 
@@ -235,7 +235,7 @@ public static class SeedData
         Variants =
         [
             Variant("3c000000-0000-0000-0005-000000000001", "HG-CON-LUNE-NAT", "Natural", "#8a5a3c", null, 0m, 3, 0),
-            Variant("3c000000-0000-0000-0005-000000000002", "HG-CON-LUNE-BLK", "Ebonised", "#231f1d", "#3a3533", 150m, 1, 1),
+            Variant("3c000000-0000-0000-0005-000000000002", "HG-CON-LUNE-BLK", "Ebonised", "#231f1d", "#6b5f59", 150m, 1, 1),
         ],
     };
 
