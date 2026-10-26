@@ -4,6 +4,7 @@ import { Button } from '@/components/base/buttons/button'
 import BlurText from '@/components/reactbits/BlurText'
 import { routePaths } from '@/Routes/routePaths'
 import { HeroBackdrop } from './HeroBackdrop'
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -59,9 +60,9 @@ export function HeroSection() {
             transition={{ duration: 0.7, delay: 0.65, ease }}
             className="mt-9 flex flex-wrap gap-3"
           >
-            <Button href={routePaths.products} size="xl" iconTrailing={ArrowRight} className="bg-beige text-neutral-950 shadow-none ring-0 hover:bg-white">
+            <PrimaryButton surface="dark" href={routePaths.products} size="lg" iconTrailing={ArrowRight}>
               Shop the collection
-            </Button>
+            </PrimaryButton>
             <Button href={`${routePaths.home}#in-3d`} size="xl" color="secondary" iconLeading={Cube01} className="glass-dark bg-white/8 text-white ring-0 hover:bg-white/15 hover:text-white">
               How the 3D view works
             </Button>

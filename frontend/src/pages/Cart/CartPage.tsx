@@ -7,6 +7,7 @@ import { OrderSummary } from '@/features/cart/components/OrderSummary'
 import { useCartQuote } from '@/features/checkout/hooks'
 import { routePaths } from '@/Routes/routePaths'
 import { CartItem } from './components/CartItem'
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 export function CartPage() {
   const lines = useCartStore((state) => state.lines)
@@ -69,9 +70,9 @@ export function CartPage() {
               Some items need your attention before checkout.
             </p>
           )}
-          <Button href={routePaths.checkout} size="xl" className="w-full" iconTrailing={ArrowRight} isDisabled={problems.length > 0}>
+          <PrimaryButton href={routePaths.checkout} size="lg" className="w-full" iconTrailing={ArrowRight} isDisabled={problems.length > 0}>
             Continue to checkout
-          </Button>
+          </PrimaryButton>
           <Button href={routePaths.products} size="lg" color="link-gray" className="mt-4 w-full justify-center">
             Continue shopping
           </Button>
