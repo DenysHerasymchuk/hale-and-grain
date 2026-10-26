@@ -17,6 +17,7 @@
   "ignorePatterns": [
     "src/components/base/**",
     "src/components/application/**",
-    "src/components/foundations/**"
+    "src/components/foundations/**",
+    "src/components/reactbits/**"
   ]
 }
