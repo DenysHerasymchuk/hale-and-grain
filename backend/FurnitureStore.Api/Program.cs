@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 using FurnitureStore.Api.Data;
 using FurnitureStore.Api.Domain;
 using FurnitureStore.Api.Features.Catalog;
+using FurnitureStore.Api.Features.Orders;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -17,7 +20,27 @@ builder.Services
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<StoreDbContext>();
 
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<CatalogService>();
+builder.Services.AddScoped<OrderService>();
+
+// Without a configured provider, checkout refuses orders instead of pretending to take payment.
+if (builder.Configuration["Payments:Provider"] == "Development")
+{
+    builder.Services.AddScoped<IPaymentProvider, DevelopmentPaymentProvider>();
+}
+else
+{
+    builder.Services.AddScoped<IPaymentProvider, UnconfiguredPaymentProvider>();
+}
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy("orders", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1) }));
+});
 
 builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(System.Text.Json.JsonNamingPolicy.CamelCase)));
@@ -57,11 +80,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+app.UseRateLimiter();
 
 app.MapHealthChecks("/health");
 
 var api = app.MapGroup("/api/v1");
 api.MapCatalogEndpoints();
+api.MapOrderEndpoints();
 
 app.Run();
 
