@@ -36,9 +36,9 @@ export function Footer() {
     <footer className="mt-24 bg-neutral-900 text-neutral-300">
       <div className="container-page grid gap-12 py-16 md:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div className="max-w-xs">
-          <Logo inverted />
+          <Logo />
           <p className="mt-5 text-sm leading-relaxed text-neutral-400">
-            Solid-timber furniture, designed in our studio and made to order in small batches. Built to be repaired, not replaced.
+            Solid-timber furniture, designed in our studio and made to order in small batches. Every joint can be taken apart for repair.
           </p>
         </div>
         {columns.map((column) => (

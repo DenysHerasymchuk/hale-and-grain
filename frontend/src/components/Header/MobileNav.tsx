@@ -11,11 +11,11 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
 export function MobileNav({ categories }: { categories: Category[] }) {
   return (
     <DialogTrigger>
-      <Button aria-label="Open menu" className="inline-flex size-10 items-center justify-center rounded-full text-secondary hover:bg-secondary lg:hidden">
+      <Button aria-label="Open menu" className="inline-flex size-10 items-center justify-center rounded-full text-neutral-300 hover:bg-white/10 hover:text-white lg:hidden">
         <Menu01 className="size-5" aria-hidden />
       </Button>
       <ModalOverlay isDismissable className="fixed inset-0 z-50 bg-neutral-950/40 entering:animate-in entering:fade-in exiting:animate-out exiting:fade-out">
-        <Modal className="fixed inset-y-0 left-0 w-[min(22rem,88vw)] bg-primary shadow-2xl entering:animate-in entering:slide-in-from-left exiting:animate-out exiting:slide-out-to-left">
+        <Modal className="glass fixed inset-y-0 left-0 w-[min(22rem,88vw)] shadow-2xl entering:animate-in entering:slide-in-from-left exiting:animate-out exiting:slide-out-to-left">
           <Dialog className="flex h-full flex-col p-6 outline-none">
             {({ close }) => (
               <>

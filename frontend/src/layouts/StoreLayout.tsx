@@ -1,6 +1,7 @@
-import { Outlet } from 'react-router'
 import { Footer } from '@/components/Footer/Footer'
 import { Header } from '@/components/Header/Header'
+import { PageTransition } from '@/components/Motion/PageTransition'
+import { CartToast } from '@/features/cart/components/CartToast'
 import { useWishlistSync } from '@/features/wishlist/useWishlistSync'
 
 export function StoreLayout() {
@@ -13,9 +14,10 @@ export function StoreLayout() {
       </a>
       <Header />
       <main id="main" className="flex-1">
-        <Outlet />
+        <PageTransition />
       </main>
       <Footer />
+      <CartToast />
     </div>
   )
 }

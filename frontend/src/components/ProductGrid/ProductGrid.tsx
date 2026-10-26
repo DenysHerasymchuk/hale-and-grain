@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { ProductCard } from '@/components/ProductCard/ProductCard'
 import type { ProductSummary } from '@/types/api'
 import { cx } from '@/utils/cx'
@@ -6,9 +7,16 @@ export function ProductGrid({ products, className }: { products: ProductSummary[
   return (
     <ul className={cx('grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3', className)}>
       {products.map((product, index) => (
-        <li key={product.id} className="has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-4 has-focus-visible:ring-offset-bg-primary rounded-[var(--radius-card)]">
+        <motion.li
+          key={product.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.55, delay: (index % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="rounded-[var(--radius-card)] has-focus-visible:ring-2 has-focus-visible:ring-focus-ring has-focus-visible:ring-offset-4 has-focus-visible:ring-offset-bg-primary"
+        >
           <ProductCard product={product} priority={index < 3} />
-        </li>
+        </motion.li>
       ))}
     </ul>
   )

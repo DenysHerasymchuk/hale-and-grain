@@ -17,7 +17,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
 
   return (
     <article className={cx('group relative flex flex-col', className)}>
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-secondary">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-secondary transition-[box-shadow,translate] duration-500 ease-out group-hover:-translate-y-1 group-hover:shadow-xl motion-reduce:transition-none">
         {product.imageUrl ? (
           <img
             src={product.imageUrl}
@@ -31,7 +31,7 @@ export function ProductCard({ product, className, priority = false }: ProductCar
         )}
         <div className="absolute top-3 left-3 flex gap-1.5">
           {product.hasModel && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-primary/90 px-2.5 py-1 text-xs font-medium text-secondary backdrop-blur">
+            <span className="glass inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium text-secondary">
               <Cube01 className="size-3.5" aria-hidden />
               View in 3D
             </span>

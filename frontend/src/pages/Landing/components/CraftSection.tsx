@@ -1,15 +1,15 @@
 const pillars = [
   {
-    title: 'Solid timber, start to finish',
-    text: 'No veneered chipboard, no hidden MDF backs. If a surface looks like wood, it is wood all the way through.',
+    title: 'Solid timber throughout',
+    text: "Tops, sides and backs are solid wood. We don't use veneered chipboard or MDF anywhere in a piece.",
   },
   {
-    title: 'Joints, not just screws',
-    text: 'Housings, pegged tenons and timber runners. Joinery that tightens with time and can be taken apart to repair.',
+    title: 'Pegged and housed joints',
+    text: 'We use housings, pegged tenons and timber drawer runners. Joints like these tighten as the wood settles, and they come apart cleanly when something needs repair.',
   },
   {
     title: 'Made when you order',
-    text: 'We build in small batches against real orders, so nothing sits in a warehouse and nothing is discounted to clear.',
+    text: "We build in small batches against real orders, so there's no warehouse stock to clear at a discount.",
   },
 ]
 
@@ -23,10 +23,10 @@ export function CraftSection() {
       <div>
         <p className="eyebrow">Craftsmanship</p>
         <h2 id="craft-heading" className="mt-3 font-display text-4xl text-primary md:text-5xl">
-          Built to be repaired, not replaced
+          Furniture you can fix
         </h2>
         <p className="mt-5 max-w-lg text-tertiary">
-          Hale &amp; Grain started as a two-person workshop. We still design every piece at the bench, and we still sign the underside of every top.
+          Hale &amp; Grain started as a two-person workshop, and we still design every piece at the bench. Each top is signed underneath.
         </p>
         <ul className="mt-10 divide-y divide-border-secondary border-y border-secondary">
           {pillars.map((pillar) => (
