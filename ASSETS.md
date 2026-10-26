@@ -31,6 +31,9 @@ Requires Blender 4.2+ (the official portable build works if the distro package d
 # GLB: textures downscaled to 1K WebP, model centred and grounded at the origin
 blender -b wooden_table_02_4k.blend -P scripts/assets/export_glb.py -- frontend/public/models/harrow-dining-table.glb 1024
 
+# Transparent cutout used in the landing hero (edges feathered afterwards)
+blender -b drawer_cabinet_4k.blend -P scripts/assets/render_cutout.py -- hero-cabinet.webp 35 128
+
 # Four studio shots: <slug>-1..4.webp
 blender -b wooden_table_02_4k.blend -P scripts/assets/render_shots.py -- frontend/public/images/products harrow-dining-table 64
 ```

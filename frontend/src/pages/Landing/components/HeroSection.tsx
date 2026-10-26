@@ -1,46 +1,37 @@
 import { ArrowRight, Cube01 } from '@untitledui/icons'
 import { motion } from 'motion/react'
-import { lazy, Suspense } from 'react'
 import { Button } from '@/components/base/buttons/button'
 import BlurText from '@/components/reactbits/BlurText'
-import { useProduct } from '@/features/catalog/hooks'
-import { ModelErrorBoundary } from '@/features/viewer/ModelErrorBoundary'
-import { useWebGLSupport } from '@/features/viewer/useWebGLSupport'
-import { useInView } from '@/hooks/useInView'
 import { routePaths } from '@/Routes/routePaths'
 import { HeroBackdrop } from './HeroBackdrop'
 
-const HeroModel = lazy(() => import('./HeroModel').then((m) => ({ default: m.HeroModel })))
-
-const HERO_SLUG = 'atelier-drawer-cabinet'
 const ease = [0.22, 1, 0.36, 1] as const
 
 export function HeroSection() {
-  const { ref, inView } = useInView<HTMLElement>('0px', false)
-  const { data: product } = useProduct(HERO_SLUG)
-  const webGL = useWebGLSupport()
-  const poster = product?.images[0]
-  // Without WebGL the photo peeks in from the edge instead.
-  const posterImage = poster && (
-    <img src={poster.url} alt="" className="absolute top-1/2 right-0 h-[70%] w-auto translate-x-[45%] -translate-y-1/2 object-contain opacity-80 mix-blend-luminosity" />
-  )
-
   return (
-    <section ref={ref} className="relative isolate overflow-hidden bg-neutral-950 text-white">
-      <HeroBackdrop paused={!inView} />
+    <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
+      <HeroBackdrop />
 
-      {/* Anchored to the screen's right edge so the cabinet is cut off by the viewport itself. */}
-      <div className="absolute inset-y-0 right-0 hidden w-[58%] md:block">
-        {product?.model && webGL ? (
-          <ModelErrorBoundary fallback={() => posterImage}>
-            <Suspense fallback={null}>
-              <HeroModel model={product.model} active={inView} />
-            </Suspense>
-          </ModelErrorBoundary>
-        ) : (
-          posterImage
-        )}
-      </div>
+      {/*
+        Transparent cutout of the Atelier cabinet, anchored to the screen's right edge.
+        The outer layer slides it in until half the cabinet shows; the inner one leans
+        out a little every few seconds. Both are transforms only, so they stay cheap.
+      */}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 right-0 hidden h-[78%] -translate-y-1/2 md:block"
+        initial={{ x: '100%' }}
+        animate={{ x: '50%' }}
+        transition={{ duration: 1.6, delay: 0.4, ease }}
+      >
+        <motion.img
+          src="/images/hero-cabinet.webp"
+          alt=""
+          className="h-full w-auto origin-bottom-left"
+          animate={{ x: [0, '-9%', '-9%', 0], rotate: [0, -1.5, -1.5, 0] }}
+          transition={{ duration: 2.6, times: [0, 0.35, 0.65, 1], ease: 'easeInOut', delay: 2.6, repeat: Infinity, repeatDelay: 3.5 }}
+        />
+      </motion.div>
 
       <div className="container-page pointer-events-none relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center py-14 lg:py-10">
         <div className="pointer-events-auto max-w-2xl">

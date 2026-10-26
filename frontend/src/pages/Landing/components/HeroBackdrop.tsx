@@ -1,27 +1,10 @@
-import Aurora from '@/components/reactbits/Aurora'
-
-/**
- * Dark hero backdrop: espresso base with a low, warm aurora along the top edge. The
- * base alone is the fallback when WebGL 2 is unavailable; Aurora freezes itself under
- * reduced motion and stops drawing while off screen.
- */
-export function HeroBackdrop({ paused }: { paused: boolean }) {
+/** Dark hero backdrop: espresso base with a faint warm glow where the cabinet peeks in. Pure CSS, no GPU loop. */
+export function HeroBackdrop() {
   return (
-    <div aria-hidden className="absolute inset-0 -z-10 bg-[#161412]">
-      <Aurora
-        colorStops={['#4a2d1f', '#985a37', '#c98d62', '#5f3824']}
-        amplitude={1.1}
-        blend={0.12}
-        height={0.34}
-        glow={0.12}
-        brightness={0.55}
-        opacity={0.85}
-        layers={2}
-        speed={0.6}
-        // A soft gradient gains nothing from retina resolution; 1x is a quarter of the pixel work.
-        dpr={1}
-        paused={paused}
-      />
-    </div>
+    <div
+      aria-hidden
+      className="absolute inset-0 -z-10"
+      style={{ background: 'radial-gradient(45% 60% at 100% 55%, rgb(152 90 55 / 0.28), transparent 70%), #161412' }}
+    />
   )
 }
