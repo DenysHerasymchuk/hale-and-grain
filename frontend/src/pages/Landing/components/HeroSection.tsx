@@ -32,7 +32,7 @@ export function HeroSection() {
       </div>
 
       <figure className="relative">
-        <div className="aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-secondary sm:aspect-[16/12] lg:aspect-[7/6]">
+        <div className="aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-secondary sm:aspect-[3/2]">
           <img src="/images/hero.webp" alt="The Lune console, Orchard display shelf and Harrow table arranged in a warm studio" fetchPriority="high" className="size-full object-cover" />
         </div>
         <figcaption className="absolute bottom-4 left-4 max-w-[16rem] rounded-md bg-primary/95 p-4 shadow-lg backdrop-blur sm:bottom-6 sm:left-6">
