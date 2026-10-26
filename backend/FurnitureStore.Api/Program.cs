@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using FurnitureStore.Api.Data;
 using FurnitureStore.Api.Domain;
+using FurnitureStore.Api.Features.Account;
 using FurnitureStore.Api.Features.Catalog;
 using FurnitureStore.Api.Features.Orders;
 using Microsoft.AspNetCore.RateLimiting;
@@ -17,9 +18,33 @@ builder.Services.AddDbContext<StoreDbContext>(options =>
         npgsql => npgsql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 builder.Services
-    .AddIdentityCore<AppUser>()
+    .AddIdentityApiEndpoints<AppUser>(options =>
+    {
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequiredLength = 10;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Lockout.MaxFailedAccessAttempts = 5;
+    })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<StoreDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.Name = "hg_session";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    options.ExpireTimeSpan = TimeSpan.FromDays(14);
+    options.SlidingExpiration = true;
+    // This is an API: answer 401/403 instead of redirecting to a login page.
+    options.Events.OnRedirectToLogin = context => Results.Unauthorized().ExecuteAsync(context.HttpContext);
+    options.Events.OnRedirectToAccessDenied = context => Results.Forbid().ExecuteAsync(context.HttpContext);
+});
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(Roles.Admin, policy => policy.RequireRole(Roles.Admin));
+
+builder.Services.AddTransient<IEmailSender<AppUser>, LoggingEmailSender>();
 
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<CatalogService>();
@@ -41,6 +66,9 @@ builder.Services.AddRateLimiter(options =>
     options.AddPolicy("orders", context => RateLimitPartition.GetFixedWindowLimiter(
         context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
         _ => new FixedWindowRateLimiterOptions { PermitLimit = 30, Window = TimeSpan.FromMinutes(1) }));
+    options.AddPolicy("auth", context => RateLimitPartition.GetFixedWindowLimiter(
+        context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = 20, Window = TimeSpan.FromMinutes(1) }));
 });
 
 builder.Services.ConfigureHttpJsonOptions(options =>
@@ -95,12 +123,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseRateLimiter();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 
 var api = app.MapGroup("/api/v1");
 api.MapCatalogEndpoints();
 api.MapOrderEndpoints();
+api.MapAuthEndpoints();
 
 app.Run();
 
