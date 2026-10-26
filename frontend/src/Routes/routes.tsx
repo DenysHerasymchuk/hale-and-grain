@@ -19,6 +19,9 @@ export const routes: RouteObject[] = [
             errorElement: <RouteErrorPage />,
             children: [
               { index: true, lazy: page(() => import('@/pages/Landing/LandingPage'), (m) => m.LandingPage) },
+              { path: 'products', lazy: page(() => import('@/pages/Products/ProductsPage'), (m) => m.ProductsPage) },
+              { path: 'categories/:slug', lazy: page(() => import('@/pages/Category/CategoryPage'), (m) => m.CategoryPage) },
+              { path: 'search', lazy: page(() => import('@/pages/Search/SearchPage'), (m) => m.SearchPage) },
               { path: '*', element: <NotFoundPage /> },
             ],
           },
