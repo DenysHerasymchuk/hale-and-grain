@@ -1,0 +1,104 @@
+/*
+ * Hale & Grain brand layer. Overrides Untitled UI's primitive scales (theme.css stays
+ * vendor-pristine so `untitledui upgrade` keeps working) with a warm stone neutral, an
+ * oiled-oak accent, and an editorial serif for display type.
+ */
+@theme {
+    --font-body: "Instrument Sans Variable", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+
+    --max-width-container: 1360px;
+
+    /* Warm stone. Every grey in the UI resolves to one of these. */
+    --color-neutral-25: rgb(253 251 247);
+    --color-neutral-50: rgb(249 246 240);
+    --color-neutral-100: rgb(242 237 228);
+    --color-neutral-200: rgb(229 221 208);
+    --color-neutral-300: rgb(211 200 184);
+    --color-neutral-400: rgb(169 157 140);
+    --color-neutral-500: rgb(133 122 107);
+    --color-neutral-600: rgb(103 94 82);
+    --color-neutral-700: rgb(79 72 64);
+    --color-neutral-800: rgb(54 49 44);
+    --color-neutral-900: rgb(36 33 30);
+    --color-neutral-950: rgb(22 20 18);
+
+    /* Oiled oak / terracotta accent, used sparingly. */
+    --color-brand-25: rgb(253 249 245);
+    --color-brand-50: rgb(251 244 238);
+    --color-brand-100: rgb(245 229 214);
+    --color-brand-200: rgb(234 208 182);
+    --color-brand-300: rgb(220 177 140);
+    --color-brand-400: rgb(201 141 98);
+    --color-brand-500: rgb(180 113 70);
+    --color-brand-600: rgb(152 90 55);
+    --color-brand-700: rgb(122 71 45);
+    --color-brand-800: rgb(95 56 36);
+    --color-brand-900: rgb(74 45 31);
+    --color-brand-950: rgb(42 25 15);
+
+    /* Surfaces: cream page, paper cards, charcoal primary actions. */
+    --color-bg-primary: var(--color-neutral-50);
+    --color-bg-primary_alt: var(--color-neutral-25);
+    --color-bg-secondary: var(--color-neutral-100);
+    --color-bg-secondary_alt: var(--color-neutral-100);
+    --color-bg-primary_hover: var(--color-neutral-100);
+    --color-bg-secondary_hover: var(--color-neutral-200);
+    --color-bg-tertiary: var(--color-neutral-200);
+    --color-bg-brand-solid: var(--color-neutral-900);
+    --color-bg-brand-solid_hover: var(--color-neutral-800);
+    --color-bg-brand-section: var(--color-neutral-900);
+    --color-bg-brand-section_subtle: var(--color-neutral-800);
+    --color-border-primary: var(--color-neutral-300);
+    --color-border-secondary: var(--color-neutral-200);
+    --color-focus-ring: var(--color-brand-500);
+
+    --radius-card: 0.375rem;
+}
+
+@layer base {
+    html {
+        background-color: var(--color-bg-primary);
+        color: var(--color-text-primary);
+    }
+
+    ::selection {
+        background-color: var(--color-brand-200);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-focus-ring);
+        outline-offset: 2px;
+    }
+}
+
+@utility font-display {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-variation-settings: "SOFT" 50, "WONK" 0;
+    letter-spacing: -0.02em;
+}
+
+@utility container-page {
+    width: 100%;
+    max-width: var(--max-width-container);
+    margin-inline: auto;
+    padding-inline: 1rem;
+
+    @media (width >= 48rem) {
+        padding-inline: 2rem;
+    }
+
+    @media (width >= 80rem) {
+        padding-inline: 3rem;
+    }
+}
+
+@utility eyebrow {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+}
