@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AlertTriangle, Lock01 } from '@untitledui/icons'
 import { Link, Navigate, useNavigate } from 'react-router'
-import { Button } from '@/components/base/buttons/button'
 import { LoadingState } from '@/components/StatusViews/StatusViews'
 import { useCartStore } from '@/features/cart/cartStore'
 import { OrderSummary } from '@/features/cart/components/OrderSummary'
@@ -16,6 +15,7 @@ import { CheckoutLines } from '@/pages/Checkout/components/CheckoutLines'
 import { CheckoutSteps } from '@/pages/Checkout/components/CheckoutSteps'
 import { routePaths } from '@/Routes/routePaths'
 import type { Quote } from '@/types/api'
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 export function CheckoutPaymentPage() {
   const navigate = useNavigate()
@@ -115,9 +115,9 @@ export function CheckoutPaymentPage() {
             </div>
           )}
 
-          <Button size="xl" iconLeading={Lock01} isLoading={placeOrder.isPending} showTextWhileLoading isDisabled={!quote?.canCheckout} onPress={() => placeOrder.mutate()}>
+          <PrimaryButton size="lg" iconLeading={Lock01} isLoading={placeOrder.isPending} isDisabled={!quote?.canCheckout} onClick={() => placeOrder.mutate()}>
             {quote ? `Place order · ${formatMoney(quote.total, quote.currency)}` : 'Place order'}
-          </Button>
+          </PrimaryButton>
         </div>
 
         {isPending || !quote ? (

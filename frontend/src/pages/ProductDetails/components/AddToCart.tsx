@@ -1,11 +1,11 @@
 import { Check, ShoppingBag01 } from '@untitledui/icons'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { Button } from '@/components/base/buttons/button'
 import { QuantitySelector } from '@/components/QuantitySelector/QuantitySelector'
 import { useCartNotice } from '@/features/cart/cartNotice'
 import { lineLimit, useCartStore } from '@/features/cart/cartStore'
 import type { ProductDetail, ProductVariant } from '@/types/api'
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 interface AddToCartProps {
   product: ProductDetail
@@ -57,8 +57,8 @@ export function AddToCart({ product, variant }: AddToCartProps) {
   return (
     <div className="flex gap-3">
       <QuantitySelector value={quantityToAdd} max={Math.max(remaining, 1)} onChange={setQuantity} isDisabled={soldOut || remaining === 0} />
-      <motion.div className="flex-1" whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }}>
-        <Button size="xl" className="w-full overflow-hidden" isDisabled={soldOut || (remaining === 0 && !justAdded)} onPress={addToCart}>
+      <div className="flex-1">
+        <PrimaryButton size="lg" className="w-full" isDisabled={soldOut || (remaining === 0 && !justAdded)} onClick={addToCart}>
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
               key={label}
@@ -72,8 +72,8 @@ export function AddToCart({ product, variant }: AddToCartProps) {
               {label}
             </motion.span>
           </AnimatePresence>
-        </Button>
-      </motion.div>
+        </PrimaryButton>
+      </div>
     </div>
   )
 }

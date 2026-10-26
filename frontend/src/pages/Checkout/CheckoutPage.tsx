@@ -1,7 +1,6 @@
 import { ArrowRight } from '@untitledui/icons'
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router'
-import { Button } from '@/components/base/buttons/button'
 import { Input } from '@/components/base/input/input'
 import { NativeSelect } from '@/components/base/select/select-native'
 import { LoadingState } from '@/components/StatusViews/StatusViews'
@@ -15,6 +14,7 @@ import { routePaths } from '@/Routes/routePaths'
 import type { CheckoutDetails } from '@/types/api'
 import { CheckoutLines } from './components/CheckoutLines'
 import { CheckoutSteps } from './components/CheckoutSteps'
+import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 const emptyDetails: CheckoutDetails = {
   email: '',
@@ -84,9 +84,9 @@ export function CheckoutPage() {
             />
           </fieldset>
 
-          <Button type="submit" size="xl" iconTrailing={ArrowRight}>
+          <PrimaryButton type="submit" size="lg" iconTrailing={ArrowRight}>
             Continue to payment
-          </Button>
+          </PrimaryButton>
         </form>
 
         {isPending || !quote ? (
