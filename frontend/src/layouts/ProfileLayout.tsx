@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { NavLink, useNavigate } from 'react-router'
+import { PageTransition } from '@/components/Motion/PageTransition'
 import { useLogout, useSession } from '@/features/auth/useSession'
 import { routePaths } from '@/Routes/routePaths'
 import { cx } from '@/utils/cx'
@@ -58,7 +59,7 @@ export function ProfileLayout() {
           </ul>
         </nav>
         <section className="min-w-0">
-          <Outlet />
+          <PageTransition />
         </section>
       </div>
     </div>

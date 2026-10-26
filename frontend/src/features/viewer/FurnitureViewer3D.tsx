@@ -80,7 +80,7 @@ export function FurnitureViewer3D({ model, productName, tint = null, fallbackIma
         </ModelErrorBoundary>
       )}
 
-      <p id={instructionsId} className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary/80 px-3 py-1 text-xs whitespace-nowrap text-tertiary backdrop-blur">
+      <p id={instructionsId} className="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 glass rounded-full px-3 py-1 text-xs whitespace-nowrap text-tertiary">
         Drag to rotate · Scroll or pinch to zoom · Right-drag to pan
       </p>
     </div>
@@ -100,7 +100,7 @@ function ViewerButton({ label, onPress, icon: Icon }: ViewerButtonProps) {
       aria-label={label}
       title={label}
       onClick={onPress}
-      className="inline-flex size-9 items-center justify-center rounded-full bg-primary/90 text-secondary shadow-sm ring-1 ring-black/5 backdrop-blur transition-colors hover:bg-primary hover:text-primary"
+      className="glass inline-flex size-9 items-center justify-center rounded-full text-secondary transition-[color,transform] hover:scale-105 hover:text-primary active:scale-95 motion-reduce:transition-none"
     >
       <Icon className="size-4" aria-hidden />
     </button>
