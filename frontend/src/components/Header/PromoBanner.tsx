@@ -4,35 +4,20 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { routePaths } from '@/Routes/routePaths'
 
-const STORAGE_KEY = 'hale-grain-promo-dismissed'
-
-function wasDismissed() {
-  try {
-    return localStorage.getItem(STORAGE_KEY) === '1'
-  } catch {
-    return false
-  }
-}
-
-/** Promo strip that slides down above the header and stays closed once dismissed. */
+/**
+ * Promo strip that slides down above the header. Closing it lasts for the current page
+ * load only (in-app navigation keeps it closed); any reload brings it back.
+ */
 export function PromoBanner() {
   const [open, setOpen] = useState(false)
 
   // Open after mount so the slide-down plays instead of the strip just being there.
   useEffect(() => {
-    if (wasDismissed()) return
     const timer = window.setTimeout(() => setOpen(true), 350)
     return () => window.clearTimeout(timer)
   }, [])
 
-  const dismiss = () => {
-    setOpen(false)
-    try {
-      localStorage.setItem(STORAGE_KEY, '1')
-    } catch {
-      // Private mode: it simply reappears next visit.
-    }
-  }
+  const dismiss = () => setOpen(false)
 
   return (
     <AnimatePresence initial={false}>

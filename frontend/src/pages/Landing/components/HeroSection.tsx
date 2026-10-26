@@ -19,7 +19,7 @@ export function HeroSection() {
       */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 right-0 hidden h-[78%] -translate-y-1/2 md:block"
+        className="pointer-events-none absolute top-1/2 right-0 hidden h-[96%] -translate-y-1/2 md:block"
         initial={{ x: '100%' }}
         animate={{ x: '50%' }}
         transition={{ duration: 1.6, delay: 0.4, ease }}
