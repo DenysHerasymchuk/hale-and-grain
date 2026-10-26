@@ -85,18 +85,18 @@ public static class SeedData
         Name = "Harrow Dining Table",
         Slug = "harrow-dining-table",
         Sku = "HG-TBL-HARROW",
-        ShortDescription = "A solid timber dining table with a softly bevelled top and splayed legs.",
+        ShortDescription = "A compact solid-timber table with a framed plank top and tapered legs. Seats four.",
         Description = """
             Harrow is the table we built for long dinners. The top is edge-glued from wide, straight-grained
             boards and finished with a hard-wax oil that takes everyday wear and repairs with a cloth.
 
-            The legs are set back from the corners so six chairs fit without anyone straddling a leg, and the
-            stretchers are pegged rather than screwed, so the frame tightens rather than loosens with time.
+            At 113 cm it suits a kitchen or a small dining room, and doubles as a generous writing desk. The
+            legs taper towards the floor so four chairs tuck in without anyone straddling a leg.
             """,
         Price = 1890m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
-        Dimensions = "W 200 × D 95 × H 75 cm",
+        Dimensions = "W 113 × D 71 × H 80 cm",
         Materials = "Solid timber, hard-wax oil finish",
         IsPublished = true,
         IsFeatured = true,
@@ -118,10 +118,10 @@ public static class SeedData
         Name = "Atelier Drawer Cabinet",
         Slug = "atelier-drawer-cabinet",
         Sku = "HG-STO-ATELIER",
-        ShortDescription = "A tall bank of shallow drawers, made for paper, linen and small collections.",
+        ShortDescription = "A tall cabinet with four deep drawers, made for linen, paper and the things in between.",
         Description = """
-            Inspired by the plan chests in print studios, Atelier stacks shallow drawers that keep everything
-            visible at a glance. Each drawer runs on timber guides, waxed so they glide without hardware.
+            Inspired by the cabinets in old print studios, Atelier pairs open display space with a bank of
+            four full-width drawers. Each drawer runs on timber guides, waxed so it glides without hardware.
 
             Brushed metal pulls are fixed through the drawer front, not glued, and the carcass is finished on
             all four sides so it can stand away from the wall as a room divider.
@@ -129,7 +129,7 @@ public static class SeedData
         Price = 1450m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
-        Dimensions = "W 60 × D 45 × H 120 cm",
+        Dimensions = "W 114 × D 49 × H 188 cm",
         Materials = "Timber carcass, brushed metal pulls",
         IsPublished = true,
         IsFeatured = true,
@@ -161,7 +161,7 @@ public static class SeedData
         Price = 790m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
-        Dimensions = "W 90 × D 35 × H 180 cm",
+        Dimensions = "W 110 × D 50 × H 214 cm",
         Materials = "Powder-coated steel, timber shelves",
         IsPublished = true,
         IsFeatured = false,
@@ -181,18 +181,18 @@ public static class SeedData
         Name = "Orchard Display Shelf",
         Slug = "orchard-display-shelf",
         Sku = "HG-SHL-ORCHARD",
-        ShortDescription = "An open timber shelf with stepped tiers for ceramics, books and plants.",
+        ShortDescription = "An open timber shelf with three pull-out drawers beneath, for ceramics, books and plants.",
         Description = """
             Orchard is all timber: no metal brackets, no visible fixings. The shelves are housed into the
             side panels so the joinery itself carries the load.
 
-            We size the tiers for real objects: the lower shelf takes oversized art books, the upper ones
-            suit a row of cups or a trailing plant.
+            Three small drawers sit along the base for the things you'd rather not display. The shelves above
+            are sized for real objects: oversized art books below, a row of cups or a trailing plant on top.
             """,
         Price = 680m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
-        Dimensions = "W 80 × D 30 × H 150 cm",
+        Dimensions = "W 108 × D 37 × H 156 cm",
         Materials = "Solid timber, oil finish",
         IsPublished = true,
         IsFeatured = true,
@@ -224,7 +224,7 @@ public static class SeedData
         Price = 1290m,
         CategoryId = categoryId,
         Brand = "Hale & Grain Studio",
-        Dimensions = "W 140 × D 40 × H 85 cm",
+        Dimensions = "W 172 × D 34 × H 66 cm",
         Materials = "Hardwood, hand-rubbed lacquer",
         IsPublished = true,
         IsFeatured = true,
@@ -271,6 +271,8 @@ public static class SeedData
         new() { Url = $"/images/products/{slug}-4.webp", AltText = $"{name}, detail", DisplayOrder = 3, Role = ImageRole.Detail },
     ];
 
+    // Poly Haven assets keep a single material named after the asset, which is what variant
+    // tints target. Exported by scripts/assets/export_glb.py.
     private static ProductModel PolyHavenModel(string slug, string assetId, string assetName) => new()
     {
         Url = $"/models/{slug}.glb",
@@ -278,5 +280,6 @@ public static class SeedData
         Attribution = $"\"{assetName}\" from Poly Haven",
         AttributionUrl = $"https://polyhaven.com/a/{assetId}",
         License = PolyHavenLicense,
+        Config = new ModelConfig { MaterialTargets = [assetId] },
     };
 }
