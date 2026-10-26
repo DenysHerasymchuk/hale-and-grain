@@ -14,21 +14,21 @@ export function HeroSection() {
 
       {/*
         Transparent cutout of the Atelier cabinet, anchored to the screen's right edge.
-        The outer layer slides it in until half the cabinet shows; the inner one leans
+        The outer layer slides it in until most of the cabinet shows; the inner one leans
         out a little every few seconds. Both are transforms only, so they stay cheap.
       */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 right-0 hidden h-[96%] -translate-y-1/2 md:block"
+        className="pointer-events-none absolute top-1/2 right-0 hidden h-[90%] -translate-y-1/2 md:block"
         initial={{ x: '100%' }}
-        animate={{ x: '50%' }}
+        animate={{ x: '10%' }}
         transition={{ duration: 1.6, delay: 0.4, ease }}
       >
         <motion.img
           src="/images/hero-cabinet.webp"
           alt=""
           className="h-full w-auto origin-bottom-left"
-          animate={{ x: [0, '-9%', '-9%', 0], rotate: [0, -1.5, -1.5, 0] }}
+          animate={{ x: [0, '-5%', '-5%', 0], rotate: [0, -1, -1, 0] }}
           transition={{ duration: 2.6, times: [0, 0.35, 0.65, 1], ease: 'easeInOut', delay: 2.6, repeat: Infinity, repeatDelay: 3.5 }}
         />
       </motion.div>
