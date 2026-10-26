@@ -1,0 +1,68 @@
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+
+export const MAX_LINE_QUANTITY = 10
+
+export interface CartLine {
+  productId: string
+  variantId: string
+  slug: string
+  name: string
+  variantName: string
+  sku: string
+  imageUrl: string | null
+  /** Price when added, for display only. Checkout re-prices every line on the server. */
+  unitPrice: number
+  currency: string
+  /** Stock seen when added; caps the stepper so customers aren't surprised at checkout. */
+  available: number
+  quantity: number
+}
+
+interface CartState {
+  lines: CartLine[]
+  add: (line: Omit<CartLine, 'quantity'>, quantity: number) => void
+  setQuantity: (variantId: string, quantity: number) => void
+  remove: (variantId: string) => void
+  clear: () => void
+}
+
+export const lineLimit = (line: Pick<CartLine, 'available'>) => Math.max(0, Math.min(MAX_LINE_QUANTITY, line.available))
+
+const clampQuantity = (quantity: number, line: Pick<CartLine, 'available'>) => Math.max(1, Math.min(lineLimit(line), Math.floor(quantity)))
+
+export const useCartStore = create<CartState>()(
+  persist(
+    (set) => ({
+      lines: [],
+      add: (line, quantity) =>
+        set((state) => {
+          const existing = state.lines.find((l) => l.variantId === line.variantId)
+          if (!existing) {
+            return { lines: [...state.lines, { ...line, quantity: clampQuantity(quantity, line) }] }
+          }
+          // Refresh the snapshot (price, stock) and merge quantities.
+          return {
+            lines: state.lines.map((l) => (l.variantId === line.variantId ? { ...line, quantity: clampQuantity(l.quantity + quantity, line) } : l)),
+          }
+        }),
+      setQuantity: (variantId, quantity) =>
+        set((state) => ({
+          lines: state.lines.map((l) => (l.variantId === variantId ? { ...l, quantity: clampQuantity(quantity, l) } : l)),
+        })),
+      remove: (variantId) => set((state) => ({ lines: state.lines.filter((l) => l.variantId !== variantId) })),
+      clear: () => set({ lines: [] }),
+    }),
+    {
+      name: 'hale-grain-cart',
+      version: 1,
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ lines: state.lines }),
+    },
+  ),
+)
+
+export const selectItemCount = (state: CartState) => state.lines.reduce((sum, line) => sum + line.quantity, 0)
+
+/** Display subtotal in cents-safe arithmetic; the authoritative total comes from the API. */
+export const selectSubtotal = (state: CartState) => state.lines.reduce((sum, line) => sum + Math.round(line.unitPrice * 100) * line.quantity, 0) / 100
