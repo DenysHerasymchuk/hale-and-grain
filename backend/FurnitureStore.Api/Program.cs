@@ -132,6 +132,7 @@ var api = app.MapGroup("/api/v1");
 api.MapCatalogEndpoints();
 api.MapOrderEndpoints();
 api.MapAuthEndpoints();
+api.MapAccountEndpoints();
 
 app.Run();
 
