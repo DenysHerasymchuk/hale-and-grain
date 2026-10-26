@@ -1,6 +1,7 @@
 import { Heart, SearchLg, ShoppingBag01, User01 } from '@untitledui/icons'
 import { Link, NavLink } from 'react-router'
 import { Logo } from '@/components/Logo/Logo'
+import { selectItemCount, useCartStore } from '@/features/cart/cartStore'
 import { useCategories } from '@/features/catalog/hooks'
 import { routePaths } from '@/Routes/routePaths'
 import { cx } from '@/utils/cx'
@@ -14,6 +15,7 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 
 export function Header() {
   const { data: categories = [] } = useCategories()
+  const cartCount = useCartStore(selectItemCount)
 
   return (
     <header className="sticky top-0 z-40 border-b border-secondary bg-primary/90 backdrop-blur-md">
@@ -54,7 +56,13 @@ export function Header() {
           <HeaderIconLink to={routePaths.search} label="Search" icon={SearchLg} />
           <HeaderIconLink to={routePaths.wishlist} label="Wishlist" icon={Heart} className="hidden sm:inline-flex" />
           <HeaderIconLink to={routePaths.profile} label="Account" icon={User01} className="hidden sm:inline-flex" />
-          <HeaderIconLink to={routePaths.cart} label="Cart" icon={ShoppingBag01} />
+          <HeaderIconLink to={routePaths.cart} label={cartCount > 0 ? `Cart, ${cartCount} items` : 'Cart'} icon={ShoppingBag01}>
+            {cartCount > 0 && (
+              <span aria-hidden className="absolute top-1 right-0.5 flex min-w-4.5 items-center justify-center rounded-full bg-brand-600 px-1 text-[0.65rem] leading-4.5 font-semibold text-white tabular-nums">
+                {cartCount}
+              </span>
+            )}
+          </HeaderIconLink>
         </div>
       </div>
     </header>
@@ -69,7 +77,7 @@ interface HeaderIconLinkProps {
   children?: React.ReactNode
 }
 
-export function HeaderIconLink({ to, label, icon: Icon, className, children }: HeaderIconLinkProps) {
+function HeaderIconLink({ to, label, icon: Icon, className, children }: HeaderIconLinkProps) {
   return (
     <Link
       to={to}
