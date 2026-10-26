@@ -208,3 +208,45 @@ export interface CreateOrderResponse {
   order: Order
   accessToken: string
 }
+
+export interface Profile {
+  email: string
+  firstName: string
+  lastName: string
+  marketingEmails: boolean
+  createdAt: string
+}
+
+export interface Address {
+  id: string
+  label: string
+  fullName: string
+  line1: string
+  line2: string | null
+  city: string
+  postalCode: string
+  country: string
+  isDefault: boolean
+}
+
+export type SaveAddress = Omit<Address, 'id'>
+
+export interface OrderSummary {
+  orderNumber: string
+  status: OrderStatus
+  paymentStatus: PaymentStatus
+  itemCount: number
+  total: number
+  currency: string
+  createdAt: string
+}
+
+export interface WishlistItem {
+  productId: string
+  slug: string
+  name: string
+  categoryName: string
+  imageUrl: string | null
+  price: number
+  currency: string
+}
