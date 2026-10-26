@@ -30,6 +30,8 @@ services:
       Payments__Provider: ${PAYMENTS_PROVIDER:-Development}
       # The API is reachable only through the web container's proxy on this network.
       ForwardedHeaders__TrustAllProxies: "true"
+      # Base for links in (logged) account emails.
+      Frontend__BaseUrl: http://localhost:${WEB_PORT:-8080}
     depends_on:
       db:
         condition: service_healthy
