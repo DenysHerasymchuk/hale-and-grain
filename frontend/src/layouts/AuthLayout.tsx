@@ -6,7 +6,7 @@ export function AuthLayout() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
       <div className="flex flex-col px-6 py-8 sm:px-12">
-        <Logo />
+        <Logo tone="ink" />
         <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-12">
           <Outlet />
         </main>

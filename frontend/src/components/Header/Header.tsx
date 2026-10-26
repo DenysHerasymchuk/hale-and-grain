@@ -1,4 +1,5 @@
 import { Heart, SearchLg, ShoppingBag01, User01 } from '@untitledui/icons'
+import { AnimatePresence, motion } from 'motion/react'
 import { Link, NavLink } from 'react-router'
 import { Logo } from '@/components/Logo/Logo'
 import { selectItemCount, useCartStore } from '@/features/cart/cartStore'
@@ -10,7 +11,7 @@ import { MobileNav } from './MobileNav'
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cx(
     'relative py-2 text-sm font-medium transition-colors after:absolute after:inset-x-0 after:-bottom-px after:h-px after:origin-left after:bg-current after:transition-transform after:duration-300',
-    isActive ? 'text-primary after:scale-x-100' : 'text-secondary after:scale-x-0 hover:text-primary hover:after:scale-x-100',
+    isActive ? 'text-beige after:scale-x-100' : 'text-neutral-300 after:scale-x-0 hover:text-white hover:after:scale-x-100',
   )
 
 export function Header() {
@@ -18,8 +19,8 @@ export function Header() {
   const cartCount = useCartStore(selectItemCount)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-secondary bg-primary/90 backdrop-blur-md">
-      <div className="bg-neutral-900 text-neutral-100">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-neutral-950/85 backdrop-blur-xl backdrop-saturate-150">
+      <div className="border-b border-white/5 text-neutral-400">
         <p className="container-page py-2 text-center text-xs tracking-wide">
           Free delivery on orders over €750 &middot; Made to order in small batches
         </p>
@@ -57,11 +58,22 @@ export function Header() {
           <HeaderIconLink to={routePaths.wishlist} label="Wishlist" icon={Heart} className="hidden sm:inline-flex" />
           <HeaderIconLink to={routePaths.profile} label="Account" icon={User01} className="hidden sm:inline-flex" />
           <HeaderIconLink to={routePaths.cart} label={cartCount > 0 ? `Cart, ${cartCount} items` : 'Cart'} icon={ShoppingBag01}>
-            {cartCount > 0 && (
-              <span aria-hidden className="absolute top-1 right-0.5 flex min-w-4.5 items-center justify-center rounded-full bg-brand-600 px-1 text-[0.65rem] leading-4.5 font-semibold text-white tabular-nums">
-                {cartCount}
-              </span>
-            )}
+            <AnimatePresence>
+              {cartCount > 0 && (
+                // Re-keyed on the count so every change replays the bump.
+                <motion.span
+                  key={cartCount}
+                  aria-hidden
+                  initial={{ scale: 0.4, opacity: 0 }}
+                  animate={{ scale: [1.35, 1], opacity: 1 }}
+                  exit={{ scale: 0.4, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 520, damping: 18 }}
+                  className="absolute top-1 right-0.5 flex min-w-4.5 items-center justify-center rounded-full bg-beige px-1 text-[0.65rem] leading-4.5 font-semibold text-neutral-950 tabular-nums"
+                >
+                  {cartCount}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </HeaderIconLink>
         </div>
       </div>
@@ -82,7 +94,7 @@ function HeaderIconLink({ to, label, icon: Icon, className, children }: HeaderIc
     <Link
       to={to}
       aria-label={label}
-      className={cx('relative inline-flex size-10 items-center justify-center rounded-full text-secondary transition-colors hover:bg-secondary hover:text-primary', className)}
+      className={cx('relative inline-flex size-10 items-center justify-center rounded-full text-neutral-300 transition-colors hover:bg-white/10 hover:text-white', className)}
     >
       <Icon className="size-5" aria-hidden />
       {children}
