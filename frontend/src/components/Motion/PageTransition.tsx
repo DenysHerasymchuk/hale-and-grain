@@ -10,7 +10,9 @@ export function PageTransition() {
   const outlet = useOutlet()
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    // No initial={false} here: it would also skip the intro animations of everything on the
+    // first page (hero entrance, looping keyframes), not just this wrapper's fade.
+    <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, y: 12 }}

@@ -13,23 +13,24 @@ export function HeroSection() {
       <HeroBackdrop />
 
       {/*
-        Transparent cutout of the Atelier cabinet, anchored to the screen's right edge.
-        The outer layer slides it in until most of the cabinet shows; the inner one leans
-        out a little every few seconds. Both are transforms only, so they stay cheap.
+        Transparent cutout of the Atelier cabinet hiding behind the screen's right edge.
+        The outer layer slides it out from fully hidden; the inner one makes it peek: it
+        pivots on its back foot so the top tips out to the left, holds, and ducks back.
+        Transforms only, so the loop stays cheap.
       */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 right-0 hidden h-[90%] -translate-y-1/2 md:block"
+        className="pointer-events-none absolute right-0 bottom-[4%] hidden h-[92%] md:block"
         initial={{ x: '100%' }}
-        animate={{ x: '10%' }}
-        transition={{ duration: 1.6, delay: 0.4, ease }}
+        animate={{ x: '40%' }}
+        transition={{ duration: 1.8, delay: 0.4, ease }}
       >
         <motion.img
           src="/images/hero-cabinet.webp"
           alt=""
-          className="h-full w-auto origin-bottom-left"
-          animate={{ x: [0, '-5%', '-5%', 0], rotate: [0, -1, -1, 0] }}
-          transition={{ duration: 2.6, times: [0, 0.35, 0.65, 1], ease: 'easeInOut', delay: 2.6, repeat: Infinity, repeatDelay: 3.5 }}
+          className="h-full w-auto origin-bottom-right"
+          animate={{ x: [0, '-14%', '-14%', '-4%', 0], rotate: [0, -7, -7, -2, 0] }}
+          transition={{ duration: 3.2, times: [0, 0.3, 0.6, 0.8, 1], ease: 'easeInOut', delay: 2.4, repeat: Infinity, repeatDelay: 2.8 }}
         />
       </motion.div>
 
