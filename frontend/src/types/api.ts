@@ -120,3 +120,91 @@ export interface ProblemDetails {
   detail?: string
   errors?: Record<string, string[]>
 }
+
+export interface CartLineRequest {
+  variantId: string
+  quantity: number
+}
+
+export interface QuoteLine {
+  variantId: string
+  productId: string
+  productName: string
+  productSlug: string
+  variantName: string
+  sku: string
+  imageUrl: string | null
+  unitPrice: number
+  quantity: number
+  lineTotal: number
+  available: number
+}
+
+export interface LineProblem {
+  variantId: string
+  code: 'unavailable' | 'insufficient_stock' | 'quantity_limit'
+  message: string
+  available: number
+}
+
+export interface Quote {
+  lines: QuoteLine[]
+  problems: LineProblem[]
+  currency: string
+  subtotal: number
+  shippingCost: number
+  total: number
+  canCheckout: boolean
+}
+
+export interface ShippingAddress {
+  line1: string
+  line2: string | null
+  city: string
+  postalCode: string
+  country: string
+}
+
+export interface CheckoutDetails {
+  email: string
+  fullName: string
+  phone: string | null
+  shippingAddress: ShippingAddress
+}
+
+export type OrderStatus = 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
+export type PaymentStatus = 'pending' | 'developmentSimulated' | 'paid' | 'failed' | 'refunded'
+
+export interface OrderLine {
+  productId: string | null
+  productName: string
+  productSlug: string
+  variantName: string
+  sku: string
+  imageUrl: string | null
+  unitPrice: number
+  quantity: number
+  lineTotal: number
+}
+
+export interface Order {
+  orderNumber: string
+  status: OrderStatus
+  paymentStatus: PaymentStatus
+  paymentReference: string | null
+  email: string
+  fullName: string
+  phone: string | null
+  shippingAddress: ShippingAddress
+  lines: OrderLine[]
+  currency: string
+  subtotal: number
+  shippingCost: number
+  total: number
+  createdAt: string
+}
+
+export interface CreateOrderResponse {
+  order: Order
+  accessToken: string
+}

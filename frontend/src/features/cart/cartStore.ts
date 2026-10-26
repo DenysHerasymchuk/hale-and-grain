@@ -25,6 +25,8 @@ interface CartState {
   setQuantity: (variantId: string, quantity: number) => void
   remove: (variantId: string) => void
   clear: () => void
+  /** Adopts the server's current price and stock for each line. */
+  syncPrices: (updates: { variantId: string; unitPrice: number; available: number }[]) => void
 }
 
 export const lineLimit = (line: Pick<CartLine, 'available'>) => Math.max(0, Math.min(MAX_LINE_QUANTITY, line.available))
@@ -52,6 +54,17 @@ export const useCartStore = create<CartState>()(
         })),
       remove: (variantId) => set((state) => ({ lines: state.lines.filter((l) => l.variantId !== variantId) })),
       clear: () => set({ lines: [] }),
+      syncPrices: (updates) =>
+        set((state) => {
+          let changed = false
+          const lines = state.lines.map((line) => {
+            const update = updates.find((u) => u.variantId === line.variantId)
+            if (!update || (update.unitPrice === line.unitPrice && update.available === line.available)) return line
+            changed = true
+            return { ...line, unitPrice: update.unitPrice, available: update.available }
+          })
+          return changed ? { lines } : state
+        }),
     }),
     {
       name: 'hale-grain-cart',

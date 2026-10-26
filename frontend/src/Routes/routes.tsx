@@ -24,6 +24,13 @@ export const routes: RouteObject[] = [
               { path: 'categories/:slug', lazy: page(() => import('@/pages/Category/CategoryPage'), (m) => m.CategoryPage) },
               { path: 'wishlist', lazy: page(() => import('@/pages/Wishlist/WishlistPage'), (m) => () => <m.WishlistPage />) },
               { path: 'cart', lazy: page(() => import('@/pages/Cart/CartPage'), (m) => m.CartPage) },
+              { path: 'checkout', lazy: page(() => import('@/pages/Checkout/CheckoutPage'), (m) => m.CheckoutPage) },
+              { path: 'checkout/payment', lazy: page(() => import('@/pages/CheckoutPayment/CheckoutPaymentPage'), (m) => m.CheckoutPaymentPage) },
+              {
+                path: 'checkout/confirmation/:orderNumber',
+                lazy: page(() => import('@/pages/CheckoutConfirmation/CheckoutConfirmationPage'), (m) => m.CheckoutConfirmationPage),
+              },
+              { path: 'orders/:orderNumber', lazy: page(() => import('@/pages/Order/OrderPage'), (m) => m.OrderPage) },
               { path: 'search', lazy: page(() => import('@/pages/Search/SearchPage'), (m) => m.SearchPage) },
               { path: '*', element: <NotFoundPage /> },
             ],
