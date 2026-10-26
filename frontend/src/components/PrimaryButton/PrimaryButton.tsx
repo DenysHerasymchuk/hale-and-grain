@@ -47,6 +47,9 @@ export function PrimaryButton({
       type={type}
       size={size}
       radius={10}
+      // The edge light circles continuously; SpecularButton holds it still under reduced motion.
+      autoAnimate
+      speed={1.1}
       disabled={isDisabled || isLoading}
       aria-busy={isLoading || undefined}
       className={cx('group font-semibold', className)}

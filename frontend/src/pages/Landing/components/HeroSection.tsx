@@ -1,9 +1,11 @@
 import { ArrowRight, Cube01 } from '@untitledui/icons'
 import { motion } from 'motion/react'
-import { Button } from '@/components/base/buttons/button'
+import { Link } from 'react-router'
 import BlurText from '@/components/reactbits/BlurText'
 import { routePaths } from '@/Routes/routePaths'
 import { HeroBackdrop } from './HeroBackdrop'
+import { HeroModelStage } from './HeroModelStage'
+import { HeroPeekCards } from './HeroPeekCards'
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -13,30 +15,10 @@ export function HeroSection() {
     <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
       <HeroBackdrop />
 
-      {/*
-        Transparent cutout of the Atelier cabinet hiding behind the screen's right edge.
-        The outer layer slides it out from fully hidden; the inner one makes it peek: it
-        pivots on its back foot so the top tips out to the left, holds, and ducks back.
-        Transforms only, so the loop stays cheap.
-      */}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute right-0 bottom-[4%] hidden h-[92%] md:block"
-        initial={{ x: '100%' }}
-        animate={{ x: '40%' }}
-        transition={{ duration: 1.8, delay: 0.4, ease }}
-      >
-        <motion.img
-          src="/images/hero-cabinet.webp"
-          alt=""
-          className="h-full w-auto origin-bottom-right"
-          animate={{ x: [0, '-14%', '-14%', '-4%', 0], rotate: [0, -7, -7, -2, 0] }}
-          transition={{ duration: 3.2, times: [0, 0.3, 0.6, 0.8, 1], ease: 'easeInOut', delay: 2.4, repeat: Infinity, repeatDelay: 2.8 }}
-        />
-      </motion.div>
+      <HeroPeekCards />
 
-      <div className="container-page pointer-events-none relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center py-14 lg:py-10">
-        <div className="pointer-events-auto max-w-2xl">
+      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-8 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-10 xl:pr-40">
+        <div className="max-w-2xl">
           <BlurText
             as="h1"
             text="Furniture you can walk around before it arrives."
@@ -63,9 +45,14 @@ export function HeroSection() {
             <PrimaryButton surface="dark" href={routePaths.products} size="lg" iconTrailing={ArrowRight}>
               Shop the collection
             </PrimaryButton>
-            <Button href={`${routePaths.home}#in-3d`} size="xl" color="secondary" iconLeading={Cube01} className="glass-dark bg-white/8 text-white ring-0 hover:bg-white/15 hover:text-white">
+            {/* Same box as the primary lg button: 18px/38px padding, 1.125rem text, 10px radius. */}
+            <Link
+              to={`${routePaths.home}#in-3d`}
+              className="glass-dark inline-flex items-center gap-2 rounded-[10px] px-[38px] py-[18px] text-[1.125rem] leading-none font-semibold text-white transition-colors hover:bg-white/15"
+            >
+              <Cube01 className="size-5" aria-hidden />
               How the 3D view works
-            </Button>
+            </Link>
           </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
@@ -77,6 +64,7 @@ export function HeroSection() {
           </motion.p>
         </div>
 
+        <HeroModelStage />
       </div>
     </section>
   )
