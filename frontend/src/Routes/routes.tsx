@@ -4,6 +4,9 @@ import { StoreLayout } from '@/layouts/StoreLayout'
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
 import { RouteErrorPage } from '@/pages/RouteError/RouteErrorPage'
 
+// Every page is code-split; `lazy` resolves the named export each page module provides.
+const page = <M,>(load: () => Promise<M>, pick: (module: M) => React.ComponentType) => async () => ({ Component: pick(await load()) })
+
 export const routes: RouteObject[] = [
   {
     element: <RootLayout />,
@@ -12,7 +15,13 @@ export const routes: RouteObject[] = [
       {
         element: <StoreLayout />,
         children: [
-          { errorElement: <RouteErrorPage />, children: [{ path: '*', element: <NotFoundPage /> }] },
+          {
+            errorElement: <RouteErrorPage />,
+            children: [
+              { index: true, lazy: page(() => import('@/pages/Landing/LandingPage'), (m) => m.LandingPage) },
+              { path: '*', element: <NotFoundPage /> },
+            ],
+          },
         ],
       },
     ],
