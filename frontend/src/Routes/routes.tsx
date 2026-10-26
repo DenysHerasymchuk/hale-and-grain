@@ -20,7 +20,9 @@ export const routes: RouteObject[] = [
             children: [
               { index: true, lazy: page(() => import('@/pages/Landing/LandingPage'), (m) => m.LandingPage) },
               { path: 'products', lazy: page(() => import('@/pages/Products/ProductsPage'), (m) => m.ProductsPage) },
+              { path: 'products/:slug', lazy: page(() => import('@/pages/ProductDetails/ProductDetailsPage'), (m) => m.ProductDetailsPage) },
               { path: 'categories/:slug', lazy: page(() => import('@/pages/Category/CategoryPage'), (m) => m.CategoryPage) },
+              { path: 'wishlist', lazy: page(() => import('@/pages/Wishlist/WishlistPage'), (m) => () => <m.WishlistPage />) },
               { path: 'cart', lazy: page(() => import('@/pages/Cart/CartPage'), (m) => m.CartPage) },
               { path: 'search', lazy: page(() => import('@/pages/Search/SearchPage'), (m) => m.SearchPage) },
               { path: '*', element: <NotFoundPage /> },
