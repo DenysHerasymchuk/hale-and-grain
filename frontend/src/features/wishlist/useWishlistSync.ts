@@ -3,10 +3,6 @@ import { accountApi } from '@/features/account/api'
 import { useSession } from '@/features/auth/useSession'
 import { useWishlistStore } from './wishlistStore'
 
-/**
- * Guests keep their wishlist on this device. On sign-in the local list is merged into the
- * account's, and from then on every change is saved to the account too.
- */
 export function useWishlistSync() {
   const { data: session } = useSession()
   const userId = session?.id ?? null

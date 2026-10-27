@@ -1,9 +1,5 @@
 import { useEffect, useRef } from 'react'
 
-/**
- * Publishes the sticky header's live height as --chrome-h on <html>, so full-screen
- * sections can size themselves to the space below it, promo banner open or closed.
- */
 export function useChromeHeight() {
   const ref = useRef<HTMLElement>(null)
 

@@ -7,7 +7,6 @@ declare module 'react-aria-components' {
   }
 }
 
-/** Lets React Aria links (Untitled UI buttons with `href`) navigate client-side. */
 export function RootLayout() {
   const navigate = useNavigate()
   return (

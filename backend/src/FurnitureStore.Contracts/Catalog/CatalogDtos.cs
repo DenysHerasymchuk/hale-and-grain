@@ -69,7 +69,6 @@ public record ProductDetailDto(
     IReadOnlyList<ProductVariantDto> Variants,
     ProductModelDto? Model);
 
-// Constructor defaults let [AsParameters] treat every query-string value as optional.
 public record ProductQuery(
     [property: Range(1, 10_000)] int Page = 1,
     [property: Range(1, ProductQuery.MaxPageSize)] int PageSize = 12,

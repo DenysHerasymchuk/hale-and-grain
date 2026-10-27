@@ -25,7 +25,6 @@ interface ViewerMessageProps {
   onRetry?: () => void
 }
 
-/** Shown in place of the canvas when WebGL is unavailable or the model cannot load. */
 export function ViewerMessage({ title, message, image, onRetry }: ViewerMessageProps) {
   return (
     <div className="absolute inset-0">

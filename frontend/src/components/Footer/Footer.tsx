@@ -73,7 +73,6 @@ export function Footer() {
           <PaymentMethods />
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 lg:justify-end">
-            {/* Decorative on purpose: this is a demo shop with no legal pages behind these. */}
             {['Privacy Policy', 'Terms of Service', 'Return & Refund Policy'].map((label) => (
               <span key={label} className="text-neutral-300 underline underline-offset-4">
                 {label}

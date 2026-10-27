@@ -4,7 +4,6 @@ import { useSession } from '@/features/auth/useSession'
 import { AccessDeniedPage } from '@/pages/AccessDeniedPage'
 import { routePaths } from './routePaths'
 
-/** UI gate for the admin area. The API enforces the Admin role on every admin endpoint. */
 export function AdminRoute() {
   const location = useLocation()
   const { data: session, isPending, isError, error, refetch } = useSession()

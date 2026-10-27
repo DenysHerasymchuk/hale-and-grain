@@ -10,7 +10,6 @@ namespace FurnitureStore.Api.Endpoints;
 
 public static class AdminStoreEndpoints
 {
-    /// <summary>Everything under /admin requires the Admin role; hiding the UI is not the protection.</summary>
     public static void MapAdminEndpoints(this IEndpointRouteBuilder api)
     {
         var admin = api.MapGroup("/admin").WithTags("Admin").RequireAuthorization(Roles.Admin);

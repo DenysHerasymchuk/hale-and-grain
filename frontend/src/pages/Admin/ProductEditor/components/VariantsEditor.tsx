@@ -21,7 +21,6 @@ interface VariantsEditorProps {
   onChange: (variants: AdminVariant[]) => void
 }
 
-/** Finishes: each one is a buyable SKU with its own stock, price adjustment and 3D tint. */
 export function VariantsEditor({ variants, productSku, onChange }: VariantsEditorProps) {
   const update = (index: number, changes: Partial<AdminVariant>) => onChange(variants.map((v, i) => (i === index ? { ...v, ...changes } : v)))
 

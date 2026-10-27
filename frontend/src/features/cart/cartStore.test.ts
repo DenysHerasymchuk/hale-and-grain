@@ -53,7 +53,6 @@ describe('cart store', () => {
     const saved = localStorage.getItem('hale-grain-cart')
     expect(saved).toContain('HG-TBL-HARROW-NAT')
 
-    // Simulate a reload: in-memory state is gone, storage still holds the snapshot.
     useCartStore.setState({ lines: [] })
     localStorage.setItem('hale-grain-cart', saved ?? '')
     await useCartStore.persist.rehydrate()

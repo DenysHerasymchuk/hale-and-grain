@@ -7,7 +7,6 @@ import { useCartNotice } from '../cartNotice'
 
 const VISIBLE_MS = 4000
 
-/** Glass confirmation that slides in under the header after an add-to-cart. */
 export function CartToast() {
   const notice = useCartNotice((state) => state.notice)
   const dismiss = useCartNotice((state) => state.dismiss)

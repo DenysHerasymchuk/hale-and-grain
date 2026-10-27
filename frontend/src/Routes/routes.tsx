@@ -9,7 +9,6 @@ import { RouteErrorPage } from '@/pages/RouteErrorPage'
 import { AdminRoute } from './AdminRoute'
 import { ProtectedRoute } from './ProtectedRoute'
 
-// Every page is code-split; `lazy` resolves the named export each page module provides.
 const page = <M,>(load: () => Promise<M>, pick: (module: M) => React.ComponentType) => async () => ({ Component: pick(await load()) })
 
 export const routes: RouteObject[] = [

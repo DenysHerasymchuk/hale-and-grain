@@ -13,7 +13,6 @@ export interface Credentials {
   password: string
 }
 
-// Endpoints come from ASP.NET Core Identity's MapIdentityApi; the session is an HttpOnly cookie.
 export const authApi = {
   me: (signal?: AbortSignal) => api.get<Session>('/auth/me', signal),
   login: (credentials: Credentials) => api.post<void>('/auth/login?useCookies=true', credentials),

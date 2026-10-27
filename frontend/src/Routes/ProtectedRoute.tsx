@@ -3,10 +3,6 @@ import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useSession } from '@/features/auth/useSession'
 import { routePaths } from './routePaths'
 
-/**
- * Sends guests to sign in, then back. This is a convenience only: every account endpoint
- * is authorised by the API, which is what actually protects customer data.
- */
 export function ProtectedRoute() {
   const location = useLocation()
   const { data: session, isPending, isError, error, refetch } = useSession()

@@ -3,10 +3,6 @@ using NetArchTest.Rules;
 
 namespace FurnitureStore.Architecture.Tests;
 
-/// <summary>
-/// The dependency rule: each layer may only point inwards.
-/// Api -> Infrastructure -> Application -> Contracts -> Domain.
-/// </summary>
 public class LayerDependencyTests
 {
     private const string DomainNs = "FurnitureStore.Domain";

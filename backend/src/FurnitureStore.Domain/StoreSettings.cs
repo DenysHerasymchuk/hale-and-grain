@@ -1,6 +1,5 @@
 namespace FurnitureStore.Domain;
 
-/// <summary>Single-row table edited from the admin settings page.</summary>
 public class StoreSettings
 {
     public const int SingletonId = 1;

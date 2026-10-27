@@ -7,7 +7,6 @@ interface RevealProps {
   delay?: number
 }
 
-/** Fades content up the first time it scrolls into view. Static under reduced motion (see App's MotionConfig). */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   return (
     <motion.div

@@ -19,7 +19,6 @@ export function ForgotPasswordPage() {
     return (
       <>
         <h1 className="font-display text-4xl text-primary">Check your inbox</h1>
-        {/* Same message whether or not the account exists, so emails can't be enumerated. */}
         <p className="mt-4 text-secondary">
           If <strong>{email}</strong> belongs to an account with a confirmed email address, a reset link is on its way.
         </p>

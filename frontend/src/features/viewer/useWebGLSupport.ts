@@ -9,7 +9,6 @@ function detectWebGL(): boolean {
   }
 }
 
-/** Checked once per mount; WebGL availability does not change during a session. */
 export function useWebGLSupport(): boolean {
   const [supported] = useState(detectWebGL)
   return supported

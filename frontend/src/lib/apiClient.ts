@@ -13,7 +13,6 @@ export class ApiError extends Error {
     this.problem = problem
   }
 
-  /** Flattens field errors for display; falls back to the summary message. */
   get messages(): string[] {
     const fieldErrors = Object.values(this.problem.errors ?? {}).flat()
     return fieldErrors.length > 0 ? fieldErrors : [this.message]

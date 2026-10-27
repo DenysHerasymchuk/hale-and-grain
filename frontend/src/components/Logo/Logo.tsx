@@ -1,10 +1,6 @@
 import { Link } from 'react-router'
 import { cx } from '@/utils/cx'
 
-/**
- * The wordmark PNG is an alpha mask, so CSS sets its colour: beige on dark surfaces (the
- * default) and ink on cream ones. Source artwork: assets/brand/logo-source.png.
- */
 export function Logo({ className, tone = 'beige' }: { className?: string; tone?: 'beige' | 'ink' }) {
   return (
     <Link to="/" aria-label="Hale & Grain, home" className={cx('group inline-block', className)}>

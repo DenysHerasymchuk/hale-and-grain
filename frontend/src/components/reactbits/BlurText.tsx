@@ -1,5 +1,4 @@
-// Adapted from React Bits (https://reactbits.dev, MIT). Local change: `as` prop so the
-// effect can render a real heading instead of a <p>.
+// Adapted from React Bits (https://reactbits.dev, MIT).
 
 import { motion, MotionConfig, type Easing, type MotionStyle, type Transition } from 'motion/react';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';

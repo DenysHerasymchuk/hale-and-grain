@@ -24,7 +24,6 @@ public class CatalogService(IStoreDbContext db)
 
         if (!string.IsNullOrWhiteSpace(query.Q))
         {
-            // Lower-cased Contains: provider-neutral and case-insensitive; EF Core escapes % and _.
             var term = query.Q.Trim().ToLower();
             products = products.Where(p =>
                 p.Name.ToLower().Contains(term) ||
@@ -91,7 +90,6 @@ public class CatalogService(IStoreDbContext db)
             return [];
         }
 
-        // Same category first, then the rest of the catalogue to fill the row.
         return await db.Products.AsNoTracking()
             .Where(p => p.IsPublished && p.Id != source.Id)
             .OrderByDescending(p => p.CategoryId == source.CategoryId)

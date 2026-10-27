@@ -6,7 +6,6 @@ import { ModelErrorBoundary } from '@/features/viewer/ModelErrorBoundary'
 import { useInView } from '@/hooks/useInView'
 import { routePaths } from '@/Routes/routePaths'
 
-// three.js is ~600 KB; keep it out of the landing bundle until the section is near the viewport.
 const FurnitureViewer3D = lazy(() => import('@/features/viewer/FurnitureViewer3D').then((m) => ({ default: m.FurnitureViewer3D })))
 
 const SHOWCASE_SLUG = 'lune-console'
@@ -51,7 +50,6 @@ export function ViewerShowcase() {
 
         <div ref={ref} className="aspect-[4/3] w-full">
           {inView && product?.model ? (
-            // Also catches a failed download of the viewer chunk itself.
             <ModelErrorBoundary fallback={() => <ShowcasePoster image={poster} />}>
             <Suspense fallback={<div className="size-full animate-pulse rounded-[var(--radius-card)] bg-neutral-800 motion-reduce:animate-none" />}>
               <FurnitureViewer3D

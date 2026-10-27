@@ -34,14 +34,12 @@ export function CheckoutPaymentPage() {
     },
     onSuccess: ({ order, accessToken }) => {
       rememberOrder(order.orderNumber, accessToken)
-      // Clear only once we've left this page, or its empty-cart guard would redirect to /cart first.
       void Promise.resolve(navigate(`${routePaths.checkoutConfirmation(order.orderNumber)}?token=${encodeURIComponent(accessToken)}`, { replace: true })).then(() => {
         clearCart()
         clearDetails()
       })
     },
     onError: (error) => {
-      // Stock or prices moved under us; refresh the quote so the summary shows why.
       if (error instanceof ApiError && error.status === 409) void queryClient.invalidateQueries({ queryKey: ['cart-quote'] })
     },
   })
@@ -132,7 +130,6 @@ export function CheckoutPaymentPage() {
   )
 }
 
-/** A 409 from POST /orders carries a fresh quote instead of a ProblemDetails body. */
 function isQuote(body: unknown): body is Quote {
   return typeof body === 'object' && body !== null && 'problems' in body && Array.isArray(body.problems)
 }

@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
 export interface CartNotice {
-  /** Changes on every add, so adding the same item twice re-shows the toast. */
   id: number
   name: string
   variantName: string

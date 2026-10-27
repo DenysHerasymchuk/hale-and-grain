@@ -9,7 +9,6 @@ interface ModelErrorBoundaryState {
   error: Error | null
 }
 
-/** Keeps a failed model download or a WebGL crash inside the viewer instead of the whole page. */
 export class ModelErrorBoundary extends Component<ModelErrorBoundaryProps, ModelErrorBoundaryState> {
   state: ModelErrorBoundaryState = { error: null }
 

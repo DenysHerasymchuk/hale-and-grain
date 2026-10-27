@@ -3,7 +3,6 @@ using FurnitureStore.Domain;
 
 namespace FurnitureStore.Application.Orders;
 
-/// <summary>Variant data the pricing rules need, loaded from the database, never from the client.</summary>
 public record PricedVariant(
     Guid VariantId,
     Guid ProductId,
@@ -17,10 +16,8 @@ public record PricedVariant(
     int Stock,
     bool IsPublished);
 
-/// <summary>Pure pricing rules: no I/O, so they are unit-tested directly.</summary>
 public static class OrderPricing
 {
-    /// <summary>Combines repeated variants so one variant can't dodge the per-line limit.</summary>
     public static IReadOnlyList<CartLineRequest> MergeLines(IEnumerable<CartLineRequest> lines) =>
         lines.GroupBy(l => l.VariantId)
             .Select(g => new CartLineRequest(g.Key, g.Sum(l => l.Quantity)))

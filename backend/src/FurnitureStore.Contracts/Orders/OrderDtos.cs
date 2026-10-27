@@ -23,7 +23,6 @@ public record QuoteLineDto(
     decimal LineTotal,
     int Available);
 
-/// <summary>Why a requested line cannot be ordered as asked.</summary>
 public record LineProblem(Guid VariantId, string Code, string Message, int Available);
 
 public record QuoteDto(
@@ -78,5 +77,4 @@ public record OrderDto(
     decimal Total,
     DateTimeOffset CreatedAt);
 
-/// <param name="AccessToken">Shown once. Lets a guest reopen the order; only its hash is stored.</param>
 public record CreateOrderResponse(OrderDto Order, string AccessToken);

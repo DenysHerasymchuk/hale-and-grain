@@ -4,14 +4,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { routePaths } from '@/Routes/routePaths'
 
-/**
- * Promo strip that slides down above the header. Closing it lasts for the current page
- * load only (in-app navigation keeps it closed); any reload brings it back.
- */
 export function PromoBanner() {
   const [open, setOpen] = useState(false)
 
-  // Open after mount so the slide-down plays instead of the strip just being there.
   useEffect(() => {
     const timer = window.setTimeout(() => setOpen(true), 350)
     return () => window.clearTimeout(timer)

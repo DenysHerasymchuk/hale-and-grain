@@ -9,7 +9,6 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 60 * 1000,
       refetchOnWindowFocus: false,
-      // 4xx answers will not change on retry; network blips and 5xx might.
       retry: (failureCount, error) => !(error instanceof ApiError && error.status >= 400 && error.status < 500) && failureCount < 2,
     },
   },
@@ -18,7 +17,6 @@ const queryClient = new QueryClient({
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Every motion component honours the OS "reduce motion" setting. */}
       <MotionConfig reducedMotion="user">
         <RouterProvider router={router} />
       </MotionConfig>

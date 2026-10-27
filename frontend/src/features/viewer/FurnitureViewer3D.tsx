@@ -14,9 +14,7 @@ import { ModelLoadingFallback, ViewerMessage, type FallbackImage } from './Viewe
 export interface FurnitureViewer3DProps {
   model: ProductModel
   productName: string
-  /** Hex colour multiplied into the model's target materials, e.g. for a finish variant. */
   tint?: string | null
-  /** Shown if WebGL is unavailable or the model fails to load. */
   fallbackImage?: FallbackImage | null
   className?: string
 }

@@ -7,7 +7,6 @@ import { authApi } from '@/features/auth/api'
 import { ApiError } from '@/lib/apiClient'
 import { routePaths } from '@/Routes/routePaths'
 
-/** Target of the emailed reset link: /reset-password?email=…&code=… */
 export function ResetPasswordPage() {
   const [searchParams] = useSearchParams()
   const email = searchParams.get('email') ?? ''

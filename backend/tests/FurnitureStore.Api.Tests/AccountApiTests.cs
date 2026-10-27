@@ -40,7 +40,7 @@ public class AccountApiTests(StoreApiFactory factory)
 
         var created = await (await alice.PostAsJsonAsync("/api/v1/account/addresses", Address())).Content.ReadFromJsonAsync<AddressDto>(TestJson.Options);
 
-        Assert.True(created!.IsDefault); // first address becomes the default
+        Assert.True(created!.IsDefault);
         Assert.Empty((await bob.GetFromJsonAsync<List<AddressDto>>("/api/v1/account/addresses", TestJson.Options))!);
         Assert.Equal(HttpStatusCode.NotFound, (await bob.PutAsJsonAsync($"/api/v1/account/addresses/{created.Id}", Address())).StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, (await bob.DeleteAsync($"/api/v1/account/addresses/{created.Id}")).StatusCode);

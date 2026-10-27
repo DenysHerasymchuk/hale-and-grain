@@ -11,7 +11,6 @@ interface ProductShelfProps {
   link?: { to: string; label: string }
 }
 
-/** A titled row of products from the live catalogue; degrades to a short note if the API is down. */
 export function ProductShelf({ id, eyebrow, title, query, link }: ProductShelfProps) {
   const { data, isPending, isError } = useProducts(query)
 

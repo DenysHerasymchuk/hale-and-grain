@@ -1,4 +1,3 @@
-/** Must match OrderRules.ShippingCountries in the API. */
 export const shippingCountries = [
   { value: 'AT', label: 'Austria' },
   { value: 'BE', label: 'Belgium' },

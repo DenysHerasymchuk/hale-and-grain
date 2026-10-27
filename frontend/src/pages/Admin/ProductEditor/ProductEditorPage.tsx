@@ -13,7 +13,6 @@ import { ImagesEditor } from './components/ImagesEditor'
 import { ModelEditor } from './components/ModelEditor'
 import { VariantsEditor } from './components/VariantsEditor'
 
-/** /admin/products/new and /admin/products/:id/edit share one form. */
 export function ProductEditorPage() {
   const { id } = useParams()
   const product = useAdminProduct(id)
@@ -23,7 +22,6 @@ export function ProductEditorPage() {
   if (product.isError) return <ErrorState error={product.error} onRetry={() => void product.refetch()} />
   if (categories.isError) return <ErrorState error={categories.error} onRetry={() => void categories.refetch()} />
 
-  // Keyed so switching between products resets the form state.
   return <ProductForm key={id ?? 'new'} product={product.data} categories={categories.data} />
 }
 

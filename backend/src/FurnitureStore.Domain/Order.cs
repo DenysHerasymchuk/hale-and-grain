@@ -5,7 +5,6 @@ public class Order
     public Guid Id { get; set; }
     public required string OrderNumber { get; set; }
 
-    /// <summary>SHA-256 of the guest access token. The raw token is shown to the customer once.</summary>
     public required string AccessTokenHash { get; set; }
 
     public string? UserId { get; set; }
@@ -34,8 +33,6 @@ public class OrderLine
     public Guid Id { get; set; }
     public Guid OrderId { get; set; }
 
-    // References survive for reporting, but the snapshot fields below are what the
-    // customer paid for, even if the product is later renamed, repriced or deleted.
     public Guid? ProductId { get; set; }
     public Guid? VariantId { get; set; }
 
@@ -71,7 +68,6 @@ public enum PaymentStatus
 {
     Pending,
 
-    /// <summary>Development checkout only. No money moved.</summary>
     DevelopmentSimulated,
     Paid,
     Failed,

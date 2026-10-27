@@ -25,7 +25,6 @@ export function AddToCart({ product, variant }: AddToCartProps) {
     return () => window.clearTimeout(timer)
   }, [justAdded])
 
-  // What is left to add once the cart's existing quantity is counted.
   const remaining = Math.max(0, lineLimit({ available: variant.stock }) - inCart)
   const soldOut = variant.stock === 0
   const quantityToAdd = Math.min(quantity, Math.max(remaining, 1))

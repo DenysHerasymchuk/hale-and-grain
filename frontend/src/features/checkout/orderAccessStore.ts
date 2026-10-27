@@ -6,7 +6,6 @@ interface OrderAccessState {
   remember: (orderNumber: string, token: string) => void
 }
 
-/** Guest order access tokens, so a customer on this device can reopen their orders. */
 export const useOrderAccessStore = create<OrderAccessState>()(
   persist(
     (set) => ({

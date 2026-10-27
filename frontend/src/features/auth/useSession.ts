@@ -5,7 +5,6 @@ import { authApi, type Credentials, type Session } from './api'
 
 export const sessionKey = ['session'] as const
 
-/** The signed-in customer, or null for guests. A 401 is an answer, not an error. */
 export function useSession() {
   return useQuery<Session | null>({
     queryKey: sessionKey,
@@ -25,8 +24,6 @@ export function useLogin() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (credentials: Credentials) => authApi.login(credentials),
-    // Remove rather than invalidate: no observer may be mounted on the auth pages, and a stale
-    // cached `null` would make the next protected route bounce straight back to login.
     onSuccess: () => queryClient.removeQueries({ queryKey: sessionKey }),
   })
 }
@@ -35,7 +32,6 @@ export function useLogout() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: authApi.logout,
-    // Account data must not linger after sign-out, on screen or on this device.
     onSettled: () => {
       queryClient.clear()
       useWishlistStore.getState().replaceAll([])

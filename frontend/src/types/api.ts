@@ -1,6 +1,3 @@
-// Mirrors the backend DTOs in backend/FurnitureStore.Api/Features. Keep in sync by hand;
-// the surface is small enough that codegen would cost more than it saves.
-
 export interface PagedResult<T> {
   items: T[]
   page: number
@@ -112,7 +109,6 @@ export interface ProductQuery {
   sort?: ProductSort
 }
 
-/** RFC 7807 body returned by every API error. */
 export interface ProblemDetails {
   type?: string
   title?: string

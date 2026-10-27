@@ -12,7 +12,6 @@ public static class AuthEndpoints
     {
         var auth = api.MapGroup("/auth").WithTags("Auth").RequireRateLimiting("auth");
 
-        // register, login (?useCookies=true), forgotPassword, resetPassword, manage/info...
         auth.MapIdentityApi<AppUser>();
 
         auth.MapPost("/logout", async (SignInManager<AppUser> signIn) =>

@@ -2,7 +2,6 @@ import { ChevronDown } from '@untitledui/icons'
 import type { ReactNode } from 'react'
 import type { ProductDetail } from '@/types/api'
 
-/** Long-form details as native disclosure widgets: keyboard and screen-reader friendly for free. */
 export function ProductInformation({ product }: { product: ProductDetail }) {
   return (
     <div className="divide-y divide-border-secondary border-y border-secondary">

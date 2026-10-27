@@ -1,7 +1,4 @@
-// Adapted from React Bits (https://reactbits.dev, MIT): SpecularButton, JS + Tailwind variant.
-// Local changes: TypeScript types; an optional `href` renders a router link with the same
-// look; no loseContext() on cleanup (it broke React StrictMode's dev re-mount). Rendering
-// is otherwise unchanged.
+// Adapted from React Bits (https://reactbits.dev, MIT).
 import { useEffect, useRef, type CSSProperties, type MouseEventHandler, type ReactNode } from 'react'
 import { Link } from 'react-router'
 
@@ -186,7 +183,6 @@ export interface SpecularButtonProps {
   proximity?: number
   autoAnimate?: boolean
   disabled?: boolean
-  /** Renders a router link instead of a button. */
   href?: string
   onClick?: MouseEventHandler<HTMLElement>
   type?: 'button' | 'submit' | 'reset'
@@ -244,7 +240,6 @@ const SpecularButton = ({
     disabled,
   }
   const settingsRef = useRef(settings)
-  // The render loop reads the latest props each frame without restarting WebGL.
   settingsRef.current = settings
 
   useEffect(() => {
@@ -456,7 +451,6 @@ const SpecularButton = ({
       gl.deleteVertexArray(vao)
       gl.deleteProgram(program)
     }
-    // Settings flow in through settingsRef; the WebGL setup runs once per mount.
   }, [])
 
   useEffect(() => {

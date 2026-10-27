@@ -6,7 +6,6 @@ import { EmptyState } from '@/components/StatusViews/StatusViews'
 import { useWishlistStore } from '@/features/wishlist/wishlistStore'
 import { routePaths } from '@/Routes/routePaths'
 
-/** Rendered on its own at /wishlist and inside the profile layout at /profile/wishlist. */
 export function WishlistPage({ embedded = false }: { embedded?: boolean }) {
   const items = useWishlistStore((state) => state.items)
   const remove = useWishlistStore((state) => state.remove)

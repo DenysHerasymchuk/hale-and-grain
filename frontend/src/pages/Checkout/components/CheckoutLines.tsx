@@ -1,7 +1,6 @@
 import { Price } from '@/components/Price/Price'
 import type { QuoteLine } from '@/types/api'
 
-/** Compact line list for the checkout summary, priced by the server quote. */
 export function CheckoutLines({ lines, currency }: { lines: QuoteLine[]; currency: string }) {
   return (
     <ul className="mb-6 divide-y divide-border-primary border-b border-primary">

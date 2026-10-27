@@ -1,6 +1,5 @@
 const formatters = new Map<string, Intl.NumberFormat>()
 
-/** Display-only formatting. Totals that matter are always calculated by the API. */
 export function formatMoney(amount: number, currency = 'EUR'): string {
   let formatter = formatters.get(currency)
   if (!formatter) {

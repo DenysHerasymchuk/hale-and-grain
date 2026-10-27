@@ -9,7 +9,6 @@ internal static class Patterns
     public const string Sku = "^[A-Z0-9]+(-[A-Z0-9]+)*$";
     public const string Hex = "^#[0-9a-fA-F]{6}$";
 
-    /// <summary>Site-relative paths or https URLs only; rejects javascript:, data: and friends.</summary>
     public const string AssetUrl = @"^(/[A-Za-z0-9._~/-]+|https://[^\s""'<>]+)$";
 }
 
@@ -45,7 +44,6 @@ public record AdminModelInput(
     [property: StringLength(100)] string? License,
     [property: Required] AdminModelConfigInput Config);
 
-/// <summary>Full product document; PUT replaces images, variants and model metadata wholesale.</summary>
 public record AdminProductInput(
     [property: Required, StringLength(150)] string Name,
     [property: Required, StringLength(150), RegularExpression(Patterns.Slug)] string Slug,

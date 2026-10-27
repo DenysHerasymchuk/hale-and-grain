@@ -12,7 +12,6 @@ public abstract record CreateOrderResult
 {
     public record Created(CreateOrderResponse Response) : CreateOrderResult;
 
-    /// <summary>Prices or stock changed since the customer's last quote; nothing was written.</summary>
     public record Rejected(QuoteDto Quote) : CreateOrderResult;
 
     public record InvalidCountry(string Country) : CreateOrderResult;
@@ -43,8 +42,6 @@ public class OrderService(IStoreDbContext db, IPaymentProvider payments, TimePro
             return new CreateOrderResult.Rejected(quote);
         }
 
-        // Conditional decrement: Postgres re-checks `Stock >= qty` on the locked row, so two
-        // concurrent checkouts for the last item cannot both succeed.
         foreach (var line in quote.Lines)
         {
             var reserved = await db.ProductVariants
@@ -114,10 +111,6 @@ public class OrderService(IStoreDbContext db, IPaymentProvider payments, TimePro
         return new CreateOrderResult.Created(new CreateOrderResponse(order.ToDto(), accessToken));
     }
 
-    /// <summary>
-    /// Returns the order only to its signed-in owner or to someone holding its access token.
-    /// Anything else is indistinguishable from "not found", so order numbers can't be probed.
-    /// </summary>
     public async Task<OrderDto?> GetOrderAsync(string orderNumber, string? accessToken, string? userId, CancellationToken ct)
     {
         var order = await db.Orders.AsNoTracking()
@@ -158,11 +151,8 @@ public class OrderService(IStoreDbContext db, IPaymentProvider payments, TimePro
     private async Task<StoreSettings> GetSettingsAsync(CancellationToken ct) =>
         await db.StoreSettings.AsNoTracking().FirstOrDefaultAsync(ct) ?? new StoreSettings();
 
-    // Crockford-style alphabet: no 0/O or 1/I/L to misread over the phone.
     private const string OrderNumberAlphabet = "23456789ABCDEFGHJKMNPQRSTVWXYZ";
 
-    // ponytail: 30^6 random suffix per day; a collision hits the unique index and the request
-    // fails with a 500. Retry on DbUpdateException if order volume ever makes that plausible.
     private static string NewOrderNumber(DateTimeOffset now) =>
         $"HG-{now:yyMMdd}-{RandomNumberGenerator.GetString(OrderNumberAlphabet, 6)}";
 

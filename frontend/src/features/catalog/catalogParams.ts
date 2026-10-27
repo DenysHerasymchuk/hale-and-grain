@@ -17,7 +17,6 @@ function readPositiveNumber(params: URLSearchParams, key: string): number | unde
   return params.has(key) && Number.isFinite(value) && value >= 0 ? value : undefined
 }
 
-/** URL is the source of truth for catalogue state, so filtered views can be shared and bookmarked. */
 export function readCatalogParams(params: URLSearchParams): ProductQuery {
   const sort = params.get('sort')
   const page = readPositiveNumber(params, 'page')
@@ -33,7 +32,6 @@ export function readCatalogParams(params: URLSearchParams): ProductQuery {
   }
 }
 
-/** Returns new params with `changes` applied; any filter change resets to page 1. */
 export function updateCatalogParams(params: URLSearchParams, changes: Record<string, string | number | boolean | undefined>): URLSearchParams {
   const next = new URLSearchParams(params)
   for (const [key, value] of Object.entries(changes)) {

@@ -12,12 +12,11 @@ namespace FurnitureStore.Tests;
 [Collection(ApiCollection.Name)]
 public class OrderApiTests(StoreApiFactory factory)
 {
-    // Seeded variants (see SeedData). Each test uses its own so they don't share stock.
-    private static readonly Guid HarrowNatural = Guid.Parse("3c000000-0000-0000-0001-000000000001"); // €1890, stock 6
-    private static readonly Guid HarrowEbonised = Guid.Parse("3c000000-0000-0000-0001-000000000003"); // stock 2
-    private static readonly Guid AtelierSmoked = Guid.Parse("3c000000-0000-0000-0002-000000000002"); // €1540, stock 2
-    private static readonly Guid OrchardNatural = Guid.Parse("3c000000-0000-0000-0004-000000000001"); // €680, stock 7
-    private static readonly Guid OrchardWhite = Guid.Parse("3c000000-0000-0000-0004-000000000002"); // stock 0
+    private static readonly Guid HarrowNatural = Guid.Parse("3c000000-0000-0000-0001-000000000001");
+    private static readonly Guid HarrowEbonised = Guid.Parse("3c000000-0000-0000-0001-000000000003");
+    private static readonly Guid AtelierSmoked = Guid.Parse("3c000000-0000-0000-0002-000000000002");
+    private static readonly Guid OrchardNatural = Guid.Parse("3c000000-0000-0000-0004-000000000001");
+    private static readonly Guid OrchardWhite = Guid.Parse("3c000000-0000-0000-0004-000000000002");
 
     private readonly HttpClient _client = factory.CreateClient();
 
@@ -77,7 +76,6 @@ public class OrderApiTests(StoreApiFactory factory)
     [Fact]
     public async Task Concurrent_checkouts_cannot_oversell_the_last_items()
     {
-        // Stock is 2; five customers each try to buy one at the same moment.
         var attempts = Enumerable.Range(0, 5)
             .Select(_ => factory.CreateClient().PostAsJsonAsync("/api/v1/orders", Order(new CartLineRequest(AtelierSmoked, 1))));
         var responses = await Task.WhenAll(attempts);
@@ -121,7 +119,6 @@ public class OrderApiTests(StoreApiFactory factory)
         }
         finally
         {
-            // Other tests in the collection read this product's price.
             await products.ExecuteUpdateAsync(s => s.SetProperty(p => p.Price, 1890m));
         }
     }

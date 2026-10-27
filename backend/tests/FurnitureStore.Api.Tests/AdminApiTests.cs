@@ -84,6 +84,6 @@ public class AdminApiTests(StoreApiFactory factory)
         var dashboard = await admin.GetFromJsonAsync<DashboardDto>("/api/v1/admin/dashboard", TestJson.Options);
 
         Assert.Equal(5, dashboard!.PublishedProducts);
-        Assert.True(dashboard.OutOfStockVariants >= 1); // Orchard "Whitewashed" is seeded with no stock
+        Assert.True(dashboard.OutOfStockVariants >= 1);
     }
 }

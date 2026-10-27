@@ -8,7 +8,6 @@ import { sortOptions } from '../catalogParams'
 interface ProductFiltersProps {
   query: ProductQuery
   categories: Category[]
-  /** Hidden on category pages, where the category comes from the URL path. */
   showCategory: boolean
   onChange: (changes: Record<string, string | number | boolean | undefined>) => void
   onClear: () => void
@@ -58,7 +57,6 @@ interface PriceRangeProps {
   onApply: (changes: { minPrice?: number; maxPrice?: number }) => void
 }
 
-/** Applied on submit rather than per keystroke, so typing "1500" does not fire four requests. */
 function PriceRange({ min, max, onApply }: PriceRangeProps) {
   const [draftMin, setDraftMin] = useState(min?.toString() ?? '')
   const [draftMax, setDraftMax] = useState(max?.toString() ?? '')

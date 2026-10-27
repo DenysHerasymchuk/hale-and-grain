@@ -1,7 +1,6 @@
 import { Outlet } from 'react-router'
 import { Logo } from '@/components/Logo/Logo'
 
-/** Focused shell for sign-in flows: no store navigation to wander off into. */
 export function AuthLayout() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-2">
