@@ -84,7 +84,7 @@ cd frontend && npm test            # plus: npm run lint, npm run typecheck, npm 
 ## What's inside
 
 - **Shop:** search, filters and sorting; product pages with a 3D viewer where picking a finish re-tints the model; wishlist; a cart that survives a refresh.
-- **Checkout:** the server recalculates every price and the delivery charge, and reserves stock in the same transaction, so two people can't both buy the last cabinet. Guests get a private link to their order.
+- **Checkout:** the server recalculates every price and the delivery charge, and reserves stock in the same transaction, so two people can't both buy the last cabinet. Someone has to lose; the database decides who. Guests get a private link to their order.
 - **Accounts:** sign-up, password reset, saved addresses, order history, and an account you can delete.
 - **Admin** at `/admin`: products (copy, prices, finishes, photos, 3D settings with a live preview), categories, stock, orders, customers and store settings. The API checks the Admin role on every request; hiding the menu isn't the security.
 
@@ -92,7 +92,7 @@ The five 3D models are CC0 from [Poly Haven](https://polyhaven.com). The product
 
 ## Good to know
 
-- **Payments are pretend.** Checkout is labelled as a development checkout and orders are marked "development, simulated", never "paid". A real provider goes behind `IPaymentProvider`.
+- **Payments are pretend.** Your bank account will never know. Checkout is labelled as a development checkout and orders are marked "development, simulated", never "paid". A real provider goes behind `IPaymentProvider`.
 - **Emails go to the API log.** That includes confirmation and reset links. Password reset only works for confirmed addresses, so confirm via the link in the log first.
 - **Settings** live in `appsettings*.json`, user-secrets or environment variables (`ConnectionStrings__Store`, `Seed__AdminEmail`, `Payments__Provider`, `Cors__AllowedOrigins`). `.env.example` lists the Docker ones.
 - **Schema changes:** `dotnet ef migrations add Name -o Data/Migrations` from the API folder.
