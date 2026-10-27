@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FurnitureStore.Api/FurnitureStore.Api.csproj" />
+    <Project Path="src/FurnitureStore.Application/FurnitureStore.Application.csproj" />
+    <Project Path="src/FurnitureStore.Contracts/FurnitureStore.Contracts.csproj" />
+    <Project Path="src/FurnitureStore.Domain/FurnitureStore.Domain.csproj" />
+    <Project Path="src/FurnitureStore.Infrastructure/FurnitureStore.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FurnitureStore.Api.Tests/FurnitureStore.Api.Tests.csproj" />
+    <Project Path="tests/FurnitureStore.Application.Tests/FurnitureStore.Application.Tests.csproj" />
+    <Project Path="tests/FurnitureStore.Architecture.Tests/FurnitureStore.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
