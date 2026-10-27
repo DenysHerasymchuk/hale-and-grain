@@ -40,7 +40,7 @@ export function PromoBanner() {
               <span className="hidden rounded-full bg-beige px-2 py-0.5 text-[0.7rem] font-semibold tracking-wider text-brand-800 uppercase sm:inline">Offer</span>
               <p className="text-center">
                 <span className="font-medium text-white">Free delivery over €750</span>
-                <span className="hidden sm:inline"> &middot; Every piece made to order in 6–8 weeks</span>
+                <span className="hidden sm:inline"> &middot; It&rsquo;s just a demo, no one will notice</span>
               </p>
               <Link to={routePaths.products} className="group hidden items-center gap-1 font-medium text-white underline-offset-4 hover:underline md:inline-flex">
                 Shop now <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
