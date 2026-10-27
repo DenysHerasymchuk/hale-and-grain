@@ -108,10 +108,21 @@ Every push and pull request runs `.github/workflows/ci.yml`. It checks the front
 ## Good to know
 
 - **Payments are pretend.** Your bank account will never know. Checkout is labelled as a development checkout and orders are marked "development, simulated", never "paid". A real provider goes behind `IPaymentProvider`.
-- **Emails go to the API log.** That includes confirmation and reset links. Password reset only works for confirmed addresses, so confirm via the link in the log first.
+- **Emails go to the API log** locally (`Email:LogLinks`). That includes confirmation and reset links. Password reset only works for confirmed addresses, so confirm via the link in the log first.
 - **Settings** live in `appsettings*.json`, user-secrets or environment variables (`ConnectionStrings__Store`, `Seed__AdminEmail`, `Payments__Provider`, `Cors__AllowedOrigins`). `.env.example` lists the Docker ones.
 - **Schema changes:** from `backend/`, run `dotnet ef migrations add Name --project src/FurnitureStore.Infrastructure --startup-project src/FurnitureStore.Api -o Persistence/Migrations`.
 - **Not done yet:** Dutch/English translation, plus the About and Contact pages the footer links to.
+
+## Deploying
+
+```bash
+# in .env: PUBLIC_HOST=shop.example.com, a strong POSTGRES_PASSWORD, PAYMENTS_PROVIDER empty until a real one exists
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+- The site listens on `127.0.0.1:8080` over plain HTTP. Put a TLS proxy in front (Caddy, Traefik, a load balancer) and set HSTS there. Session cookies are `Secure` in this mode, so login doesn't work without HTTPS.
+- The database isn't exposed, and sign-in keys are stored in it, so logins survive restarts.
+- No mail provider is wired up, so in production account emails are dropped, not logged. Plug one in behind `IEmailSender<AppUser>` before you open sign-ups. Same for payments behind `IPaymentProvider`.
 
 ## Credits
 

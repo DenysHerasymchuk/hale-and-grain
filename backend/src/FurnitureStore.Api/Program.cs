@@ -5,6 +5,7 @@ using FurnitureStore.Application;
 using FurnitureStore.Domain;
 using FurnitureStore.Infrastructure;
 using FurnitureStore.Infrastructure.Persistence;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
@@ -31,13 +32,21 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "hg_session";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    // Production sits behind TLS; Development (and the local compose stack's http) do not.
+    options.Cookie.SecurePolicy = builder.Configuration.GetValue<bool>("Auth:SecureCookies")
+        ? CookieSecurePolicy.Always
+        : CookieSecurePolicy.SameAsRequest;
     options.ExpireTimeSpan = TimeSpan.FromDays(14);
     options.SlidingExpiration = true;
     // This is an API: answer 401/403 instead of redirecting to a login page.
     options.Events.OnRedirectToLogin = context => Results.Unauthorized().ExecuteAsync(context.HttpContext);
     options.Events.OnRedirectToAccessDenied = context => Results.Forbid().ExecuteAsync(context.HttpContext);
 });
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("FurnitureStore")
+    // Keys in the database: sessions survive restarts and are shared by every API replica.
+    .PersistKeysToDbContext<StoreDbContext>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(Roles.Admin, policy => policy.RequireRole(Roles.Admin));

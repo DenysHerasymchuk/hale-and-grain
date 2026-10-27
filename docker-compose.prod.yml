@@ -1,0 +1,33 @@
+# Production overrides: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# Every ${VAR:?} must be set (in .env or the shell); compose refuses to start without them.
+# TLS is terminated by a reverse proxy in front of the web container (Caddy, Traefik, a load balancer).
+x-api-env: &api-env
+  ConnectionStrings__Store: Host=db;Port=5432;Database=${POSTGRES_DB:-furniture_store};Username=${POSTGRES_USER:-furniture};Password=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD};Gss Encryption Mode=Disable
+  ASPNETCORE_ENVIRONMENT: Production
+  AllowedHosts: ${PUBLIC_HOST:?set PUBLIC_HOST, e.g. shop.example.com}
+  Frontend__BaseUrl: https://${PUBLIC_HOST}
+  Cors__AllowedOrigins__0: https://${PUBLIC_HOST}
+  Auth__SecureCookies: "true"
+  Email__LogLinks: "false"
+  # "Development" only records orders; leave empty to refuse checkout until a real provider exists.
+  Payments__Provider: ${PAYMENTS_PROVIDER:-}
+
+services:
+  db:
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    # Not reachable from outside the compose network.
+    ports: !reset []
+    restart: unless-stopped
+
+  migrate:
+    environment: *api-env
+
+  api:
+    environment: *api-env
+    restart: unless-stopped
+
+  web:
+    ports: !override
+      - "127.0.0.1:${WEB_PORT:-8080}:8080"
+    restart: unless-stopped
