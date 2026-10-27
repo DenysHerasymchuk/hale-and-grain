@@ -6,8 +6,8 @@ import { OrderDetails } from '@/features/orders/OrderDetails'
 import { orderStatuses, orderStatusLabel } from '@/features/orders/orderLabels'
 import type { OrderStatus } from '@/types/api'
 import { routePaths } from '@/Routes/routePaths'
-import { AdminPageHeader } from '../components/AdminPageHeader'
-import { SelectField } from '../components/Field'
+import { AdminPageHeader } from './components/AdminPageHeader'
+import { SelectField } from './components/Field'
 
 export function AdminOrderDetailsPage() {
   const { id = '' } = useParams()

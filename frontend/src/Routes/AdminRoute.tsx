@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useSession } from '@/features/auth/useSession'
-import { AccessDeniedPage } from '@/pages/AccessDenied/AccessDeniedPage'
+import { AccessDeniedPage } from '@/pages/AccessDeniedPage'
 import { routePaths } from './routePaths'
 
 /** UI gate for the admin area. The API enforces the Admin role on every admin endpoint. */

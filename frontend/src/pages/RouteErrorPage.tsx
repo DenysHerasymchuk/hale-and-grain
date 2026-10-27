@@ -1,6 +1,6 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 import { Button } from '@/components/base/buttons/button'
-import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 
 /** Last-resort boundary for errors thrown while rendering or lazy-loading a route. */
 export function RouteErrorPage() {

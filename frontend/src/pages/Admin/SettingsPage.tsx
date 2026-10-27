@@ -4,8 +4,8 @@ import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { adminApi, useAdminMutation, useStoreSettings } from '@/features/admin/api'
 import type { StoreSettings } from '@/features/admin/types'
 import { ApiError } from '@/lib/apiClient'
-import { AdminPageHeader, AdminPanel } from '../components/AdminPageHeader'
-import { TextField } from '../components/Field'
+import { AdminPageHeader, AdminPanel } from './components/AdminPageHeader'
+import { TextField } from './components/Field'
 
 export function AdminSettingsPage() {
   const { data, isPending, isError, error, refetch } = useStoreSettings()

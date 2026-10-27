@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useAccountOrders } from '@/features/account/hooks'
 import { routePaths } from '@/Routes/routePaths'
-import { OrderList } from '../components/OrderList'
+import { OrderList } from './components/OrderList'
 
 export function ProfileOrdersPage() {
   const { data: orders, isPending, isError, error, refetch } = useAccountOrders()
