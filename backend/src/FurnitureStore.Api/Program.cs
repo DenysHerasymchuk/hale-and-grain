@@ -83,7 +83,18 @@ app.UseForwardedHeaders();
 // `dotnet run -- --seed` migrates and seeds explicitly; Development does it on startup.
 if (args.Contains("--seed") || (app.Environment.IsDevelopment() && app.Configuration.GetValue("Database:MigrateOnStartup", true)))
 {
-    await DatabaseInitializer.MigrateAndSeedAsync(app.Services, app.Configuration);
+    try
+    {
+        await DatabaseInitializer.MigrateAndSeedAsync(app.Services, app.Configuration);
+    }
+    catch (InvalidOperationException ex) when (args.Contains("--seed"))
+    {
+        // Bad seed config (e.g. a weak admin password): one readable line, not a stack trace.
+        app.Logger.LogCritical("Seeding failed: {Reason}", ex.Message);
+        Environment.ExitCode = 1;
+        return;
+    }
+
     if (args.Contains("--seed"))
     {
         return;
