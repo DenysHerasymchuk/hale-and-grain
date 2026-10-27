@@ -1,12 +1,14 @@
 using FurnitureStore.Application.Abstractions;
 using FurnitureStore.Domain;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureStore.Infrastructure.Persistence;
 
-public class StoreDbContext(DbContextOptions<StoreDbContext> options) : IdentityDbContext<AppUser>(options), IStoreDbContext
+public class StoreDbContext(DbContextOptions<StoreDbContext> options) : IdentityDbContext<AppUser>(options), IStoreDbContext, IDataProtectionKeyContext
 {
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductImage> ProductImages => Set<ProductImage>();
@@ -21,6 +23,8 @@ public class StoreDbContext(DbContextOptions<StoreDbContext> options) : Identity
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
+        // Key XML is a few KB; exempt it from the 500-char string convention below.
+        builder.Entity<DataProtectionKey>().Property(k => k.Xml).HasColumnType("text");
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
