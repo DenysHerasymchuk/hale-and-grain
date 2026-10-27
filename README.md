@@ -25,178 +25,79 @@
 
 ## About
 
-A furniture webshop where every product can be turned, zoomed and inspected in 3D before it goes in the cart. React and React Three Fiber on the front, ASP.NET Core and PostgreSQL behind it, with real orders, accounts and an admin area.
+A furniture shop where you can spin, zoom and poke at every piece in 3D before buying it. React and React Three Fiber in front, ASP.NET Core and PostgreSQL behind, with real orders, accounts and an admin area.
 
-## What's inside
+## Setup
 
-- **Storefront:** catalogue with search, filters, sorting and paging; product pages with an interactive 3D viewer whose finish swatches re-tint the model; wishlist; cart that survives reloads.
-- **Checkout:** prices, stock and delivery are always recalculated on the server. Stock is reserved atomically, so two people can't buy the last item. Guests get a private link to their order.
-- **Accounts:** register, sign in, password reset, saved addresses, order history, wishlist synced across devices, account deletion.
-- **Admin** (`/admin`): dashboard, products (copy, prices, finishes, photos and 3D model settings with a live preview), categories, inventory, orders, customers and store settings. Every admin endpoint requires the Admin role.
+### With Docker
 
-| Layer | Stack |
-| --- | --- |
-| Frontend | React 19, TypeScript (strict), Vite, React Router, TanStack Query, Zustand, Tailwind CSS v4, Untitled UI, React Three Fiber + drei |
-| Backend | ASP.NET Core (.NET 10) minimal APIs, EF Core 10, ASP.NET Core Identity (cookie auth) |
-| Database | PostgreSQL 17 |
-| Tests | xUnit + Testcontainers (backend), Vitest + Testing Library (frontend) |
-
-## Quick start with Docker
-
-The fastest way to see the whole thing running. Needs only Docker.
+All you need is Docker.
 
 ```sh
 cp .env.example .env
-# Optional: set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD in .env to get an admin account
 docker compose up --build
 ```
 
-Open <http://localhost:8080>. The `migrate` service applies database migrations and loads the demo catalogue once, then exits; `api` and `web` start after it.
+Then open <http://localhost:8080>. The first start runs the migrations and loads five demo products.
 
-To rebuild after pulling changes: `docker compose up --build -d`.
+Want to use `/admin`? Set `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` in `.env` before the first start.
 
-## Local development
+### For development
 
-For hot reload you run the database in Docker and the two apps directly.
-
-### Prerequisites
-
-- Node.js 20.19 or newer (developed on 24)
-- .NET SDK 10
-- Docker (for PostgreSQL and the backend tests)
-- EF Core CLI, only if you change the database model: `dotnet tool install --global dotnet-ef`
-
-### 1. Database
+You'll need Node 20.19+, the .NET 10 SDK and Docker.
 
 ```sh
+# 1. database
 docker compose up -d db
-```
 
-PostgreSQL listens on `localhost:5432` with the development credentials from `docker-compose.yml`. These are local defaults only; override them in `.env`.
-
-### 2. Backend
-
-```sh
+# 2. API on http://localhost:5266 (API docs at /scalar)
 cd backend/FurnitureStore.Api
-
-# Optional, once: an admin account for /admin (stored outside the repo)
-dotnet user-secrets init
-dotnet user-secrets set "Seed:AdminEmail" "you@example.com"
-dotnet user-secrets set "Seed:AdminPassword" "ChooseALongPassw0rd"
-
 dotnet run --launch-profile http
-```
 
-The API runs on <http://localhost:5266>. In Development it applies migrations and seeds the catalogue (and the admin, if configured) on startup.
-
-- API reference (Scalar): <http://localhost:5266/scalar>
-- Health check: <http://localhost:5266/health>
-
-### 3. Frontend
-
-```sh
+# 3. shop on http://localhost:5173
 cd frontend
 npm install
 npm run dev
 ```
 
-Open <http://localhost:5173>. Vite proxies `/api` to the backend, so the auth cookie stays same-origin. Point the proxy elsewhere with `VITE_API_PROXY_TARGET` in `frontend/.env` (see `frontend/.env.example`).
+The API migrates and seeds itself on startup in Development. Vite proxies `/api` to it, so there's nothing to configure.
 
-## Configuration
-
-Backend settings come from `appsettings*.json`, user-secrets and environment variables (`__` separates sections, e.g. `ConnectionStrings__Store`).
-
-| Setting | Purpose | Default |
-| --- | --- | --- |
-| `ConnectionStrings:Store` | PostgreSQL connection string | local Docker DB in Development |
-| `Seed:AdminEmail`, `Seed:AdminPassword` | Creates an Admin account on start if both are set | not set |
-| `Payments:Provider` | `Development` records orders as "development, simulated" without taking money. Anything else disables checkout (503) until a real provider is wired in. | `Development` in Development |
-| `Cors:AllowedOrigins` | Origins allowed to call the API cross-site | `http://localhost:5173` |
-| `Frontend:BaseUrl` | Base for links in account emails | `http://localhost:5173` |
-| `ForwardedHeaders:TrustAllProxies` | Trust `X-Forwarded-*` (only when the API is reachable solely through a proxy) | `false` |
-| `RateLimits:AuthPerMinute` | Sign-in/registration requests per IP per minute | `20` |
-
-Never commit real secrets; `.env` is git-ignored and `.env.example` documents every variable.
-
-## Database and migrations
-
-Migrations live in `backend/FurnitureStore.Api/Data/Migrations`.
+For an admin account, run this once in `backend/FurnitureStore.Api` and restart the API:
 
 ```sh
-cd backend/FurnitureStore.Api
-
-# Apply migrations and load seed data, then exit (what the Docker migrate service runs)
-dotnet run -- --seed
-
-# After changing the model
-dotnet ef migrations add DescribeTheChange -o Data/Migrations
-dotnet ef migrations has-pending-model-changes
+dotnet user-secrets init
+dotnet user-secrets set "Seed:AdminEmail" "you@example.com"
+dotnet user-secrets set "Seed:AdminPassword" "ChooseALongPassw0rd"
 ```
 
-Seed data is deterministic: five products with fixed IDs, finishes, photos and 3D models. Seeding only runs into an empty catalogue, so it never overwrites edits. To start over locally: `docker compose down -v && docker compose up -d db`.
-
-## Tests
+### Tests
 
 ```sh
-# Backend: unit tests plus API tests against a throwaway PostgreSQL container (Docker must be running)
-cd backend && dotnet test
-
-# Frontend
-cd frontend
-npm test            # Vitest
-npm run typecheck   # tsc
-npm run lint        # oxlint
-npm run build       # production build
+cd backend && dotnet test          # needs Docker: spins up a throwaway Postgres
+cd frontend && npm test            # plus: npm run lint, npm run typecheck, npm run build
 ```
 
-The backend suite covers pricing rules, catalogue queries, order creation, concurrent checkouts that must not oversell, order access control, authentication, customer data isolation and admin authorisation.
+### Starting over
 
-## Project layout
+`docker compose down -v` wipes the database. The next start seeds it again.
 
-```text
-backend/
-  FurnitureStore.Api/
-    Domain/            entities (Product, Variant, Order, ...)
-    Data/              DbContext, EF configurations, migrations, seed data
-    Features/          Catalog, Orders, Account, Admin: endpoints, DTOs and services per feature
-  FurnitureStore.Tests/
-frontend/
-  public/models/       .glb furniture models
-  public/images/       product renders and the hero cutout
-  src/
-    Routes/            all routes (routes.tsx), path helpers, auth and admin guards
-    layouts/           Store, Auth, Profile and Admin shells
-    pages/             one page per route; pages with their own components get a folder
-    features/          catalog, cart, checkout, viewer (3D), auth, account, admin, wishlist
-    components/        shared UI; base/ holds Untitled UI, reactbits/ holds adapted React Bits
-scripts/assets/        Blender scripts that produced the models and renders
-assets/brand/          logo: original artwork plus ink and beige PNGs
-```
+## What's inside
 
-## 3D models
+- **Shop:** search, filters and sorting; product pages with a 3D viewer where picking a finish re-tints the model; wishlist; a cart that survives a refresh.
+- **Checkout:** the server recalculates every price and the delivery charge, and reserves stock in the same transaction, so two people can't both buy the last cabinet. Someone has to lose; the database decides who. Guests get a private link to their order.
+- **Accounts:** sign-up, password reset, saved addresses, order history, and an account you can delete.
+- **Admin** at `/admin`: products (copy, prices, finishes, photos, 3D settings with a live preview), categories, stock, orders, customers and store settings. The API checks the Admin role on every request; hiding the menu isn't the security.
 
-Products store a model URL plus per-model settings (scale, turn, which materials a finish tints). The `.glb` files are served as static assets; the database only holds references. The viewer loads lazily on product pages, falls back to photos when WebGL is unavailable or a file fails to load, and respects reduced-motion settings.
+The five 3D models are CC0 from [Poly Haven](https://polyhaven.com). The product photos are our own Blender renders of them; [ASSETS.md](ASSETS.md) has the scripts.
 
-The five models are CC0 assets from [Poly Haven](https://polyhaven.com), converted and downsized with the Blender scripts in `scripts/assets/`. See [ASSETS.md](ASSETS.md) for sources and how to regenerate them.
+## Good to know
 
-## Payments and email
+- **Payments are pretend.** Your bank account will never know. Checkout is labelled as a development checkout and orders are marked "development, simulated", never "paid". A real provider goes behind `IPaymentProvider`.
+- **Emails go to the API log.** That includes confirmation and reset links. Password reset only works for confirmed addresses, so confirm via the link in the log first.
+- **Settings** live in `appsettings*.json`, user-secrets or environment variables (`ConnectionStrings__Store`, `Seed__AdminEmail`, `Payments__Provider`, `Cors__AllowedOrigins`). `.env.example` lists the Docker ones.
+- **Schema changes:** `dotnet ef migrations add Name -o Data/Migrations` from the API folder.
+- **Not done yet:** Dutch/English translation, plus the About and Contact pages the footer links to.
 
-There is no real payment provider yet. With `Payments:Provider=Development` the checkout is clearly labelled as a development checkout and orders are recorded as "development, simulated", never as paid. To go live, implement `IPaymentProvider` (`backend/FurnitureStore.Api/Features/Orders/Payments.cs`) for your provider.
+## Credits
 
-Account emails (confirmation, password reset) are written to the API log by `LoggingEmailSender`. Swap in a real `IEmailSender<AppUser>` before production. Password reset only works for confirmed email addresses, so locally: register, copy the confirmation link from the log, then request a reset.
-
-## Before production
-
-- Wire up a real payment provider and email sender.
-- Serve over HTTPS, set `ASPNETCORE_ENVIRONMENT=Production`, and use a managed PostgreSQL with its own credentials.
-- Run migrations as a deploy step (`dotnet run -- --seed` or a migration bundle) rather than on startup.
-- Set real values for `Cors:AllowedOrigins` and `Frontend:BaseUrl`.
-
-## Not done yet
-
-- Dutch/English translation
-- About and Contact pages (linked from the footer)
-
-## Licence and credits
-
-3D models: Poly Haven, CC0. UI components: Untitled UI and React Bits (MIT), adapted where noted in the source.
+3D models by Poly Haven (CC0). UI from Untitled UI and React Bits (MIT), adapted where the source says so.
