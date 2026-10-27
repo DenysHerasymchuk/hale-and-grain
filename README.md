@@ -127,7 +127,7 @@ Same `docker-compose.yml`. In Coolify, add the repo as a **Docker Compose** reso
 | `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | first admin (10+ chars, an uppercase letter and a digit) |
 
 - The API serves the shop itself, so the whole thing is one container behind Coolify's HTTPS proxy. Turn on HSTS in the proxy.
-- Ports bind to `127.0.0.1` only, so the database and app are never reachable from the internet directly. Sign-in keys live in the database, so logins survive redeploys.
+- `docker-compose.yml` publishes no ports, so nothing clashes on the server and the database is never reachable from outside. Local ports live in `docker-compose.override.yml`, which Docker loads automatically but Coolify ignores. Sign-in keys live in the database, so logins survive redeploys.
 - The app applies migrations itself on every start, so there's no separate migration step.
 - No mail provider is wired up, so with `EMAIL_LOG_LINKS=false` account emails are dropped. Plug one in behind `IEmailSender<AppUser>` before you open sign-ups. Same for payments behind `IPaymentProvider`.
 
