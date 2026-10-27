@@ -33,14 +33,15 @@ export function toQueryString(params: object): string {
 }
 
 async function request<T>(method: string, path: string, body?: unknown, signal?: AbortSignal): Promise<T> {
+  const raw = body === undefined || body instanceof FormData
   let response: Response
   try {
     response = await fetch(`${API_BASE}${path}`, {
       method,
       signal,
       credentials: 'same-origin',
-      headers: body === undefined ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json' },
-      body: body === undefined ? undefined : JSON.stringify(body),
+      headers: raw ? { Accept: 'application/json' } : { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: raw ? (body as FormData | undefined) : JSON.stringify(body),
     })
   } catch (error) {
     if (error instanceof DOMException && error.name === 'AbortError') throw error
@@ -72,4 +73,9 @@ export const api = {
   put: <T>(path: string, body: unknown) => request<T>('PUT', path, body),
   patch: <T>(path: string, body: unknown) => request<T>('PATCH', path, body),
   delete: <T = void>(path: string) => request<T>('DELETE', path),
+  upload: <T>(path: string, file: File) => {
+    const form = new FormData()
+    form.append('file', file)
+    return request<T>('POST', path, form)
+  },
 }
