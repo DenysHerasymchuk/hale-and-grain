@@ -1,10 +1,12 @@
 import { createBrowserRouter, type RouteObject } from 'react-router'
+import { AdminLayout } from '@/layouts/AdminLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
 import { ProfileLayout } from '@/layouts/ProfileLayout'
 import { RootLayout } from '@/layouts/RootLayout'
 import { StoreLayout } from '@/layouts/StoreLayout'
 import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
 import { RouteErrorPage } from '@/pages/RouteError/RouteErrorPage'
+import { AdminRoute } from './AdminRoute'
 import { ProtectedRoute } from './ProtectedRoute'
 
 // Every page is code-split; `lazy` resolves the named export each page module provides.
@@ -15,6 +17,29 @@ export const routes: RouteObject[] = [
     element: <RootLayout />,
     errorElement: <RouteErrorPage />,
     children: [
+      {
+        path: 'admin',
+        element: <AdminRoute />,
+        errorElement: <RouteErrorPage />,
+        children: [
+          {
+            element: <AdminLayout />,
+            children: [
+              { index: true, lazy: page(() => import('@/pages/Admin/Dashboard/DashboardPage'), (m) => m.DashboardPage) },
+              { path: 'products', lazy: page(() => import('@/pages/Admin/Products/ProductsPage'), (m) => m.AdminProductsPage) },
+              { path: 'products/new', lazy: page(() => import('@/pages/Admin/ProductEditor/ProductEditorPage'), (m) => m.ProductEditorPage) },
+              { path: 'products/:id/edit', lazy: page(() => import('@/pages/Admin/ProductEditor/ProductEditorPage'), (m) => m.ProductEditorPage) },
+              { path: 'categories', lazy: page(() => import('@/pages/Admin/Categories/CategoriesPage'), (m) => m.CategoriesPage) },
+              { path: 'inventory', lazy: page(() => import('@/pages/Admin/Inventory/InventoryPage'), (m) => m.InventoryPage) },
+              { path: 'orders', lazy: page(() => import('@/pages/Admin/Orders/OrdersPage'), (m) => m.AdminOrdersPage) },
+              { path: 'orders/:id', lazy: page(() => import('@/pages/Admin/OrderDetails/AdminOrderDetailsPage'), (m) => m.AdminOrderDetailsPage) },
+              { path: 'customers', lazy: page(() => import('@/pages/Admin/Customers/CustomersPage'), (m) => m.CustomersPage) },
+              { path: 'settings', lazy: page(() => import('@/pages/Admin/Settings/SettingsPage'), (m) => m.AdminSettingsPage) },
+              { path: '*', element: <NotFoundPage /> },
+            ],
+          },
+        ],
+      },
       {
         element: <AuthLayout />,
         errorElement: <RouteErrorPage />,
