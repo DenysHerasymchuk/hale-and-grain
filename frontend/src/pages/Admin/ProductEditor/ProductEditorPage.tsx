@@ -58,6 +58,12 @@ function ProductForm({ product, categories }: { product: AdminProduct | undefine
   const [draft, setDraft] = useState<AdminProductInput>(() => (product ? toInput(product) : blankProduct(categories)))
   const [slugTouched, setSlugTouched] = useState(Boolean(product))
   const set = (changes: Partial<AdminProductInput>) => setDraft((current) => ({ ...current, ...changes }))
+  const setSku = (sku: string) =>
+    setDraft((current) => ({
+      ...current,
+      sku,
+      variants: current.variants.map((variant) => (variant.sku === `${current.sku}-STD` ? { ...variant, sku: `${sku}-STD` } : variant)),
+    }))
 
   const save = useAdminMutation((input: AdminProductInput) => (product ? adminApi.updateProduct(product.id, input) : adminApi.createProduct(input)))
   const remove = useAdminMutation(() => adminApi.deleteProduct(product?.id ?? ''))
@@ -122,7 +128,7 @@ function ProductForm({ product, categories }: { product: AdminProduct | undefine
               }}
               hint={`Shop address: /products/${draft.slug || '…'}`}
             />
-            <TextField label="SKU" required value={draft.sku} onChange={(e) => set({ sku: e.target.value.toUpperCase() })} />
+            <TextField label="SKU" required value={draft.sku} onChange={(e) => setSku(e.target.value.toUpperCase())} />
             <SelectField label="Category" value={draft.categoryId} onChange={(e) => set({ categoryId: e.target.value })}>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>

@@ -14,7 +14,14 @@ import type {
   StoreSettings,
 } from './types'
 
+export interface UploadResult {
+  url: string
+  fileSizeBytes: number
+}
+
 export const adminApi = {
+  uploadModel: (file: File) => api.upload<UploadResult>('/admin/uploads/models', file),
+  uploadImage: (file: File) => api.upload<UploadResult>('/admin/uploads/images', file),
   dashboard: (signal?: AbortSignal) => api.get<Dashboard>('/admin/dashboard', signal),
   products: (q: string, signal?: AbortSignal) => api.get<AdminProductListItem[]>(`/admin/products${toQueryString({ q })}`, signal),
   product: (id: string, signal?: AbortSignal) => api.get<AdminProduct>(`/admin/products/${id}`, signal),

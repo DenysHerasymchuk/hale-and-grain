@@ -129,6 +129,7 @@ Same `docker-compose.yml`. In Coolify, add the repo as a **Docker Compose** reso
 - The API serves the shop itself, so the whole thing is one container behind Coolify's HTTPS proxy. Turn on HSTS in the proxy.
 - `docker-compose.yml` publishes no ports, so nothing clashes on the server and the database is never reachable from outside. Local ports live in `docker-compose.override.yml`, which Docker loads automatically but Coolify ignores. Sign-in keys live in the database, so logins survive redeploys.
 - The app applies migrations itself on every start, so there's no separate migration step.
+- Uploaded models and photos live in the `uploads` volume, so they survive redeploys. Back it up along with the database.
 - No mail provider is wired up, so with `EMAIL_LOG_LINKS=false` account emails are dropped. Plug one in behind `IEmailSender<AppUser>` before you open sign-ups. Same for payments behind `IPaymentProvider`.
 
 ## Credits

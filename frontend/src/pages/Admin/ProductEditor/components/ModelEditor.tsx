@@ -1,7 +1,9 @@
 import { lazy, Suspense, useDeferredValue } from 'react'
+import { adminApi } from '@/features/admin/api'
 import type { AdminModel } from '@/features/admin/types'
 import { ModelErrorBoundary } from '@/features/viewer/ModelErrorBoundary'
 import { CheckboxField, SelectField, TextField } from '../../components/Field'
+import { UploadButton } from '../../components/UploadButton'
 
 const FurnitureViewer3D = lazy(() => import('@/features/viewer/FurnitureViewer3D').then((m) => ({ default: m.FurnitureViewer3D })))
 
@@ -41,12 +43,18 @@ export function ModelEditor({ model, productName, previewTint, onChange }: Model
       <div className="space-y-4">
         <CheckboxField label="This product has a 3D model" checked onChange={(on) => onChange(on ? model : null)} />
         <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
-          <TextField label="Model URL" required value={model.url} onChange={(e) => set({ url: e.target.value })} hint="A .glb or .gltf file under /models/ or an https URL." />
+          <TextField label="Model URL" required value={model.url} onChange={(e) => set({ url: e.target.value })} hint="Upload a .glb (up to 50 MB), or paste a path under /models/ or an https URL." />
           <SelectField label="Format" value={model.format} onChange={(e) => set({ format: e.target.value === 'gltf' ? 'gltf' : 'glb' })}>
             <option value="glb">GLB</option>
             <option value="gltf">glTF</option>
           </SelectField>
         </div>
+        <UploadButton
+          label="Upload .glb"
+          accept=".glb,model/gltf-binary"
+          upload={adminApi.uploadModel}
+          onUploaded={([upload]) => upload && set({ url: upload.url, fileSizeBytes: upload.fileSizeBytes, format: 'glb' })}
+        />
         <div className="grid gap-4 sm:grid-cols-3">
           <TextField label="Scale" type="number" step="any" min={0.001} value={model.config.scale} onChange={(e) => setConfig({ scale: Number(e.target.value) || 1 })} />
           <TextField
@@ -79,7 +87,7 @@ export function ModelEditor({ model, productName, previewTint, onChange }: Model
             </Suspense>
           </ModelErrorBoundary>
         ) : (
-          <p className="rounded-lg bg-secondary p-4 text-sm text-tertiary">Enter a .glb or .gltf URL to preview it.</p>
+          <p className="rounded-lg bg-secondary p-4 text-sm text-tertiary">Upload a .glb or enter its URL to preview it.</p>
         )}
       </div>
     </div>

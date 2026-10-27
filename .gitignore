@@ -1,6 +1,7 @@
 # .NET
 bin/
 obj/
+backend/src/FurnitureStore.Api/uploads/
 *.user
 .vs/
 

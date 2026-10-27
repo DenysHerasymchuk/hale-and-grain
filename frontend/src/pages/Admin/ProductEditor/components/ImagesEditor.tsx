@@ -1,8 +1,10 @@
 import { ArrowDown, ArrowUp, Plus, Trash01 } from '@untitledui/icons'
 import { Button } from '@/components/base/buttons/button'
+import { adminApi } from '@/features/admin/api'
 import type { AdminImage } from '@/features/admin/types'
 import type { ImageRole } from '@/types/api'
 import { controlClass } from '../../components/Field'
+import { UploadButton } from '../../components/UploadButton'
 
 const roles: ImageRole[] = ['primary', 'gallery', 'detail', 'lifestyle']
 
@@ -42,10 +44,21 @@ export function ImagesEditor({ images, onChange }: { images: AdminImage[]; onCha
           </div>
         </div>
       ))}
-      <Button color="secondary" size="sm" iconLeading={Plus} onPress={() => onChange([...images, { url: '', altText: '', role: images.length === 0 ? 'primary' : 'gallery' }])}>
-        Add photo
-      </Button>
-      <p className="text-xs text-tertiary">Site paths like /images/products/name.webp or full https URLs. Files are served as static assets, not stored in the database.</p>
+      <div className="flex flex-wrap items-start gap-3">
+        <UploadButton
+          label="Upload photos"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          upload={adminApi.uploadImage}
+          onUploaded={(uploads) =>
+            onChange([...images, ...uploads.map(({ url }, i): AdminImage => ({ url, altText: '', role: images.length + i === 0 ? 'primary' : 'gallery' }))])
+          }
+        />
+        <Button color="secondary" size="sm" iconLeading={Plus} onPress={() => onChange([...images, { url: '', altText: '', role: images.length === 0 ? 'primary' : 'gallery' }])}>
+          Add by URL
+        </Button>
+      </div>
+      <p className="text-xs text-tertiary">Upload JPEG, PNG or WebP (up to 10 MB each), or add a site path like /images/products/name.webp or an https URL.</p>
     </div>
   )
 }

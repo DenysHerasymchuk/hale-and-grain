@@ -20,6 +20,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=api /app .
 COPY --from=web /web/dist ./wwwroot
+RUN mkdir uploads && chown $APP_UID uploads
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 USER $APP_UID

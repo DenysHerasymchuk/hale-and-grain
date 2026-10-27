@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -143,6 +144,16 @@ app.UseStaticFiles(new StaticFileOptions
             context.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
         }
     },
+});
+
+var uploadsPath = AdminUploadEndpoints.UploadsPath(app.Configuration, app.Environment);
+Directory.CreateDirectory(uploadsPath);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads",
+    ContentTypeProvider = contentTypes,
+    OnPrepareResponse = context => context.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable",
 });
 
 if (app.Environment.IsDevelopment())
