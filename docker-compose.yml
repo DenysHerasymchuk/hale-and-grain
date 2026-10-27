@@ -21,11 +21,11 @@ services:
       retries: 10
     restart: unless-stopped
 
-  # One-shot: applies EF Core migrations and seeds the catalogue, then exits.
-  migrate:
+  app:
     build: .
-    command: ["--seed"]
-    environment: &app-env
+    environment:
+      # Applies EF Core migrations and seeds the catalogue before serving requests.
+      Database__MigrateOnStartup: "true"
       ConnectionStrings__Store: Host=db;Port=5432;Database=${POSTGRES_DB:-furniture_store};Username=${POSTGRES_USER:-furniture};Password=${POSTGRES_PASSWORD:-furniture_dev};Gss Encryption Mode=Disable
       Seed__AdminEmail: ${SEED_ADMIN_EMAIL:-}
       Seed__AdminPassword: ${SEED_ADMIN_PASSWORD:-}
@@ -38,18 +38,11 @@ services:
       # On: cookies need HTTPS. Off: account emails go to the log instead of being dropped.
       Auth__SecureCookies: ${SECURE_COOKIES:-false}
       Email__LogLinks: ${EMAIL_LOG_LINKS:-true}
-    depends_on:
-      db:
-        condition: service_healthy
-
-  app:
-    build: .
-    environment: *app-env
     ports:
       - "127.0.0.1:${WEB_PORT:-8080}:8080"
     depends_on:
-      migrate:
-        condition: service_completed_successfully
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:
