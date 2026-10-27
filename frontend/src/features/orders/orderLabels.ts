@@ -18,3 +18,5 @@ const paymentLabels: Record<PaymentStatus, string> = {
 
 export const orderStatusLabel = (status: OrderStatus) => statusLabels[status]
 export const paymentStatusLabel = (status: PaymentStatus) => paymentLabels[status]
+
+export const orderStatuses: OrderStatus[] = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled']

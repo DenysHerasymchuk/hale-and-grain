@@ -30,6 +30,8 @@ public class StoreApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         builder.UseSetting("ConnectionStrings:Store", _postgres.GetConnectionString());
         builder.UseSetting("Seed:AdminEmail", AdminEmail);
         builder.UseSetting("Seed:AdminPassword", AdminPassword);
+        // Every test client shares one address; the production limit would trip mid-suite.
+        builder.UseSetting("RateLimits:AuthPerMinute", "1000");
     }
 }
 
