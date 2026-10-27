@@ -91,14 +91,15 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-// `dotnet run -- --seed` migrates and seeds explicitly; Development does it on startup.
-if (args.Contains("--seed") || (app.Environment.IsDevelopment() && app.Configuration.GetValue("Database:MigrateOnStartup", true)))
+// Migrate and seed on startup: on by default in Development, and switched on by docker-compose.yml.
+// `dotnet run -- --seed` does it once and exits.
+if (args.Contains("--seed") || app.Configuration.GetValue("Database:MigrateOnStartup", app.Environment.IsDevelopment()))
 {
     try
     {
         await DatabaseInitializer.MigrateAndSeedAsync(app.Services, app.Configuration);
     }
-    catch (InvalidOperationException ex) when (args.Contains("--seed"))
+    catch (InvalidOperationException ex)
     {
         // Bad seed config (e.g. a weak admin password): one readable line, not a stack trace.
         app.Logger.LogCritical("Seeding failed: {Reason}", ex.Message);
