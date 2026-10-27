@@ -18,7 +18,7 @@ public static class AuthEndpoints
         {
             await signIn.SignOutAsync();
             return TypedResults.NoContent();
-        }).RequireAuthorization();
+        }).RequireAuthorization().DisableRateLimiting();
 
         auth.MapGet("/me", async Task<Results<Ok<SessionDto>, UnauthorizedHttpResult>> (ClaimsPrincipal principal, UserManager<AppUser> users) =>
         {
@@ -30,6 +30,6 @@ public static class AuthEndpoints
 
             var isAdmin = await users.IsInRoleAsync(user, Roles.Admin);
             return TypedResults.Ok(new SessionDto(user.Id, user.Email ?? "", user.FirstName, user.LastName, isAdmin));
-        }).RequireAuthorization();
+        }).RequireAuthorization().DisableRateLimiting();
     }
 }
