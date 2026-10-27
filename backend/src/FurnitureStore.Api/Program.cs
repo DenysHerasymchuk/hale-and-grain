@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.StaticFiles;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,6 +68,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(System.Text.Json.JsonNamingPolicy.CamelCase)));
 builder.Services.AddValidation();
 builder.Services.AddProblemDetails();
+builder.Services.AddResponseCompression();
 builder.Services.AddOpenApi();
 builder.Services.AddHealthChecks().AddDbContextCheck<StoreDbContext>("database");
 
@@ -118,6 +120,41 @@ app.UseExceptionHandler(new ExceptionHandlerOptions
 });
 app.UseStatusCodePages();
 
+if (!app.Environment.IsDevelopment())
+{
+    app.Use((context, next) =>
+    {
+        var headers = context.Response.Headers;
+        headers.XContentTypeOptions = "nosniff";
+        headers.XFrameOptions = "DENY";
+        headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+        headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+        headers.ContentSecurityPolicy = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; " +
+            "font-src 'self' data:; connect-src 'self' blob: data:; worker-src 'self' blob:; script-src 'self' 'wasm-unsafe-eval'; " +
+            "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+        return next();
+    });
+}
+
+app.UseResponseCompression();
+
+// The built shop (wwwroot, filled by the Docker image) is served from the same origin as the API.
+var contentTypes = new FileExtensionContentTypeProvider();
+contentTypes.Mappings[".glb"] = "model/gltf-binary";
+contentTypes.Mappings[".gltf"] = "model/gltf+json";
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = contentTypes,
+    OnPrepareResponse = context =>
+    {
+        // Vite fingerprints everything under /assets, so those never change.
+        if (context.Context.Request.Path.StartsWithSegments("/assets"))
+        {
+            context.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
+        }
+    },
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -137,6 +174,10 @@ api.MapOrderEndpoints();
 api.MapAuthEndpoints();
 api.MapAccountEndpoints();
 api.MapAdminEndpoints();
+
+// Unknown API routes stay 404s; every other path is a client-side route for React Router.
+app.MapFallback("/api/{**path}", () => Results.NotFound());
+app.MapFallbackToFile("index.html");
 
 app.Run();
 
