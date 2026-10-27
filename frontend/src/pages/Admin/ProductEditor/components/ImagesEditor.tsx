@@ -6,7 +6,6 @@ import { controlClass } from '../../components/Field'
 
 const roles: ImageRole[] = ['primary', 'gallery', 'detail', 'lifestyle']
 
-/** Ordered photo list; the first image is the one product cards show. */
 export function ImagesEditor({ images, onChange }: { images: AdminImage[]; onChange: (images: AdminImage[]) => void }) {
   const update = (index: number, changes: Partial<AdminImage>) => onChange(images.map((image, i) => (i === index ? { ...image, ...changes } : image)))
   const move = (index: number, by: -1 | 1) => {

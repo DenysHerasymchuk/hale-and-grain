@@ -23,7 +23,6 @@ public class StoreDbContext(DbContextOptions<StoreDbContext> options) : Identity
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(StoreDbContext).Assembly);
-        // Key XML is a few KB; exempt it from the 500-char string convention below.
         builder.Entity<DataProtectionKey>().Property(k => k.Xml).HasColumnType("text");
     }
 

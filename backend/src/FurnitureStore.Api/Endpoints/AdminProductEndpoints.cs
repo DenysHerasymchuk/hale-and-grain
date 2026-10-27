@@ -66,7 +66,6 @@ public static class AdminProductEndpoints
             return TypedResults.Ok(ToDto(product));
         });
 
-        // Past orders keep their snapshots; their product/variant references become null.
         products.MapDelete("/{id:guid}", async Task<Results<NoContent, NotFound>> (Guid id, IStoreDbContext db, CancellationToken ct) =>
             await db.Products.Where(p => p.Id == id).ExecuteDeleteAsync(ct) == 0 ? TypedResults.NotFound() : TypedResults.NoContent());
     }
@@ -77,7 +76,6 @@ public static class AdminProductEndpoints
         return (track ? query : query.AsNoTracking()).FirstOrDefaultAsync(ct);
     }
 
-    /// <summary>Unique slugs and SKUs are also enforced by indexes; this turns clashes into readable errors.</summary>
     private static async Task<IResult?> FindProblemAsync(
         IStoreDbContext db, AdminProductInput input, Guid? productId, CancellationToken ct)
     {
@@ -133,7 +131,6 @@ public static class AdminProductEndpoints
             Url = image.Url, AltText = image.AltText, Role = image.Role, DisplayOrder = index,
         }));
 
-        // Keep variant ids stable where possible so carts holding them keep working.
         var keep = input.Variants.Where(v => v.Id is not null).Select(v => v.Id).ToHashSet();
         product.Variants.RemoveAll(v => !keep.Contains(v.Id));
         foreach (var (variantInput, index) in input.Variants.Select((v, i) => (v, i)))
@@ -141,7 +138,6 @@ public static class AdminProductEndpoints
             var variant = product.Variants.FirstOrDefault(v => v.Id == variantInput.Id);
             if (variant is null)
             {
-                // No explicit Id: a preset key makes EF treat the row as existing and UPDATE it.
                 variant = new ProductVariant { Sku = variantInput.Sku, Name = variantInput.Name };
                 product.Variants.Add(variant);
             }

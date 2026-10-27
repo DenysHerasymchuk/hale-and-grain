@@ -1,4 +1,3 @@
-/** Dark hero backdrop: espresso base with a faint warm glow where the cabinet peeks in. Pure CSS, no GPU loop. */
 export function HeroBackdrop() {
   return (
     <div

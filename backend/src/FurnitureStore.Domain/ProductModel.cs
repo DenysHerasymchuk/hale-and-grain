@@ -1,6 +1,5 @@
 namespace FurnitureStore.Domain;
 
-/// <summary>Reference to a 3D asset served as a static file; binaries never go in the database.</summary>
 public class ProductModel
 {
     public required string Url { get; set; }
@@ -19,7 +18,6 @@ public class ModelConfig
     public double[] Offset { get; set; } = [0, 0, 0];
     public double[]? CameraPosition { get; set; }
 
-    /// <summary>Material names in the asset that variant tints apply to. Model-specific.</summary>
     public List<string> MaterialTargets { get; set; } = [];
 }
 

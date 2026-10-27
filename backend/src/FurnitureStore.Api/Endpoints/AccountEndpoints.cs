@@ -10,10 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FurnitureStore.Api.Endpoints;
 
-/// <summary>
-/// Signed-in customer's own data. Every query is scoped by the user id from the auth cookie,
-/// never by an id from the request, so one customer can't read another's records.
-/// </summary>
 public static class AccountEndpoints
 {
     private const int MaxAddresses = 10;
@@ -123,7 +119,6 @@ public static class AccountEndpoints
 
         account.MapGet("/wishlist", (ClaimsPrincipal principal, IStoreDbContext db, CancellationToken ct) => GetWishlistAsync(db, UserId(principal), ct));
 
-        // The client merges its local wishlist with the server's and sends the full set back.
         account.MapPut("/wishlist", async (ReplaceWishlistRequest request, ClaimsPrincipal principal, IStoreDbContext db, TimeProvider clock, CancellationToken ct) =>
         {
             var userId = UserId(principal);
@@ -138,7 +133,6 @@ public static class AccountEndpoints
             return await GetWishlistAsync(db, userId, ct);
         });
 
-        // Erases the account and personal data. Orders are kept for accounting but unlinked.
         account.MapPost("/delete", async Task<Results<NoContent, ValidationProblem, UnauthorizedHttpResult>> (
             DeleteAccountRequest request, ClaimsPrincipal principal, UserManager<AppUser> users, SignInManager<AppUser> signIn) =>
         {
@@ -187,7 +181,7 @@ public static class AccountEndpoints
         }
         else if (!await db.CustomerAddresses.AnyAsync(a => a.UserId == userId && a.Id != address.Id, ct))
         {
-            address.IsDefault = true; // The first address is always the default.
+            address.IsDefault = true;
         }
     }
 

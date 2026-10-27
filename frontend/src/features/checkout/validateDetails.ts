@@ -7,7 +7,6 @@ export type DetailsErrors = Partial<Record<DetailsField, string>>
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE = /^\+?[\d\s()-]{6,30}$/
 
-/** Friendly client-side checks. The API validates again and is the authority. */
 export function validateDetails(details: CheckoutDetails): DetailsErrors {
   const errors: DetailsErrors = {}
   const { shippingAddress: address } = details

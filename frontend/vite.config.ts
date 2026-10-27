@@ -1,4 +1,3 @@
-/// <reference types="vitest/config" />
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { fileURLToPath } from 'node:url'
@@ -14,7 +13,6 @@ export default defineConfig(({ mode }) => {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
     },
     server: {
-      // Same-origin proxy keeps the Identity auth cookie first-party in development.
       proxy: {
         '/api': { target: apiTarget, changeOrigin: true },
       },

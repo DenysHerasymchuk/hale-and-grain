@@ -12,7 +12,6 @@ export function AdminPageHeader({ title, description, actions }: { title: string
   )
 }
 
-/** White panel used for tables and forms on the grey admin canvas. */
 export function AdminPanel({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <section className={`overflow-hidden rounded-xl bg-primary_alt shadow-xs ring-1 ring-border-secondary ${className}`}>{children}</section>
 }

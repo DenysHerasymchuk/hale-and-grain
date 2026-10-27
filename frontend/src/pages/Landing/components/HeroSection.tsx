@@ -41,7 +41,6 @@ export function HeroSection() {
             <PrimaryButton surface="dark" href={routePaths.products} size="lg" iconTrailing={ArrowRight}>
               Shop the collection
             </PrimaryButton>
-            {/* Same box as the primary lg button: 18px/38px padding, 1.125rem text, 10px radius. */}
             <Link
               to={`${routePaths.home}#in-3d`}
               className="glass-dark inline-flex items-center gap-2 rounded-[10px] px-[38px] py-[18px] text-[1.125rem] leading-none font-semibold text-white transition-colors hover:bg-white/15"
@@ -60,7 +59,6 @@ export function HeroSection() {
           </motion.p>
         </div>
 
-        {/* Studio render of the Atelier cabinet (transparent cutout); a gentle float, nothing heavier. */}
         <motion.div
           aria-hidden
           className="relative hidden h-[min(78svh,50rem)] lg:block"

@@ -9,7 +9,6 @@ namespace FurnitureStore.Infrastructure.Persistence;
 
 public static class DatabaseInitializer
 {
-    /// <summary>Applies pending migrations, then seeds the catalogue and the optional admin account.</summary>
     public static async Task MigrateAndSeedAsync(IServiceProvider services, IConfiguration config)
     {
         await using var scope = services.CreateAsyncScope();

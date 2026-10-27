@@ -33,20 +33,17 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.Name = "hg_session";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    // Production sits behind TLS; Development (and the local compose stack's http) do not.
     options.Cookie.SecurePolicy = builder.Configuration.GetValue<bool>("Auth:SecureCookies")
         ? CookieSecurePolicy.Always
         : CookieSecurePolicy.SameAsRequest;
     options.ExpireTimeSpan = TimeSpan.FromDays(14);
     options.SlidingExpiration = true;
-    // This is an API: answer 401/403 instead of redirecting to a login page.
     options.Events.OnRedirectToLogin = context => Results.Unauthorized().ExecuteAsync(context.HttpContext);
     options.Events.OnRedirectToAccessDenied = context => Results.Forbid().ExecuteAsync(context.HttpContext);
 });
 
 builder.Services.AddDataProtection()
     .SetApplicationName("FurnitureStore")
-    // Keys in the database: sessions survive restarts and are shared by every API replica.
     .PersistKeysToDbContext<StoreDbContext>();
 
 builder.Services.AddAuthorizationBuilder()
@@ -78,7 +75,6 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 
 if (builder.Configuration.GetValue<bool>("ForwardedHeaders:TrustAllProxies"))
 {
-    // Only safe when the API is not directly reachable (e.g. behind the compose nginx).
     builder.Services.Configure<ForwardedHeadersOptions>(options =>
     {
         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -91,8 +87,6 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-// Migrate and seed on startup: on by default in Development, and switched on by docker-compose.yml.
-// `dotnet run -- --seed` does it once and exits.
 if (args.Contains("--seed") || app.Configuration.GetValue("Database:MigrateOnStartup", app.Environment.IsDevelopment()))
 {
     try
@@ -101,7 +95,6 @@ if (args.Contains("--seed") || app.Configuration.GetValue("Database:MigrateOnSta
     }
     catch (InvalidOperationException ex)
     {
-        // Bad seed config (e.g. a weak admin password): one readable line, not a stack trace.
         app.Logger.LogCritical("Seeding failed: {Reason}", ex.Message);
         Environment.ExitCode = 1;
         return;
@@ -113,10 +106,8 @@ if (args.Contains("--seed") || app.Configuration.GetValue("Database:MigrateOnSta
     }
 }
 
-// Unhandled exceptions become a bare RFC 7807 500; details stay in the logs.
 app.UseExceptionHandler(new ExceptionHandlerOptions
 {
-    // Malformed query strings and bodies are the client's fault, not ours.
     StatusCodeSelector = exception => exception is BadHttpRequestException bad ? bad.StatusCode : StatusCodes.Status500InternalServerError,
 });
 app.UseStatusCodePages();
@@ -139,7 +130,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseResponseCompression();
 
-// The built shop (wwwroot, filled by the Docker image) is served from the same origin as the API.
 var contentTypes = new FileExtensionContentTypeProvider();
 contentTypes.Mappings[".glb"] = "model/gltf-binary";
 contentTypes.Mappings[".gltf"] = "model/gltf+json";
@@ -148,7 +138,6 @@ app.UseStaticFiles(new StaticFileOptions
     ContentTypeProvider = contentTypes,
     OnPrepareResponse = context =>
     {
-        // Vite fingerprints everything under /assets, so those never change.
         if (context.Context.Request.Path.StartsWithSegments("/assets"))
         {
             context.Context.Response.Headers.CacheControl = "public, max-age=31536000, immutable";
@@ -176,7 +165,6 @@ api.MapAuthEndpoints();
 api.MapAccountEndpoints();
 api.MapAdminEndpoints();
 
-// Unknown API routes stay 404s; every other path is a client-side route for React Router.
 app.MapFallback("/api/{**path}", () => Results.NotFound());
 app.MapFallbackToFile("index.html");
 

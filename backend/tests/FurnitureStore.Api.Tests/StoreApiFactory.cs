@@ -4,11 +4,6 @@ using Testcontainers.PostgreSql;
 
 namespace FurnitureStore.Tests;
 
-/// <summary>
-/// Boots the real API against a throwaway Postgres container. Development environment means
-/// migrations and the deterministic seed run on startup, and the development payment provider
-/// is active, exactly as on a developer machine. Requires Docker.
-/// </summary>
 public class StoreApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     public const string AdminEmail = "admin@test.local";
@@ -30,7 +25,6 @@ public class StoreApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         builder.UseSetting("ConnectionStrings:Store", _postgres.GetConnectionString());
         builder.UseSetting("Seed:AdminEmail", AdminEmail);
         builder.UseSetting("Seed:AdminPassword", AdminPassword);
-        // Every test client shares one address; the production limit would trip mid-suite.
         builder.UseSetting("RateLimits:AuthPerMinute", "1000");
     }
 }

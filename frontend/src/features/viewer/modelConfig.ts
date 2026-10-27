@@ -15,10 +15,6 @@ function toVec3(values: unknown): Vec3 | null {
   return values.every((value) => typeof value === 'number' && Number.isFinite(value)) ? (values as Vec3) : null
 }
 
-/**
- * Model metadata is edited by hand in the admin, so treat it as untrusted: anything
- * malformed falls back to a neutral default instead of breaking the scene.
- */
 export function normalizeModelConfig(config: Partial<ModelConfig> | null | undefined): SafeModelConfig {
   const scale = typeof config?.scale === 'number' && Number.isFinite(config.scale) && config.scale > 0 ? config.scale : 1
   return {

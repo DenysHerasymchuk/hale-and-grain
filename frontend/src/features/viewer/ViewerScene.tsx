@@ -29,7 +29,6 @@ export function ViewerScene({ url, config, tint, reducedMotion, apiRef, onReady 
     <Canvas
       shadows="percentage"
       dpr={[1, 2]}
-      // Render only when something changes: orbiting, damping, loading. Idle viewers cost nothing.
       frameloop="demand"
       camera={{ fov: 32, near: 0.05, far: 100, position: DEFAULT_DIRECTION }}
       gl={{ antialias: true }}
@@ -46,7 +45,6 @@ export function ViewerScene({ url, config, tint, reducedMotion, apiRef, onReady 
         shadow-bias={-0.0004}
       />
 
-      {/* Procedural studio environment: no HDR download, consistent with the product renders. */}
       <Environment resolution={256} frames={1}>
         <Lightformer form="rect" intensity={3.5} color="#fff4e6" position={[-3, 3, 4]} scale={[5, 3, 1]} />
         <Lightformer form="rect" intensity={2} color="#e9efff" position={[4, 2, 2]} scale={[4, 4, 1]} />
@@ -73,7 +71,6 @@ export function ViewerScene({ url, config, tint, reducedMotion, apiRef, onReady 
         enableDamping={!reducedMotion}
         minDistance={radius * 1.1}
         maxDistance={radius * 5}
-        // Stop just above the floor so the camera never dips under the model.
         maxPolarAngle={Math.PI / 2 - 0.04}
       />
     </Canvas>

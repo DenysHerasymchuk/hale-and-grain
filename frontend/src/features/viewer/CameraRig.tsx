@@ -17,7 +17,6 @@ interface CameraRigProps {
   cameraPosition: Vec3 | null
 }
 
-/** Exposes camera actions to the HTML buttons that sit outside the canvas. */
 export function CameraRig({ apiRef, defaultDirection, cameraPosition }: CameraRigProps) {
   const bounds = useBounds()
   const camera = useThree((state) => state.camera)

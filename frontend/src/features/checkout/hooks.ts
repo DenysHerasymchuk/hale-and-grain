@@ -2,7 +2,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useCartStore } from '@/features/cart/cartStore'
 import { checkoutApi } from './api'
 
-/** Server-side price, stock and delivery for the current cart. */
 export function useCartQuote() {
   const lines = useCartStore((state) => state.lines)
   const request = lines.map((line) => ({ variantId: line.variantId, quantity: line.quantity }))

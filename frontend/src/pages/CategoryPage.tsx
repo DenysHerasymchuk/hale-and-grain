@@ -11,7 +11,6 @@ export function CategoryPage() {
   const category = categories?.find((c) => c.slug === slug)
 
   if (isPending) return <LoadingState label="Loading category" />
-  // If the category list itself failed, still show products; CatalogView surfaces its own error.
   if (!isError && !category) return <NotFoundPage />
 
   return (

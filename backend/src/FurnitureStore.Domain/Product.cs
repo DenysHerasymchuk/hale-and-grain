@@ -23,8 +23,6 @@ public class Product
 
     public List<ProductImage> Images { get; set; } = [];
 
-    // Inventory lives on variants; every product has at least one (a single-finish
-    // product simply has one "Standard" variant). Keeps order lines uniform.
     public List<ProductVariant> Variants { get; set; } = [];
 
     public ProductModel? Model { get; set; }

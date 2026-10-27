@@ -39,7 +39,6 @@ min_corner = Vector((min(c.x for c in corners), min(c.y for c in corners), min(c
 max_corner = Vector((max(c.x for c in corners), max(c.y for c in corners), max(c.z for c in corners)))
 shift = Vector(((min_corner.x + max_corner.x) / -2, (min_corner.y + max_corner.y) / -2, -min_corner.z))
 
-# Shift only root objects; children (drawers parented to a carcass) follow.
 for obj in meshes:
     if obj.parent is None:
         obj.location += shift

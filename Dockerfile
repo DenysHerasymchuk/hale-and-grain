@@ -1,4 +1,3 @@
-# One image: the API also serves the built shop, so there is no separate web server.
 FROM node:24-alpine AS web
 WORKDIR /web
 COPY frontend/package.json frontend/package-lock.json ./
@@ -8,7 +7,6 @@ RUN npm run build
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS api
 WORKDIR /src
-# Project files first so `dotnet restore` stays cached until a dependency changes.
 COPY backend/src/FurnitureStore.Api/FurnitureStore.Api.csproj src/FurnitureStore.Api/
 COPY backend/src/FurnitureStore.Application/FurnitureStore.Application.csproj src/FurnitureStore.Application/
 COPY backend/src/FurnitureStore.Contracts/FurnitureStore.Contracts.csproj src/FurnitureStore.Contracts/

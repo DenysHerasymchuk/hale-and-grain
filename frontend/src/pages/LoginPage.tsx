@@ -19,7 +19,6 @@ export function LoginPage() {
     login.mutate({ email: email.trim(), password }, { onSuccess: () => void navigate(safeReturnPath(searchParams.get('returnTo')), { replace: true }) })
   }
 
-  // Identity answers 401 for wrong credentials and lockouts alike; don't reveal which.
   const error = login.error instanceof ApiError && login.error.status === 401 ? 'That email and password combination did not work.' : login.error ? 'Sign-in failed. Please try again.' : null
 
   return (

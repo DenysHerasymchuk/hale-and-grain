@@ -10,7 +10,6 @@ import { AddressForm } from './components/AddressForm'
 export function AddressesPage() {
   const { data: addresses, isPending, isError, error, refetch } = useAddresses()
   const remove = useDeleteAddress()
-  // 'new' for the add form, an address id while editing, null otherwise.
   const [editing, setEditing] = useState<string | null>(null)
 
   if (isPending) return <LoadingState label="Loading addresses" />

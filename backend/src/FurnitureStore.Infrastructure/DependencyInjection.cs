@@ -22,7 +22,6 @@ public static class DependencyInjection
 
         services.AddTransient<IEmailSender<AppUser>, LoggingEmailSender>();
 
-        // Without a configured provider, checkout refuses orders instead of pretending to take payment.
         if (configuration["Payments:Provider"] == "Development")
         {
             services.AddScoped<IPaymentProvider, DevelopmentPaymentProvider>();

@@ -13,7 +13,6 @@ interface LanguageState {
   setLanguage: (language: Language) => void
 }
 
-/** Dutch first; the choice is remembered per browser. */
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
@@ -26,5 +25,4 @@ export const useLanguageStore = create<LanguageState>()(
 
 export const localeFor = (language: Language) => languages.find((l) => l.code === language)?.locale ?? 'nl-NL'
 
-/** For non-React code (API client, formatters) that needs the current language. */
 export const currentLanguage = () => useLanguageStore.getState().language

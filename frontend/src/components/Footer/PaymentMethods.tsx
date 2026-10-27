@@ -7,7 +7,6 @@ import MastercardIcon from '@/components/foundations/payment-icons/mastercard-ic
 import PayPalIcon from '@/components/foundations/payment-icons/paypal-icon'
 import VisaIcon from '@/components/foundations/payment-icons/visa-icon'
 
-// iDEAL and Bancontact because the shop delivers to the Netherlands and Belgium.
 const methods = [
   { name: 'iDEAL', Icon: IdealIcon },
   { name: 'Bancontact', Icon: BancontactIcon },

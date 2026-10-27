@@ -8,7 +8,6 @@ import { cx } from '@/utils/cx'
 interface ProductCardProps {
   product: ProductSummary
   className?: string
-  /** Eagerly load images that are above the fold. */
   priority?: boolean
 }
 

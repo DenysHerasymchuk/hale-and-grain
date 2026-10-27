@@ -5,7 +5,6 @@ import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useCustomers } from '@/features/admin/api'
 import { AdminPageHeader, AdminPanel, tableClass } from './components/AdminPageHeader'
 
-/** Read-only on purpose: customers manage their own details; staff see only what support needs. */
 export function CustomersPage() {
   const [search, setSearch] = useState('')
   const query = useDeferredValue(search.trim())

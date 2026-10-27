@@ -6,7 +6,6 @@ import { routePaths } from '@/Routes/routePaths'
 import type { Order } from '@/types/api'
 import { orderStatusLabel, paymentStatusLabel } from './orderLabels'
 
-/** Read-only order view shared by the confirmation, guest lookup, account and admin pages. */
 export function OrderDetails({ order }: { order: Order }) {
   const placed = new Date(order.createdAt).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })
 

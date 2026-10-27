@@ -15,7 +15,6 @@ public class ProductVariant
     public int Stock { get; set; }
     public int DisplayOrder { get; set; }
 
-    /// <summary>Colour multiplied into the model's target materials; null leaves textures untouched.</summary>
     public string? ModelTint { get; set; }
 
     public decimal UnitPrice => Product.Price + PriceAdjustment;

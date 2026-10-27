@@ -5,10 +5,6 @@ using Microsoft.Extensions.Logging;
 
 namespace FurnitureStore.Infrastructure.Persistence;
 
-/// <summary>
-/// Deterministic development catalogue. Ids are fixed so URLs, carts and tests stay stable
-/// across database resets. Running it twice is a no-op.
-/// </summary>
 public static class SeedData
 {
     private const string PolyHavenLicense = "CC0 1.0";
@@ -272,8 +268,6 @@ public static class SeedData
         new() { Url = $"/images/products/{slug}-4.webp", AltText = $"{name}, detail", DisplayOrder = 3, Role = ImageRole.Detail },
     ];
 
-    // Poly Haven assets keep a single material named after the asset, which is what variant
-    // tints target. Exported by scripts/assets/export_glb.py.
     private static ProductModel PolyHavenModel(string slug, string assetId, string assetName) => new()
     {
         Url = $"/models/{slug}.glb",

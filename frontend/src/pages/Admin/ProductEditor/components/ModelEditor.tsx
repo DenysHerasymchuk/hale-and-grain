@@ -25,9 +25,7 @@ interface ModelEditorProps {
   onChange: (model: AdminModel | null) => void
 }
 
-/** 3D model reference and per-model tuning, with a live preview of exactly what the shop will render. */
 export function ModelEditor({ model, productName, previewTint, onChange }: ModelEditorProps) {
-  // Let typing settle before the preview refetches the file.
   const preview = useDeferredValue(model)
 
   if (!model) {

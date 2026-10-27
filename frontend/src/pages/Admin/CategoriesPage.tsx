@@ -10,7 +10,6 @@ import { TextField } from './components/Field'
 
 export function CategoriesPage() {
   const { data: categories, isPending, isError, error, refetch } = useAdminCategories()
-  // 'new' while adding, a category id while editing.
   const [editing, setEditing] = useState<string | null>(null)
   const remove = useAdminMutation((id: string) => adminApi.deleteCategory(id))
 

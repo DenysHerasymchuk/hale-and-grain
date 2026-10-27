@@ -15,7 +15,6 @@ const links = [
   { to: routePaths.adminSettings, label: 'Settings', icon: Settings01 },
 ]
 
-/** Staff shell, separate from the storefront chrome. Rendered only behind AdminRoute. */
 export function AdminLayout() {
   const navigate = useNavigate()
   const { data: session } = useSession()

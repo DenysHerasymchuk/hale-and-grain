@@ -15,7 +15,6 @@ from mathutils import Vector
 sys.path.append(str(Path(__file__).resolve().parent))
 from render_shots import bounds, place_camera, render_to, scene, setup_render, setup_studio  # noqa: E402
 
-# (asset id, x, y, z-rotation in degrees). Shelf at the back left, table forward, console right.
 ARRANGEMENT = [
     ("wooden_display_shelves_01", -1.35, 0.25, 0),
     ("wooden_table_02", 0.05, -0.45, -6),

@@ -8,7 +8,6 @@ interface CheckoutState {
   clear: () => void
 }
 
-/** Carries the details form to the payment step. Session-scoped: personal data shouldn't outlive the tab. */
 export const useCheckoutStore = create<CheckoutState>()(
   persist(
     (set) => ({

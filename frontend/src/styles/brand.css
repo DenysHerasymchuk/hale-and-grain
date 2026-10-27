@@ -1,15 +1,9 @@
-/*
- * Hale & Grain brand layer. Overrides Untitled UI's primitive scales (theme.css stays
- * vendor-pristine so `untitledui upgrade` keeps working) with a warm stone neutral, an
- * oiled-oak accent, and an editorial serif for display type.
- */
 @theme {
     --font-body: "Instrument Sans Variable", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
 
     --max-width-container: 1360px;
 
-    /* Warm stone. Every grey in the UI resolves to one of these. */
     --color-neutral-25: rgb(253 251 247);
     --color-neutral-50: rgb(249 246 240);
     --color-neutral-100: rgb(242 237 228);
@@ -23,7 +17,6 @@
     --color-neutral-900: rgb(36 33 30);
     --color-neutral-950: rgb(22 20 18);
 
-    /* Oiled oak / terracotta accent, used sparingly. */
     --color-brand-25: rgb(253 249 245);
     --color-brand-50: rgb(251 244 238);
     --color-brand-100: rgb(245 229 214);
@@ -37,10 +30,8 @@
     --color-brand-900: rgb(74 45 31);
     --color-brand-950: rgb(42 25 15);
 
-    /* The wordmark colour; reads on the dark header, hero and footer. */
     --color-beige: rgb(226 211 186);
 
-    /* Surfaces: cream page, paper cards, charcoal primary actions. */
     --color-bg-primary: var(--color-neutral-50);
     --color-bg-primary_alt: var(--color-neutral-25);
     --color-bg-secondary: var(--color-neutral-100);
@@ -106,10 +97,6 @@
     color: var(--color-text-tertiary);
 }
 
-/*
- * Frosted "bubble" glass. Light glass sits on cream surfaces, dark glass on the hero and
- * other dark sections. Both fall back to a solid tint where backdrop-filter is unsupported.
- */
 @utility glass {
     background-color: rgb(253 251 247 / 0.62);
     -webkit-backdrop-filter: blur(12px) saturate(160%);

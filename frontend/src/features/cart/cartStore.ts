@@ -11,10 +11,8 @@ export interface CartLine {
   variantName: string
   sku: string
   imageUrl: string | null
-  /** Price when added, for display only. Checkout re-prices every line on the server. */
   unitPrice: number
   currency: string
-  /** Stock seen when added; caps the stepper so customers aren't surprised at checkout. */
   available: number
   quantity: number
 }
@@ -25,7 +23,6 @@ interface CartState {
   setQuantity: (variantId: string, quantity: number) => void
   remove: (variantId: string) => void
   clear: () => void
-  /** Adopts the server's current price and stock for each line. */
   syncPrices: (updates: { variantId: string; unitPrice: number; available: number }[]) => void
 }
 
@@ -43,7 +40,6 @@ export const useCartStore = create<CartState>()(
           if (!existing) {
             return { lines: [...state.lines, { ...line, quantity: clampQuantity(quantity, line) }] }
           }
-          // Refresh the snapshot (price, stock) and merge quantities.
           return {
             lines: state.lines.map((l) => (l.variantId === line.variantId ? { ...line, quantity: clampQuantity(l.quantity + quantity, line) } : l)),
           }
@@ -77,5 +73,4 @@ export const useCartStore = create<CartState>()(
 
 export const selectItemCount = (state: CartState) => state.lines.reduce((sum, line) => sum + line.quantity, 0)
 
-/** Display subtotal in cents-safe arithmetic; the authoritative total comes from the API. */
 export const selectSubtotal = (state: CartState) => state.lines.reduce((sum, line) => sum + Math.round(line.unitPrice * 100) * line.quantity, 0) / 100

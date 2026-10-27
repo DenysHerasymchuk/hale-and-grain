@@ -18,7 +18,6 @@ export function RegisterPage() {
 
   const register = useMutation({
     mutationFn: () => authApi.register({ email: email.trim(), password }),
-    // Sign straight in; email confirmation is only required for password resets.
     onSuccess: () =>
       login.mutate({ email: email.trim(), password }, { onSuccess: () => void navigate(safeReturnPath(searchParams.get('returnTo')), { replace: true }) }),
   })

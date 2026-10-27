@@ -13,7 +13,6 @@ const links = [
   { to: routePaths.profileSettings, label: 'Settings' },
 ]
 
-/** Account shell inside the store layout; rendered only behind ProtectedRoute. */
 export function ProfileLayout() {
   const navigate = useNavigate()
   const { data: session } = useSession()

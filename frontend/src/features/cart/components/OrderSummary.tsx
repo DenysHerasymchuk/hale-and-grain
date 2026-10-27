@@ -4,7 +4,6 @@ import { cx } from '@/utils/cx'
 
 interface OrderSummaryProps {
   subtotal: number
-  /** Undefined while not yet known (cart page before a server quote). */
   shipping?: number
   total?: number
   currency?: string

@@ -1,4 +1,3 @@
-// Mirrors backend/FurnitureStore.Api/Features/Admin/AdminDtos.cs.
 import type { ImageRole, OrderStatus, PaymentStatus } from '@/types/api'
 
 export interface AdminImage {

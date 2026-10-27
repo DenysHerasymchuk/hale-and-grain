@@ -8,11 +8,9 @@ import { useCategories, useProducts } from '../hooks'
 import { ProductFilters } from './ProductFilters'
 
 interface CatalogViewProps {
-  /** Fixes the category (category pages); otherwise it is a filter in the URL. */
   category?: string
 }
 
-/** Filters, results grid and pagination, all driven by the URL query string. */
 export function CatalogView({ category }: CatalogViewProps) {
   const [searchParams, setSearchParams] = useSearchParams()
   const urlQuery = readCatalogParams(searchParams)

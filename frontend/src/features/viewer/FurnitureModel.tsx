@@ -14,10 +14,6 @@ function hasColor(material: Material): material is Material & { color: Color } {
   return 'color' in material && material.color instanceof Color
 }
 
-/**
- * Clones the cached glTF scene so per-product tints never leak into another viewer that
- * shares the same asset, and tints only the materials the product config names.
- */
 function cloneWithTint(source: Object3D, targets: string[], tint: string | null) {
   const scene = source.clone(true)
   const clonedMaterials: Material[] = []
@@ -49,12 +45,10 @@ export function FurnitureModel({ url, config, tint, onBoundsChange }: FurnitureM
     [gltf.scene, config.materialTargets, tint],
   )
 
-  // Geometry and textures belong to the shared loader cache; only our material copies are ours to free.
   useEffect(() => () => clonedMaterials.forEach((material) => material.dispose()), [clonedMaterials])
 
   const { scale } = config
 
-  // Measured on the fresh clone, before the primitive applies scale to it.
   const radius = useMemo(() => new Box3().setFromObject(scene).getBoundingSphere(new Sphere()).radius, [scene])
   useEffect(() => onBoundsChange(radius * scale), [radius, scale, onBoundsChange])
 

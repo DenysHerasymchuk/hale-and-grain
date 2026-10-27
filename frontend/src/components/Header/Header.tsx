@@ -59,7 +59,6 @@ export function Header() {
             <HeaderIconLink to={routePaths.cart} label={cartCount > 0 ? `Cart, ${cartCount} items` : 'Cart'} icon={ShoppingBag01}>
               <AnimatePresence>
                 {cartCount > 0 && (
-                  // Re-keyed on the count so every change replays the bump.
                   <motion.span
                     key={cartCount}
                     aria-hidden

@@ -40,8 +40,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         product.HasMany(p => p.Images).WithOne().HasForeignKey(i => i.ProductId);
         product.HasMany(p => p.Variants).WithOne(v => v.Product).HasForeignKey(v => v.ProductId);
 
-        // Model metadata is read and edited as one unit, so a single jsonb column fits better
-        // than a side table.
         product.OwnsOne(p => p.Model, model =>
         {
             model.ToJson();

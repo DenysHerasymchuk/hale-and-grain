@@ -7,10 +7,6 @@ import { useOrderAccessToken } from '@/features/orders/useOrderAccessToken'
 import { ApiError } from '@/lib/apiClient'
 import { routePaths } from '@/Routes/routePaths'
 
-/**
- * Guest order lookup. The API only answers for the signed-in owner or a holder of the
- * order's private link token, and replies 404 otherwise, so numbers can't be guessed.
- */
 export function OrderPage() {
   const { orderNumber = '' } = useParams()
   const token = useOrderAccessToken(orderNumber)

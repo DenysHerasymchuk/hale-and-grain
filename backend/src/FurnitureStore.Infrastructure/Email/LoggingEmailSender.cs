@@ -6,12 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace FurnitureStore.Infrastructure.Email;
 
-/// <summary>
-/// Stand-in for an email provider. With <c>Email:LogLinks</c> on (local only) account emails are
-/// written to the log so password resets can be completed; otherwise the links are dropped, since
-/// a reset link in a log is a takeover for anyone who can read the logs. Replace with a real
-/// IEmailSender (SMTP, SES, Postmark...) before going live.
-/// </summary>
 public class LoggingEmailSender(IConfiguration config, ILogger<LoggingEmailSender> logger) : IEmailSender<AppUser>
 {
     private string FrontendUrl => config["Frontend:BaseUrl"] ?? "http://localhost:5173";
@@ -30,7 +24,6 @@ public class LoggingEmailSender(IConfiguration config, ILogger<LoggingEmailSende
 
     public Task SendConfirmationLinkAsync(AppUser user, string email, string confirmationLink)
     {
-        // Identity HTML-encodes links for email bodies; a log line needs the plain URL.
         Log(email, "Confirm your account", WebUtility.HtmlDecode(confirmationLink));
         return Task.CompletedTask;
     }

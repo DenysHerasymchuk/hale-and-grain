@@ -14,7 +14,6 @@ import type {
   StoreSettings,
 } from './types'
 
-// Every call here is authorised by the API's Admin role; the route guard only hides the UI.
 export const adminApi = {
   dashboard: (signal?: AbortSignal) => api.get<Dashboard>('/admin/dashboard', signal),
   products: (q: string, signal?: AbortSignal) => api.get<AdminProductListItem[]>(`/admin/products${toQueryString({ q })}`, signal),
@@ -28,7 +27,6 @@ export const adminApi = {
   deleteCategory: (id: string) => api.delete(`/admin/categories/${id}`),
   inventory: (signal?: AbortSignal) => api.get<InventoryItem[]>('/admin/inventory', signal),
   updateStock: (variantId: string, stock: number) => api.put<void>(`/admin/inventory/${variantId}`, { stock }),
-  // Query-string enums bind case-sensitively on the API ("Pending"), unlike JSON bodies ("pending").
   orders: (status: OrderStatus | undefined, signal?: AbortSignal) =>
     api.get<AdminOrderListItem[]>(`/admin/orders${toQueryString({ status: status && status[0]?.toUpperCase() + status.slice(1) })}`, signal),
   order: (id: string, signal?: AbortSignal) => api.get<Order>(`/admin/orders/${id}`, signal),
@@ -62,10 +60,6 @@ export const useAdminOrder = (id: string) => useQuery({ queryKey: keys.order(id)
 export const useCustomers = (q: string) => useQuery({ queryKey: keys.customers(q), queryFn: ({ signal }) => adminApi.customers(q, signal) })
 export const useStoreSettings = () => useQuery({ queryKey: keys.settings, queryFn: ({ signal }) => adminApi.settings(signal) })
 
-/**
- * Admin writes touch prices, stock and copy the storefront shows, so after any change we
- * drop both the admin caches and the public catalogue cache.
- */
 export function useAdminMutation<TArgs, TResult>(mutationFn: (args: TArgs) => Promise<TResult>) {
   const queryClient = useQueryClient()
   return useMutation({

@@ -1,17 +1,11 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useLocation, useOutlet } from 'react-router'
 
-/**
- * Cross-fades between routes. Keyed on pathname only, so filter and variant changes that
- * just touch the query string don't re-animate the page.
- */
 export function PageTransition() {
   const location = useLocation()
   const outlet = useOutlet()
 
   return (
-    // No initial={false} here: it would also skip the intro animations of everything on the
-    // first page (hero entrance, looping keyframes), not just this wrapper's fade.
     <AnimatePresence mode="wait">
       <motion.div
         key={location.pathname}

@@ -11,7 +11,6 @@ interface FieldProps {
   children: (id: string) => ReactNode
 }
 
-/** Label + control + hint, wired together by id. Admin forms are dense, so these stay native. */
 export function Field({ label, hint, className, children }: FieldProps) {
   const id = useId()
   return (

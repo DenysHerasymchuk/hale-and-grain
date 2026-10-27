@@ -18,7 +18,6 @@ import { VariantSelector } from './components/VariantSelector'
 
 const FurnitureViewer3D = lazy(() => import('@/features/viewer/FurnitureViewer3D').then((m) => ({ default: m.FurnitureViewer3D })))
 
-/** Selected finish lives in the URL (?variant=SKU) so it survives reloads and can be shared. */
 function useSelectedVariant(product: ProductDetail | undefined) {
   const [searchParams, setSearchParams] = useSearchParams()
   const requested = product?.variants.find((v) => v.sku === searchParams.get('variant'))
