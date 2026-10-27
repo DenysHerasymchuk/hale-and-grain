@@ -26,6 +26,7 @@ public class StoreApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         builder.UseSetting("Seed:AdminEmail", AdminEmail);
         builder.UseSetting("Seed:AdminPassword", AdminPassword);
         builder.UseSetting("RateLimits:AuthPerMinute", "1000");
+        builder.UseSetting("Uploads:Path", Path.Combine(Path.GetTempPath(), $"hg-uploads-{Guid.NewGuid():N}"));
     }
 }
 

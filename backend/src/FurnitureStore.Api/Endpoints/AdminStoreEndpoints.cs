@@ -15,6 +15,7 @@ public static class AdminStoreEndpoints
         var admin = api.MapGroup("/admin").WithTags("Admin").RequireAuthorization(Roles.Admin);
 
         admin.MapAdminProductEndpoints();
+        admin.MapAdminUploadEndpoints();
         MapCategories(admin);
         MapInventory(admin);
         MapOrders(admin);

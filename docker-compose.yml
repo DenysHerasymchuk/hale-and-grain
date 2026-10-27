@@ -29,6 +29,8 @@ services:
       Frontend__BaseUrl: ${PUBLIC_URL:-http://localhost:8080}
       Auth__SecureCookies: ${SECURE_COOKIES:-false}
       Email__LogLinks: ${EMAIL_LOG_LINKS:-true}
+    volumes:
+      - uploads:/app/uploads
     depends_on:
       db:
         condition: service_healthy
@@ -36,3 +38,4 @@ services:
 
 volumes:
   db-data:
+  uploads:
