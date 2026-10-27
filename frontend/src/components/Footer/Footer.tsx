@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { Logo } from '@/components/Logo/Logo'
 import { useCategories } from '@/features/catalog/hooks'
 import { routePaths } from '@/Routes/routePaths'
+import { PaymentMethods } from './PaymentMethods'
 
 const currentYear = new Date().getFullYear()
 
@@ -57,15 +58,29 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-neutral-800">
-        <div className="container-page flex flex-col gap-2 py-6 text-xs text-neutral-500 sm:flex-row sm:justify-between">
-          <p>&copy; {currentYear} Hale &amp; Grain. Prices in EUR, including VAT.</p>
-          <p>
-            3D models from{' '}
-            <a href="https://polyhaven.com" className="underline underline-offset-2 hover:text-neutral-300" target="_blank" rel="noreferrer">
-              Poly Haven
-            </a>{' '}
-            (CC0).
-          </p>
+        <div className="container-page grid items-center gap-6 py-7 text-xs text-neutral-500 lg:grid-cols-[1fr_auto_1fr]">
+          <div className="space-y-1.5">
+            <p className="text-neutral-300">Copyright {currentYear} &copy; Hale &amp; Grain. Prices in EUR, including VAT.</p>
+            <p className="max-w-sm leading-relaxed">
+              Product photos are studio renders of the 3D models, shown without props. Models from{' '}
+              <a href="https://polyhaven.com" className="underline underline-offset-2 hover:text-neutral-300" target="_blank" rel="noreferrer">
+                Poly Haven
+              </a>{' '}
+              (CC0).
+            </p>
+          </div>
+
+          <PaymentMethods />
+
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 lg:justify-end">
+            {/* Decorative on purpose: this is a demo shop with no legal pages behind these. */}
+            {['Privacy Policy', 'Terms of Service', 'Return & Refund Policy'].map((label) => (
+              <span key={label} className="text-neutral-300 underline underline-offset-4">
+                {label}
+              </span>
+            ))}
+            <span className="italic">(it&rsquo;s just a demo, man)</span>
+          </div>
         </div>
       </div>
     </footer>
