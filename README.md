@@ -1,8 +1,29 @@
 <p align="center">
-  <img src="assets/banner.jpeg" alt="Hale & Grain: furniture you can walk around before it arrives" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/logo-beige.png" />
+    <img src="assets/brand/logo-ink.png" alt="Hale & Grain" width="420" />
+  </picture>
 </p>
 
-# Hale & Grain
+<p align="center"><em>Furniture you can walk around before it arrives.</em></p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19.3-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React 19.3" />
+  <img src="https://img.shields.io/badge/TypeScript-6.0-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript 6.0" />
+  <img src="https://img.shields.io/badge/Vite-8.3-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 8.3" />
+  <img src="https://img.shields.io/badge/Three.js-0.186-000000?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js 0.186" />
+  <img src="https://img.shields.io/badge/React_Three_Fiber-9.8-000000?style=flat-square&logo=react&logoColor=white" alt="React Three Fiber 9.8" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4.3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4.3" />
+  <br />
+  <img src="https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/EF_Core-10-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="EF Core 10" />
+  <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL 17" />
+  <img src="https://img.shields.io/badge/Node.js-%E2%89%A520.19-5FA04E?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js 20.19 or newer" />
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker Compose" />
+  <img src="https://img.shields.io/badge/tests-xUnit_%7C_Vitest-25A162?style=flat-square" alt="Tests: xUnit and Vitest" />
+</p>
+
+## About
 
 A furniture webshop where every product can be turned, zoomed and inspected in 3D before it goes in the cart. React and React Three Fiber on the front, ASP.NET Core and PostgreSQL behind it, with real orders, accounts and an admin area.
 
@@ -149,7 +170,7 @@ frontend/
     features/          catalog, cart, checkout, viewer (3D), auth, account, admin, wishlist
     components/        shared UI; base/ holds Untitled UI, reactbits/ holds adapted React Bits
 scripts/assets/        Blender scripts that produced the models and renders
-assets/                banner and original logo artwork
+assets/brand/          logo: original artwork plus ink and beige PNGs
 ```
 
 ## 3D models
