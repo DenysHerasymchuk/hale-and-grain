@@ -13,7 +13,7 @@ export function HeroSection() {
     <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
       <HeroBackdrop />
 
-      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-8 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-10">
+      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-8 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-4">
         <div className="max-w-2xl">
           <BlurText
             as="h1"
@@ -61,7 +61,7 @@ export function HeroSection() {
 
         <motion.div
           aria-hidden
-          className="relative hidden h-[min(78svh,50rem)] lg:block"
+          className="relative hidden h-[min(calc(100svh-var(--chrome-h,7rem)-2rem),60rem)] lg:block"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, delay: 0.3, ease }}
@@ -70,7 +70,7 @@ export function HeroSection() {
             src="/images/hero-cabinet.webp"
             alt=""
             fetchPriority="high"
-            className="mx-auto h-full w-auto object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.45)]"
+            className="ml-auto h-full w-auto translate-x-[6%] object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.45)]"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity, delay: 1.4 }}
           />
