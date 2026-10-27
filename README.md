@@ -15,6 +15,7 @@
   <img src="https://img.shields.io/badge/React_Three_Fiber-9.8-000000?style=flat-square&logo=react&logoColor=white" alt="React Three Fiber 9.8" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-4.3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4.3" />
   <br />
+  <a href="https://github.com/DenysHerasymchuk/hale-and-grain/actions/workflows/ci.yml"><img src="https://github.com/DenysHerasymchuk/hale-and-grain/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10" />
   <img src="https://img.shields.io/badge/EF_Core-10-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="EF Core 10" />
   <img src="https://img.shields.io/badge/PostgreSQL-17-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL 17" />
@@ -51,7 +52,7 @@ You'll need Node 20.19+, the .NET 10 SDK and Docker.
 docker compose up -d db
 
 # 2. API on http://localhost:5266 (API docs at /scalar)
-cd backend/FurnitureStore.Api
+cd backend/src/FurnitureStore.Api
 dotnet run --launch-profile http
 
 # 3. shop on http://localhost:5173
@@ -62,7 +63,7 @@ npm run dev
 
 The API migrates and seeds itself on startup in Development. Vite proxies `/api` to it, so there's nothing to configure.
 
-For an admin account, run this once in `backend/FurnitureStore.Api` and restart the API:
+For an admin account, run this once in `backend/src/FurnitureStore.Api` and restart the API:
 
 ```sh
 dotnet user-secrets init
@@ -90,12 +91,26 @@ cd frontend && npm test            # plus: npm run lint, npm run typecheck, npm 
 
 The five 3D models are CC0 from [Poly Haven](https://polyhaven.com). The product photos are our own Blender renders of them; [ASSETS.md](ASSETS.md) has the scripts.
 
+## How the backend is laid out
+
+Five projects, and dependencies only point inwards. Architecture tests fail the build if one leaks.
+
+| Project | Holds | May use |
+| --- | --- | --- |
+| `Domain` | entities like Product, Variant, Order | nothing |
+| `Contracts` | request and response DTOs | Domain |
+| `Application` | catalogue search, pricing, checkout | Domain, Contracts, EF Core (no database provider) |
+| `Infrastructure` | PostgreSQL, migrations, seed data, email and payment stand-ins | Application |
+| `Api` | endpoints, auth, startup | all of the above |
+
+Every push and pull request runs `.github/workflows/ci.yml`. It checks the frontend (lint, types, tests, build), builds the backend with warnings as errors and runs all three test projects, builds both Docker images and runs a Semgrep scan. A merge gate then requires all of them to pass.
+
 ## Good to know
 
 - **Payments are pretend.** Your bank account will never know. Checkout is labelled as a development checkout and orders are marked "development, simulated", never "paid". A real provider goes behind `IPaymentProvider`.
 - **Emails go to the API log.** That includes confirmation and reset links. Password reset only works for confirmed addresses, so confirm via the link in the log first.
 - **Settings** live in `appsettings*.json`, user-secrets or environment variables (`ConnectionStrings__Store`, `Seed__AdminEmail`, `Payments__Provider`, `Cors__AllowedOrigins`). `.env.example` lists the Docker ones.
-- **Schema changes:** `dotnet ef migrations add Name -o Data/Migrations` from the API folder.
+- **Schema changes:** from `backend/`, run `dotnet ef migrations add Name --project src/FurnitureStore.Infrastructure --startup-project src/FurnitureStore.Api -o Persistence/Migrations`.
 - **Not done yet:** Dutch/English translation, plus the About and Contact pages the footer links to.
 
 ## Credits
