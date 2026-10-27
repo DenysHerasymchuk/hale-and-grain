@@ -7,7 +7,7 @@ import { Price } from '@/components/Price/Price'
 import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useAdminProducts } from '@/features/admin/api'
 import { routePaths } from '@/Routes/routePaths'
-import { AdminPageHeader, AdminPanel, tableClass } from '../components/AdminPageHeader'
+import { AdminPageHeader, AdminPanel, tableClass } from './components/AdminPageHeader'
 
 export function AdminProductsPage() {
   const [search, setSearch] = useState('')

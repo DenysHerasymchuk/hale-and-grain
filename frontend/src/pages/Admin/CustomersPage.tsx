@@ -3,7 +3,7 @@ import { useDeferredValue, useState } from 'react'
 import { Price } from '@/components/Price/Price'
 import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { useCustomers } from '@/features/admin/api'
-import { AdminPageHeader, AdminPanel, tableClass } from '../components/AdminPageHeader'
+import { AdminPageHeader, AdminPanel, tableClass } from './components/AdminPageHeader'
 
 /** Read-only on purpose: customers manage their own details; staff see only what support needs. */
 export function CustomersPage() {

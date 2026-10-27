@@ -4,8 +4,8 @@ import { useAdminOrders } from '@/features/admin/api'
 import { orderStatuses, orderStatusLabel } from '@/features/orders/orderLabels'
 import type { OrderStatus } from '@/types/api'
 import { cx } from '@/utils/cx'
-import { AdminPageHeader } from '../components/AdminPageHeader'
-import { OrdersTable } from '../components/OrdersTable'
+import { AdminPageHeader } from './components/AdminPageHeader'
+import { OrdersTable } from './components/OrdersTable'
 
 export function AdminOrdersPage() {
   const [status, setStatus] = useState<OrderStatus | undefined>()

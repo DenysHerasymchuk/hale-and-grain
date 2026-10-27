@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router'
 import { LoadingState } from '@/components/StatusViews/StatusViews'
 import { CatalogView } from '@/features/catalog/components/CatalogView'
 import { useCategories } from '@/features/catalog/hooks'
-import { NotFoundPage } from '@/pages/NotFound/NotFoundPage'
+import { NotFoundPage } from '@/pages/NotFoundPage'
 import { routePaths } from '@/Routes/routePaths'
 
 export function CategoryPage() {

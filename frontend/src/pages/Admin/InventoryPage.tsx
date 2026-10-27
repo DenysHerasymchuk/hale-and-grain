@@ -5,8 +5,8 @@ import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { adminApi, useAdminMutation, useInventory, useStoreSettings } from '@/features/admin/api'
 import type { InventoryItem } from '@/features/admin/types'
 import { routePaths } from '@/Routes/routePaths'
-import { AdminPageHeader, AdminPanel, tableClass } from '../components/AdminPageHeader'
-import { controlClass } from '../components/Field'
+import { AdminPageHeader, AdminPanel, tableClass } from './components/AdminPageHeader'
+import { controlClass } from './components/Field'
 
 export function InventoryPage() {
   const { data: items, isPending, isError, error, refetch } = useInventory()

@@ -5,8 +5,8 @@ import { ErrorState, LoadingState } from '@/components/StatusViews/StatusViews'
 import { adminApi, useAdminCategories, useAdminMutation } from '@/features/admin/api'
 import type { AdminCategory, AdminCategoryInput } from '@/features/admin/types'
 import { ApiError } from '@/lib/apiClient'
-import { AdminPageHeader, AdminPanel, tableClass } from '../components/AdminPageHeader'
-import { TextField } from '../components/Field'
+import { AdminPageHeader, AdminPanel, tableClass } from './components/AdminPageHeader'
+import { TextField } from './components/Field'
 
 export function CategoriesPage() {
   const { data: categories, isPending, isError, error, refetch } = useAdminCategories()
