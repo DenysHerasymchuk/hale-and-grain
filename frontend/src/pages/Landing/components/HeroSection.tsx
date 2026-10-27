@@ -4,8 +4,6 @@ import { Link } from 'react-router'
 import BlurText from '@/components/reactbits/BlurText'
 import { routePaths } from '@/Routes/routePaths'
 import { HeroBackdrop } from './HeroBackdrop'
-import { HeroModelStage } from './HeroModelStage'
-import { HeroPeekCards } from './HeroPeekCards'
 import { PrimaryButton } from '@/components/PrimaryButton/PrimaryButton'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -15,9 +13,7 @@ export function HeroSection() {
     <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
       <HeroBackdrop />
 
-      <HeroPeekCards />
-
-      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-8 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-10 xl:pr-40">
+      <div className="container-page relative grid min-h-[calc(100svh-var(--chrome-h,7rem))] items-center gap-8 py-14 lg:grid-cols-[1.1fr_1fr] lg:py-10">
         <div className="max-w-2xl">
           <BlurText
             as="h1"
@@ -64,7 +60,23 @@ export function HeroSection() {
           </motion.p>
         </div>
 
-        <HeroModelStage />
+        {/* Studio render of the Atelier cabinet (transparent cutout); a gentle float, nothing heavier. */}
+        <motion.div
+          aria-hidden
+          className="relative hidden h-[min(78svh,50rem)] lg:block"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, delay: 0.3, ease }}
+        >
+          <motion.img
+            src="/images/hero-cabinet.webp"
+            alt=""
+            fetchPriority="high"
+            className="mx-auto h-full w-auto object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.45)]"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity, delay: 1.4 }}
+          />
+        </motion.div>
       </div>
     </section>
   )
