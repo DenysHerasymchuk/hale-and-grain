@@ -115,14 +115,21 @@ Every push and pull request runs `.github/workflows/ci.yml`. It checks the front
 
 ## Deploying
 
-```bash
-# in .env: PUBLIC_HOST=shop.example.com, a strong POSTGRES_PASSWORD, PAYMENTS_PROVIDER empty until a real one exists
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-```
+Same `docker-compose.yml`. In Coolify, add the repo as a **Docker Compose** resource, give the `app` service your domain on port 8080, and set:
 
-- The site listens on `127.0.0.1:8080` over plain HTTP. Put a TLS proxy in front (Caddy, Traefik, a load balancer) and set HSTS there. Session cookies are `Secure` in this mode, so login doesn't work without HTTPS.
-- The database isn't exposed, and sign-in keys are stored in it, so logins survive restarts.
-- No mail provider is wired up, so in production account emails are dropped, not logged. Plug one in behind `IEmailSender<AppUser>` before you open sign-ups. Same for payments behind `IPaymentProvider`.
+| Variable | Value |
+|---|---|
+| `PUBLIC_HOST` / `PUBLIC_URL` | `shop.yourdomain.com` / `https://shop.yourdomain.com` |
+| `POSTGRES_PASSWORD` | long and random |
+| `SECURE_COOKIES` | `true` |
+| `EMAIL_LOG_LINKS` | `false` |
+| `PAYMENTS_PROVIDER` | empty, until a real provider exists |
+| `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | first admin (10+ chars, an uppercase letter and a digit) |
+
+- The API serves the shop itself, so the whole thing is one container behind Coolify's HTTPS proxy. Turn on HSTS in the proxy.
+- Ports bind to `127.0.0.1` only, so the database and app are never reachable from the internet directly. Sign-in keys live in the database, so logins survive redeploys.
+- `migrate` runs on every deploy and exits when it's done. Coolify may show it as stopped; that's expected.
+- No mail provider is wired up, so with `EMAIL_LOG_LINKS=false` account emails are dropped. Plug one in behind `IEmailSender<AppUser>` before you open sign-ups. Same for payments behind `IPaymentProvider`.
 
 ## Credits
 

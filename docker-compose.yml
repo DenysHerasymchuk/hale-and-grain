@@ -1,6 +1,7 @@
 # `docker compose up --build` runs the whole store on http://localhost:8080.
 # For day-to-day development run only the database (`docker compose up -d db`) and use
 # `dotnet run` + `npm run dev` for hot reload.
+# The same file deploys to a server (e.g. Coolify): see "Deploying" in the README for the env vars.
 services:
   db:
     image: postgres:17-alpine
@@ -8,8 +9,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-furniture_store}
       POSTGRES_USER: ${POSTGRES_USER:-furniture}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-furniture_dev}
+    # Loopback only: reachable for local `dotnet run`, never from outside a server.
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
     healthcheck:
@@ -17,39 +19,38 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+    restart: unless-stopped
 
   # One-shot: applies EF Core migrations and seeds the catalogue, then exits.
   migrate:
-    build: ./backend
+    build: .
     command: ["--seed"]
-    environment: &api-env
+    environment: &app-env
       ConnectionStrings__Store: Host=db;Port=5432;Database=${POSTGRES_DB:-furniture_store};Username=${POSTGRES_USER:-furniture};Password=${POSTGRES_PASSWORD:-furniture_dev};Gss Encryption Mode=Disable
       Seed__AdminEmail: ${SEED_ADMIN_EMAIL:-}
       Seed__AdminPassword: ${SEED_ADMIN_PASSWORD:-}
-      # Local stack only: orders are recorded as "development, simulated" and no money moves.
-      Payments__Provider: ${PAYMENTS_PROVIDER:-Development}
-      # The API is reachable only through the web container's proxy on this network.
+      # "Development" records orders as simulated and no money moves; set it empty on a real server.
+      Payments__Provider: ${PAYMENTS_PROVIDER-Development}
+      # Only the host's reverse proxy (or localhost) can reach the app, so its X-Forwarded-* are trusted.
       ForwardedHeaders__TrustAllProxies: "true"
-      # Base for links in account emails; the local stack logs them since no mail provider is wired up.
-      Frontend__BaseUrl: http://localhost:${WEB_PORT:-8080}
-      Email__LogLinks: "true"
+      AllowedHosts: ${PUBLIC_HOST:-*}
+      Frontend__BaseUrl: ${PUBLIC_URL:-http://localhost:8080}
+      # On: cookies need HTTPS. Off: account emails go to the log instead of being dropped.
+      Auth__SecureCookies: ${SECURE_COOKIES:-false}
+      Email__LogLinks: ${EMAIL_LOG_LINKS:-true}
     depends_on:
       db:
         condition: service_healthy
 
-  api:
-    build: ./backend
-    environment: *api-env
+  app:
+    build: .
+    environment: *app-env
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:8080"
     depends_on:
       migrate:
         condition: service_completed_successfully
-
-  web:
-    build: ./frontend
-    ports:
-      - "${WEB_PORT:-8080}:8080"
-    depends_on:
-      - api
+    restart: unless-stopped
 
 volumes:
   db-data:
